@@ -1,0 +1,32 @@
+@import '../../scss/_variables';
+
+.buttonSmall {
+  position: relative;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 20px;
+  color: $textColorWhite;
+  border-radius: 8px;
+  background-color: $buttonBGWhite;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    background-color: $buttonHoverBGWhite;
+  }
+
+  &__icon {
+
+    margin-right: 6px;
+
+    // &:hover {
+
+    // }
+  }
+
+
+}

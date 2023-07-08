@@ -1,0 +1,43 @@
+@import '../../scss/_variables';
+
+%switchToggleActive {
+  background-color: $borderWhiteTheme;
+  border: 2px solid $borderWhiteTheme;
+  color: #fff;
+}
+
+.switch-toggle {
+  
+  max-width: 132px;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+
+  &__button {
+    padding: 10px 16px;
+    border: 2px solid $borderWhiteTheme;
+    border-radius: 32px 0px 0px 32px;
+
+
+    &:hover {
+      background-color: $buttonHoverBGWhite;
+      border: 2px solid $buttonHoverBGWhite;
+      color: #fff;
+    }
+
+    &:last-child {
+      border-radius: 0px 32px 32px 0px;
+    }
+
+    &.active{
+      @extend %switchToggleActive
+    }
+      
+
+    
+  }
+  
+}
