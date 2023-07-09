@@ -1,4 +1,4 @@
-import SettingMeny from 'components/SettingMenu/SettingMeny';
+import SettingMeny from '../SettingMenu/SettingMeny';
 
 import logo from '../../image/header/LOGO_Banyak.webp'
 

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
-import SwitchToogle from 'atoms/SwitchToggle/SwitchToggle';
+import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle';
 
 import settingIconBlue from '../../image/header/setting_icon-blue.webp';
 import chatIcon from '../../image/header/chat.svg';
