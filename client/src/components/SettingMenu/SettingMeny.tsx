@@ -1,7 +1,10 @@
 import { FC } from 'react';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
+
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
 import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle';
+import { changeOpenHeaderSeting } from './StateElementSlice';
 
 import settingIconBlue from '../../image/header/setting_icon-blue.webp';
 import chatIcon from '../../image/header/chat.svg';
@@ -10,15 +13,23 @@ import exitIcon from '../../image/header/exit.svg';
 import './SettingMeny.scss';
 
 const SettingMeny: FC = () => {
-
+  const dispatch = useAppDispatch();
+  const {headerSetting} = useAppSelector(state => state.stateElement);
+  
   const test = () => {
     console.log(1);
   }
 
-  return (
-    <div className='header__settings-container'>
-      <img src={settingIconBlue} className='header__settings-container-icon' alt="blue icon" />
-      <div className="header__settings-container-menu">    
+  const openCloseSettingMenu = (status: boolean): void => {
+    dispatch(changeOpenHeaderSeting(status));
+  }
+
+  const renderSettingMenu = () => {
+    return (
+      <div 
+        onMouseOver={() => openCloseSettingMenu(true)} 
+        onMouseLeave={() => openCloseSettingMenu(false)}
+        className="header__settings-container-menu">    
         <div className="header__settings-container-menu-container">
           <span className='header__settings-container-menu-container-round'></span>
           <span className='header__settings-container-menu-container-line'></span>
@@ -39,8 +50,17 @@ const SettingMeny: FC = () => {
             </li>
           </ul>
         </div>
-        
       </div>
+    )
+  }
+
+  return (
+    <div 
+      className='header__settings-container' 
+      onMouseOver={() => openCloseSettingMenu(true)}
+      onMouseLeave={() => openCloseSettingMenu(false)}>
+      <img src={settingIconBlue} className='header__settings-container-icon' alt="blue icon" />
+      {headerSetting ? renderSettingMenu() : null}
     </div>
     
   )
