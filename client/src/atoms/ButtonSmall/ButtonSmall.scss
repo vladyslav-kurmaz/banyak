@@ -17,6 +17,7 @@
 
   &:hover {
     background-color: $buttonHoverBGWhite;
+    transition: background-color .5s;
   }
 
   &__icon {

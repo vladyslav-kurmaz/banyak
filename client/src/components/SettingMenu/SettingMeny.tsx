@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
 
@@ -15,19 +15,21 @@ import './SettingMeny.scss';
 const SettingMeny: FC = () => {
   const dispatch = useAppDispatch();
   const {headerSetting} = useAppSelector(state => state.stateElement);
-  
+  const {userId} = useAppSelector(state => state.userInfo);
+
   const test = () => {
     console.log(1);
   }
 
-  const openCloseSettingMenu = (status: boolean): void => {
-    dispatch(changeOpenHeaderSeting(status));
-  }
+  const openCloseSettingMenu = useCallback((status: boolean): void => {
+      dispatch(changeOpenHeaderSeting(status));
+    }, [headerSetting]
+  )
 
   const renderSettingMenu = () => {
     return (
       <div 
-        onMouseOver={() => openCloseSettingMenu(true)} 
+        onMouseEnter={() => openCloseSettingMenu(true)} 
         onMouseLeave={() => openCloseSettingMenu(false)}
         className="header__settings-container-menu">    
         <div className="header__settings-container-menu-container">
@@ -35,7 +37,7 @@ const SettingMeny: FC = () => {
           <span className='header__settings-container-menu-container-line'></span>
           <ul className="header__settings-container-menu-container-list">
             <li className="header__settings-container-menu-container-list-item">
-              <ButtonSmall text='Чат' icon={chatIcon}/>
+              {userId ? <ButtonSmall text='Чат' icon={chatIcon}/> : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">Змінити мову</span>
@@ -46,7 +48,7 @@ const SettingMeny: FC = () => {
               
             </li>
             <li className="header__settings-container-menu-container-list-item">
-              <ButtonSmall text='Вийти' icon={exitIcon} fn={test}/>
+              {userId ? <ButtonSmall text='Вийти' icon={exitIcon} fn={test}/> : null}
             </li>
           </ul>
         </div>
@@ -57,7 +59,7 @@ const SettingMeny: FC = () => {
   return (
     <div 
       className='header__settings-container' 
-      onMouseOver={() => openCloseSettingMenu(true)}
+      onMouseEnter={() => openCloseSettingMenu(true)}
       onMouseLeave={() => openCloseSettingMenu(false)}>
       <img src={settingIconBlue} className='header__settings-container-icon' alt="blue icon" />
       {headerSetting ? renderSettingMenu() : null}

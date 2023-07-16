@@ -26,6 +26,7 @@
       background-color: $buttonHoverBGWhite;
       border: 2px solid $buttonHoverBGWhite;
       color: #fff;
+      transition: all .5s;
     }
 
     &:last-child {
