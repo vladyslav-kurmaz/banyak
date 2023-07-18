@@ -1,4 +1,4 @@
-import { FC, useMemo, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
 
@@ -23,6 +23,7 @@ const SettingMeny: FC = () => {
 
   const openCloseSettingMenu = useCallback((status: boolean): void => {
       dispatch(changeOpenHeaderSeting(status));
+      // eslint-disable-next-line
     }, [headerSetting]
   )
 

@@ -12,6 +12,7 @@
 
 .header__settings-container {
   position: relative;
+  z-index: 99;
   &-icon {
     position: relative;
     z-index: 100;
@@ -46,6 +47,7 @@
     width: 100%;
   
     &-container {
+      z-index: 99;
       position: absolute;
       right: 0px;
   
