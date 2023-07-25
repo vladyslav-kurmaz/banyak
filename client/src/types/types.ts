@@ -1,6 +1,7 @@
 export type stateElement = {
   headerSetting: boolean,
-  mainLanguage: 'ua' | 'eng'
+  mainLanguage: 'ua' | 'eng',
+  mainTheam: boolean
 }
 
 export type userInfo = {

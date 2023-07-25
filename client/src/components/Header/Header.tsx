@@ -31,7 +31,7 @@ const Header = () => {
       <div className="header__settings">
         <button className="header__settings-login">Увійти</button>
 
-        {userId === null ? <SettingMeny /> : null}
+        <SettingMeny />
       </div>
     </header>
   );

@@ -24,18 +24,11 @@ const SwitchToogle: FC = () => {
     
   }
 
-  
-  
-
   const changeLang = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const target = e.target as HTMLElement;
     console.log(target.getAttribute('data-lang'));
     
     dispatch(changeLanguage(target.getAttribute('data-lang')))
-
-    // if (target.getAttribute('data-lang') === mainLanguage) {
-    //   target
-    // }
   }
 
   return (

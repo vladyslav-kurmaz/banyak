@@ -1,0 +1,107 @@
+@import '../../scss//variables';
+
+
+
+.toggle-theam {
+  max-width: 132px;
+  width: 100%;
+  background-color: #fff;
+
+  &__container {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    height: 40px;
+    border: 1px solid $borderWhiteTheme;
+    border-radius: 32px;
+    background-color: #fff;
+    
+
+    @keyframes toggled-forward {
+      0% {
+        transform: translate(0%, -50%);
+      }
+      25% {
+        transform: translate(50%, -50%);
+      }
+      50% {
+        transform: translate(100%, -50%);
+        border: 1px solid #fff;
+        background-color: #615f77;
+      }
+      75% {
+        transform: translate(150%, -50%);
+        border: 1px solid #fff;
+        background-color: #433e6c;
+      }
+      100% {
+        transform: translate(200%, -50%);
+        border: 1px solid #fff;
+        background-color: #1C145E;
+      }
+    }
+
+    @keyframes toggled-backward {
+      0% {
+        transform: translate(200%, -50%);
+        border: 1px solid #fff;
+        background-color: #1C145E;
+      }
+      25% {
+        transform: translate(150%, -50%);
+        border: 1px solid #fff;
+        background-color: #433e6c;
+      }
+      50% {
+        transform: translate(100%, -50%);
+        border: 1px solid #fff;
+        background-color: #615f77;
+      }
+      75% {
+        transform: translate(50%, -50%);
+      }
+      100% {
+        transform: translate(0%, -50%);
+      }
+    }
+
+    &-elem {
+      display: block;
+      width: 32px;
+      height: 32px;
+      border: 1px solid $borderWhiteTheme;
+      border-radius: 50%;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+
+      &-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 25px;
+        height: 25px;
+      }
+      
+
+      &.false {
+        animation-name: toggled-forward;
+        animation-duration: .3s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards; 
+        
+      }
+      &.true {
+        animation-name: toggled-backward;
+        animation-duration: .3s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards; 
+        
+      }
+
+    }
+  }
+}

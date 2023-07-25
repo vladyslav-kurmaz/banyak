@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
 
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
 import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle';
+import ToggleTheam from '../../atoms/ToggleTheam/ToggleTheam';
 import { changeOpenHeaderSeting } from './StateElementSlice';
 
 import settingIconBlue from '../../image/header/setting_icon-blue.webp';
@@ -16,6 +17,7 @@ const SettingMeny: FC = () => {
   const dispatch = useAppDispatch();
   const {headerSetting} = useAppSelector(state => state.stateElement);
   const {userId} = useAppSelector(state => state.userInfo);
+  let counterViev = 0
 
   const test = () => {
     console.log(1);
@@ -46,7 +48,7 @@ const SettingMeny: FC = () => {
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">Змінити тему</span>
-              
+              <ToggleTheam/>
             </li>
             <li className="header__settings-container-menu-container-list-item">
               {userId ? <ButtonSmall text='Вийти' icon={exitIcon} fn={test}/> : null}
