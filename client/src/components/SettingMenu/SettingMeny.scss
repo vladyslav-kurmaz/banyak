@@ -45,6 +45,7 @@
     right: -3px;
     max-width: 165px;
     width: 100%;
+    background-color: #fff;
   
     &-container {
       z-index: 99;
@@ -85,6 +86,7 @@
         border: 1px solid $borderWhiteTheme;
         border-bottom-left-radius: 16px;
         border-bottom-right-radius: 16px;
+        background-color: #fff;
   
         &-item {
           margin-bottom: 28px;

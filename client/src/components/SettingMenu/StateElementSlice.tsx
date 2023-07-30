@@ -4,7 +4,8 @@ import { stateElement } from "../../types/types";
 const initialState: stateElement = {
   headerSetting: false,
   mainLanguage: 'ua',
-  mainTheam: true
+  mainTheam: true,
+  mainSlider: 0
 };
 
 const stateElementSlice = createSlice({
@@ -20,10 +21,13 @@ const stateElementSlice = createSlice({
     changeTheam: (state, action) => {
       state.mainTheam = action.payload;
     },
+    changeSlider: (state, action) => {
+      state.mainSlider = action.payload;
+    },
   },
 });
 
 const {actions, reducer} = stateElementSlice
 
-export const { changeOpenHeaderSeting, changeLanguage, changeTheam } = actions;
+export const { changeOpenHeaderSeting, changeLanguage, changeTheam, changeSlider } = actions;
 export default reducer;

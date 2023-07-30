@@ -1,0 +1,72 @@
+@import '../../scss/_variables';
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1 1 auto;
+  position: relative;
+  z-index: 98;
+
+  // height: 100vh;
+  // padding-top: 184px;
+
+  &__slide-one {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 auto;
+
+    &-info {
+      max-width: 590px;
+      display: flex;
+      // flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    
+      // min-height: 100%;
+    
+      &-container {
+    
+        
+        
+    
+        &-title {
+          // margin-top: 160px;
+          margin-bottom: 40px;
+          font-size: 64px;
+          font-weight: 600;
+        }
+    
+        &-description {
+          margin-bottom: 40px;
+          font-size: 20px;
+          font-weight: 600;
+        }
+    
+        &-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          padding: 30px 0;
+          text-decoration: none;
+          color: #fff;
+          background-color: $borderWhiteTheme;
+          border-radius: 64px;
+          transition: all .3s;
+          text-align: center;
+    
+          &:hover {
+            background-color: $buttonHoverBGWhite;
+          }
+        }
+      }
+    }
+  }
+
+}
