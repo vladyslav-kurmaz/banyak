@@ -1,78 +1,111 @@
-import { FC, useEffect, useMemo } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
-import { changeSlider } from '../SettingMenu/StateElementSlice';
+import { MouseEvent } from "react";
+import MainSliderStatus from "../../atoms/MainSliderStatus/MainSliderStatus";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
 
+import MainInfo from "../MainInfo/MainInfo";
+import MainSliderImg from "../MainSliderImg/MainSliderImg";
+import MainInstruction from "../MainInstruction/MainInstruction";
 
-import compIcon from '../../image/main-page-slider/comp.webp';
-import flowerIcon from '../../image/main-page-slider/flower.webp';
-import blickIcon from '../../image/main-page-slider/blick.webp';
-import frontIcon from '../../image/main-page-slider/frontend.webp';
-import qaIcon from '../../image/main-page-slider/qa.webp';
-import backIcon from '../../image/main-page-slider/backend.webp';
-import designerIcon from '../../image/main-page-slider/designer.webp';
+import { changeMainPageSlider } from "../SettingMenu/StateElementSlice";
 
-import './MainSlider.scss';
+import "./MainSlider.scss";
 
-const MainSlider: FC = () => {
+const MainSlider = () => {
   const dispatch = useAppDispatch();
-  const {mainSlider} = useAppSelector(state => state.stateElement)
+  const { mainPageSlider } = useAppSelector((state) => state.stateElement);
 
-  useEffect(() => {
-    
-    
-    const sliders = document.querySelectorAll('[data-num]')
-    sliders.forEach((slide, i) => {
-      const num = slide.getAttribute('data-num')
-      
-      if (num !== null && +num === mainSlider) {
-        slide.classList.add('input');
-        slide.classList.remove('output');
-      } 
-      else {        
-        if (mainSlider < 1 ) {
-          sliders[3].classList.remove('input');
-          sliders[3].classList.add('output')
-          setTimeout(() => sliders[3].classList.remove('output'), 1600)
-        } else {
-          sliders[mainSlider - 1].classList.remove('input');
-          sliders[mainSlider - 1].classList.add('output')
-          setTimeout(() => sliders[mainSlider - 1].classList.remove('output'), 1600)
-        }        
+  const changeMainSlide: (
+    e: MouseEvent<HTMLDivElement>,
+    num: number
+  ) => void = (e, num) => {
+    const target = e.currentTarget;
+
+
+    if (mainPageSlider === 0) {
+      if (!target.parentElement?.classList.contains('active')) {
+        target.parentElement?.classList.add('active')
+        target.parentElement?.classList.remove('inert')
       }
-
-    })
-
-    if (mainSlider >= 3) {
-      setTimeout(() => dispatch(changeSlider(0)), 5000)
+      console.log(target.parentElement);
     } else {
-      setTimeout(() => dispatch(changeSlider(mainSlider + 1)), 5000)
+      if (!target.parentElement?.classList.contains('inert')) {
+        target.parentElement?.classList.add('inert')
+        target.parentElement?.classList.remove('active')
+      }
     }
     
+    dispatch(changeMainPageSlider(num));
+  };
 
-  }, [mainSlider])
+  const buttonChangeSlide = () => {
+    return mainPageSlider === 0 ? (
+      <div
+        className="main__container-slider-button"
+        onClick={(e) => changeMainSlide(e, 1)}
+        style={{
+          top: "50%",
+          right: "50%",
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+        >
+          <path
+            d="M12 32V30.92L22.7059 20L12 9.08V8H22.5882L32 17.36V22.64L22.5882 32H12Z"
+            fill="#061730"
+          />
+        </svg>
+      </div>
+    ) : (
+      <div
+        className="main__container-slider-button"
+        onClick={(e) => changeMainSlide(e, 0)}
+        style={{
+          top: "50%",
+          left: "50%",
+          transform: "rotate(180deg)",
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+        >
+          <path
+            d="M12 32V30.92L22.7059 20L12 9.08V8H22.5882L32 17.36V22.64L22.5882 32H12Z"
+            fill="#061730"
+          />
+        </svg>
+      </div>
+    );
+  };
 
 
   return (
-    <div className='main-slider'>
-      <div className='main-slider__content'>
-        <div className="main-slider__content-slide front" data-num={0}>
-          <img src={frontIcon} alt="front Icon" className='main-slider__content-slide-img' />
+    <div className="main__container">
+      <div className="main__container-slider">
+        
+        <div className="main__container-slider-elem">
+          <MainInfo />
+          <MainSliderImg />
         </div>
-        <div className="main-slider__content-slide qa" data-num={1}>
-          <img src={qaIcon} alt="qa icon" className='main-slider__content-slide-img' />
+
+        <div className="main__container-slider-elem">
+          <MainInstruction />
         </div>
-        <div className="main-slider__content-slide back" data-num={2}>
-          <img src={backIcon} alt="back icon" className='main-slider__content-slide-img' />
-        </div>
-        <div className="main-slider__content-slide design" data-num={3}>
-          <img src={designerIcon} alt="design icon" className='main-slider__content-slide-img' />
-        </div>
+
+        {buttonChangeSlide()}
       </div>
-        <img src={compIcon} alt="copm" className='main-slider__comp' />
-        <img src={blickIcon} alt="bick" className='main-slider__blick' />
-        <img src={flowerIcon} alt="bick" className='main-slider__flower' />
+
+      <MainSliderStatus />
     </div>
-  )
-}
+  );
+};
 
 export default MainSlider;

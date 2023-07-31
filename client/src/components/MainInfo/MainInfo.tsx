@@ -4,17 +4,17 @@ import './MainInfo.scss';
 
 const MainInfo: FC = () => {
   return (
-    <div className='main__slide-one-info'>
-      <div className="main__slide-one-info-container">
-        <div className='main__slide-one-info-container-title'>
+    <div className='main__info'>
+      <div className="main__info-container">
+        <div className='main__info-container-title'>
           BANYAK 
         </div>
-        <div className='main__slide-one-info-container-description'>
+        <div className='main__info-container-description'>
           Це ідеальне місце для тих, хто прагне отримати досвід роботи в IT команді, 
           покращити свої навички та розширити професійні горизонти.
         </div>
 
-        <a className='main__slide-one-info-container-button' href="#">
+        <a className='main__info-container-button' href="#">
           Приєднатись до команди
         </a>
       </div>

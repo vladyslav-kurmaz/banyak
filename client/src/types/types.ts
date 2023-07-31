@@ -1,8 +1,10 @@
 export type stateElement = {
   headerSetting: boolean,
-  mainLanguage: 'ua' | 'eng',
+  mainLanguage: 'УКР' | 'ENG',
   mainTheam: boolean,
-  mainSlider: number
+  mainSlider: number,
+  mainPageSlider: 0 | 1
+  statusInstr: 'Власник ідеї' | 'Талант'
 }
 
 export type userInfo = {

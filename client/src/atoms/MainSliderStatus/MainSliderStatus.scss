@@ -1,0 +1,74 @@
+@import '../../scss/variables';
+
+.main-slider-status {
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+  z-index: 100;
+  margin-top: -1px;
+  margin-bottom: 40px;
+  position: relative;
+
+  &__ring {
+    font-size: 16px;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid $buttonBGWhite;
+    border-radius: 50%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+
+    &-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+
+      
+      &-active, &-all {
+        font-size: 20px;
+      }
+
+      &-all {
+        margin-top: 5px;
+        width: 100%;
+        text-align: center;
+      }
+    }
+    
+  }
+
+  &__element {
+    width: 100%;
+
+    &.top {
+      position: relative;
+      width: 100%;
+      height: 17px;
+      background-color: #888FC9;
+      // border: 1px solid #000;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      z-index: 10;
+    }
+
+    &.bottom {
+      position: relative;
+      width: 100%;
+      height: 17px;
+      background-color: #061730;
+      // border: 1px solid #000;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 10;
+    }
+  }
+}

@@ -1,16 +1,21 @@
 import { FC } from "react"
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
-import { changeLanguage } from "../../components/SettingMenu/StateElementSlice";
+import { changeLanguage, changeStatusInstr } from "../../components/SettingMenu/StateElementSlice";
 
 import './SwitchToggle.scss';
 
-const SwitchToogle: FC = () => {
-  const dispatch = useAppDispatch();
-  const {mainLanguage} = useAppSelector(state => state.stateElement)
+type SwitchToggle = {
+  prop1: string,
+  prop2: string
+}
 
-  const changeActiveLanguage = (leng: string) => {
+const SwitchToogle: FC <SwitchToggle> = ({prop1, prop2}) => {
+  const dispatch = useAppDispatch();
+  const {mainLanguage, statusInstr} = useAppSelector(state => state.stateElement)
+
+  const changeActiveLanguage = (status: string) => {
     
-    if (leng === mainLanguage) {
+    if (status === mainLanguage || status === statusInstr) {
       return (
         {
           'backgroundColor': '#1C145E',
@@ -26,23 +31,31 @@ const SwitchToogle: FC = () => {
 
   const changeLang = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const target = e.target as HTMLElement;
-    console.log(target.getAttribute('data-lang'));
+
+    switch(prop1 || prop2) {
+      case 'Власник ідеї' || 'Талант':
+        dispatch(changeStatusInstr(target.getAttribute('data-prop')));
+        break;
+      case 'УКР' || 'ENG':
+        dispatch(changeLanguage(target.getAttribute('data-prop')));
+        break;
+    }
     
-    dispatch(changeLanguage(target.getAttribute('data-lang')))
+    
   }
 
   return (
     <div className="switch-toggle">
       <span 
         className="switch-toggle__button"
-        data-lang='ua'
-        style={changeActiveLanguage('ua')}
-        onClick={changeLang}>УКР</span>
+        data-prop={prop1}
+        style={changeActiveLanguage(prop1)}
+        onClick={changeLang}>{prop1}</span>
       <span 
         className="switch-toggle__button"
-        style={changeActiveLanguage('eng')}
+        style={changeActiveLanguage(prop2)}
         onClick={changeLang} 
-        data-lang='eng'>ENG</span>
+        data-prop={prop2}>{prop2}</span>
     </div>
   );
 }

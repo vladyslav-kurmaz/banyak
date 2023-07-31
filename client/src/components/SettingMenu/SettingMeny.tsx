@@ -44,7 +44,7 @@ const SettingMeny: FC = () => {
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">Змінити мову</span>
-              <SwitchToogle />
+              <SwitchToogle prop1={'УКР'} prop2={'ENG'} />
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">Змінити тему</span>

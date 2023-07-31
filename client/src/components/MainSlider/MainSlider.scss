@@ -1,104 +1,100 @@
-.main-slider {
-  max-width: 590px;
-  width: 100%;
-  position: relative;
+@import '../../scss/variables';
 
 
-  &__content {
-    position: relative;
-    z-index: 99;
-    width: 600px;
-    height: 500px;
-    overflow: hidden;
-    
-    @keyframes inputSlide {
-      0% {
-        visibility: visible;
-        left: 150%;
-        bottom: -3px;
-      }
-      100% {
-        left: 50%;
-        bottom: -3px;
-      }
-    }
-
-    @keyframes outputSlide {
-      0% {
-        left: 50%;
-        bottom: -3px;
-      }
-      100% {
-        left: -20%;
-        transform: scale(.1);
-        bottom: -300px;
-        visibility: hidden;
-      }
-    }
-
-    &-slide {
-      position: absolute;
-      bottom: 0;
-
-      &.front {
-        left: 150%;
-        transform: translateX(-45%);
-        bottom: -3px;
-      }
-
-      &.qa {
-        left: 150%;
-        transform: translateX(-45%);
-        bottom: -3px;
-      }
-
-      &.back {
-        left: 150%;
-        transform: translateX(-57%);
-        bottom: -3px;
-      }
-
-      &.design {
-        left: 150%;
-        transform: translateX(-42%);
-        bottom: -3px;
-      }
-
-      &.input {
-        animation-name: inputSlide;
-        animation-duration: 1.5s;
-        animation-timing-function: ease-in;
-        animation-fill-mode: forwards;
-      }
-
-      &.output {
-        animation-name: outputSlide;
-        animation-duration: 1.5s;
-        animation-timing-function: ease-in;
-        animation-fill-mode: forwards;
-      }
-    }
-    
+@keyframes swipeStart {
+  0% {
+    left: 0;
   }
+  100% {
+    left: -1200px;
+    // opacity: 1;
+  }
+}
 
-    &__comp {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      z-index: 100;
-    }
+@keyframes swipeEnd {
+  0% {
+    left: -1200px;
+  }
+  100% {
+    left: 0px;
+  }
+}
 
-    &__blick {
-      position: absolute;
-      top: 0;
-      left: 20%;
-      z-index: 10;
-    }
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  position: relative;
+  z-index: 98;
 
-    &__flower {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 10;
+  &__container {
+      display: flex;
+      // max-width: 1200px;
+      width: 100%;
+      flex-wrap: wrap;
+      overflow: hidden;  
+
+
+      &-slider {
+        max-width: 2400px;
+        left: 0px;
+        // width: 100%;
+        display: flex;
+        // justify-content: space-between;
+        position: relative;
+
+        &.active {
+          animation-name: swipeStart;
+          animation-duration: 1.5s;
+          animation-fill-mode: ease-in;
+          animation-fill-mode: forwards;
+        }
+
+        &.inert {
+          animation-name: swipeEnd;
+          animation-duration: 1s;
+          animation-fill-mode: ease-in;
+          animation-fill-mode: forwards;
+        }
+
+        &-elem {
+          position: relative;
+          width: 1200px;
+          display: flex;
+
+        }
+
+        &-button {
+      
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 2px solid $buttonBGWhite;
+          transition: all .3s;
+          cursor: pointer;
+          position: absolute;
+          transform: translateY(-50%);
+          z-index: 101;
+    
+          &:hover {
+            border: 2px solid $buttonHoverBGWhite;
+            transition: all .3s;
+          }
+          
+          & svg  {
+            fill: $buttonBGWhite;
+            transition: all .3s;
+          }
+    
+          & svg:hover path {
+            fill: $buttonHoverBGWhite;
+            transition: all .3s;
+          }
+        }
+      }
     }
 }
