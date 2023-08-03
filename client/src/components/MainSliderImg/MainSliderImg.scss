@@ -42,9 +42,14 @@
       position: absolute;
       bottom: 0;
 
+      & img {
+        width: 450px;
+        height: 500px;
+      }
+
       &.front {
         left: 150%;
-        transform: translateX(-45%);
+        transform: translateX(-55%);
         bottom: -3px;
       }
 
@@ -62,7 +67,7 @@
 
       &.design {
         left: 150%;
-        transform: translateX(-42%);
+        transform: translateX(-45%);
         bottom: -3px;
       }
 
@@ -92,7 +97,7 @@
 
     &__blick {
       position: absolute;
-      top: 0;
+      top: 20%;
       left: 20%;
       z-index: 10;
     }
