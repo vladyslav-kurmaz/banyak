@@ -12,11 +12,11 @@ const MainSliderStatus: FC = () => {
       <div className="main-slider-status__element top"></div>
       <div className="main-slider-status__element bottom"></div>
       <div className="main-slider-status__ring">
-        <span className="main-slider-status__ring-container">
-          <span className="main-slider-status__ring-container-active">{mainPageSlider + 1}</span> 
-          {` step/ `}
+        <div className="main-slider-status__ring-container">
+          <span className="main-slider-status__ring-container-active">{`${mainPageSlider + 1} `} </span>
+          <span className="main-slider-status__ring-container-text">step/</span>
           <span className="main-slider-status__ring-container-all">2</span>
-        </span>
+        </div>
         
       </div>
     </div>
