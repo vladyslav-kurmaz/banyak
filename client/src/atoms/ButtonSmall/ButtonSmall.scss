@@ -17,6 +17,7 @@
 
   &:hover {
     background-color: $buttonHoverBGWhite;
+    box-shadow: 0px 8px 20px 0px rgba(6, 23, 48, 0.20);
     transition: background-color .5s;
   }
 

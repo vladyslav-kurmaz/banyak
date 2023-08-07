@@ -85,15 +85,23 @@
             transition: all .3s;
           }
           
-          & svg  {
-            fill: $buttonBGWhite;
-            transition: all .3s;
-          }
-    
-          & svg:hover path {
-            fill: $buttonHoverBGWhite;
-            transition: all .3s;
-          }
+          & {
+            background-color: #fff;
+
+            
+
+            & svg  {
+              fill: $buttonBGWhite;
+              transition: all .3s;
+              
+            }
+      
+            & svg:hover path {
+              fill: $buttonHoverBGWhite;
+              transition: all .3s;
+              
+            }
+          } 
         }
       }
     }

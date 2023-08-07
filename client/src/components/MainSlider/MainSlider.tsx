@@ -44,7 +44,7 @@ const MainSlider = () => {
         onClick={(e) => changeMainSlide(e, 1)}
         style={{
           top: "50%",
-          right: "50%",
+          right: "50%"
         }}
       >
         <svg
@@ -90,7 +90,7 @@ const MainSlider = () => {
   return (
     <div className="main__container">
       <div className="main__container-slider">
-        
+
         <div className="main__container-slider-elem">
           <MainInfo />
           <MainSliderImg />
