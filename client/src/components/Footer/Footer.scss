@@ -17,6 +17,19 @@
     //   padding-top: 60px;
     // }
 
+    &-item {
+      &-insta {
+        &:hover svg circle {
+          fill: #5B23A9;
+        }
+      }
+      &-linkid {
+        &:hover svg path {
+          fill: #5B23A9;
+        }
+      }
+    }
+
     &-item a {
       color: #061730;
       text-decoration: none;
@@ -52,6 +65,14 @@
         transform: translateY(-70%);
         top: 50%;
 
+        
+
+        // &:hover svg path {
+        //   fill: #5B23A9;
+        // }
+
+        
+
         & img {
           transition: all .3s;
           &:hover {
@@ -62,6 +83,8 @@
         }
         
       }
+
+      
 
       & a:nth-child(2) {
         margin-right: 20px;

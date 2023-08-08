@@ -43,19 +43,19 @@
       bottom: 0;
 
       & img {
-        width: 450px;
+        width: 540px;
         height: 500px;
       }
 
       &.front {
         left: 150%;
-        transform: translateX(-50%);
+        transform: translateX(-46%);
         bottom: -3px;
       }
 
       &.qa {
         left: 150%;
-        transform: translateX(-50%);
+        transform: translateX(-45%);
         bottom: -3px;
       }
 
@@ -89,6 +89,8 @@
   }
 
     &__comp {
+      max-width: 277px;
+      width: 100%;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -96,6 +98,8 @@
     }
 
     &__blick {
+      max-width: 113px;
+      width: 100%;
       position: absolute;
       top: 20%;
       left: 20%;
@@ -103,6 +107,8 @@
     }
 
     &__flower {
+      max-width: 213px;
+      width: 100%;
       position: absolute;
       bottom: 0;
       right: 0;

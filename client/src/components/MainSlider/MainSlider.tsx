@@ -26,7 +26,6 @@ const MainSlider = () => {
         target.parentElement?.classList.add('active')
         target.parentElement?.classList.remove('inert')
       }
-      console.log(target.parentElement);
     } else {
       if (!target.parentElement?.classList.contains('inert')) {
         target.parentElement?.classList.add('inert')
