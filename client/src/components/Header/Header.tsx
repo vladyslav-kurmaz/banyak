@@ -1,5 +1,6 @@
 import SettingMeny from "../SettingMenu/SettingMeny";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+import { Link } from "react-router-dom";
 
 import logo from "../../image/header/LOGO_Banyak.webp";
 
@@ -10,20 +11,20 @@ const Header = () => {
 
   return (
     <header className="header">
-      <a href="#" className="header__main-link">
+      <Link to="/" className="header__main-link">
         <img src={logo} alt="Logo" className="header__main-link-logo" />
-      </a>
+      </Link>
 
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="header__nav-list-item">
-            <a href="#">Про нас</a>
+            <Link to="/aboutus">Про нас</Link>
           </li>
           <li className="header__nav-list-item">
-            <a href="#">Ідеї</a>
+            <Link to="/ideas">Ідеї</Link>
           </li>
           <li className="header__nav-list-item">
-            <a href="#">Таланти</a>
+            <Link to="/talents">Таланти</Link>
           </li>
         </ul>
       </nav>
