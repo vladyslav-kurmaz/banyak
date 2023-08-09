@@ -21,14 +21,14 @@ const router = createBrowserRouter(
       },
       {
         path: '/ideas',
-        element: <IdeasAndTalent header={'Ideas'}/>,
+        element: <IdeasAndTalent type={true}/>,
         children: [
 
         ]
       },
       {
         path: '/talents',
-        element: <IdeasAndTalent header={'Talent'}/>,
+        element: <IdeasAndTalent type={false}/>,
         children: [
           
         ]

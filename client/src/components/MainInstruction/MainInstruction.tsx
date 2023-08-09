@@ -44,9 +44,9 @@ const MainInstruction: FC = () => {
     <div className="instruction">
 
       <SwitchToogle prop1={"Власник ідеї"} prop2={"Талант"} />
-      <div className="instruction__item idea">
+      <div className="instruction__item">
         <div className="instruction__item-img">
-          <img src={mainPhoto} alt="instruction photo" />
+          <img src={mainPhoto} alt="instruction" />
         </div>
         <div className="instruction__item-info">
           <ul className="instruction__item-info-list">

@@ -1,13 +1,11 @@
 import SettingMeny from "../SettingMenu/SettingMeny";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
 import { Link } from "react-router-dom";
 
-import logo from "../../image/header/LOGO_Banyak.webp";
+import logo from "../../image/logo/LOGO_Banyak.webp";
 
 import "./Header.scss";
 
 const Header = () => {
-  const {userId} = useAppSelector(state => state.userInfo);
 
   return (
     <header className="header">

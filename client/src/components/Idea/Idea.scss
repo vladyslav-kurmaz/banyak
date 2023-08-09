@@ -1,0 +1,136 @@
+@import '../../scss//variables';
+
+.idea {
+  padding: 25px 20px;
+  box-shadow: 0px 8px 20px 0px rgba(29, 60, 108, 0.2);
+  border-radius: 8px;
+  max-width: 1200px;
+  height: 147px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+
+  &__img {
+    &-picture {
+      max-width: 96px;
+      max-height: 96px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+
+    &-title {
+      font-family: Montserrat;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    &-description {
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 400;
+    }
+  }
+
+  &__specialty {
+
+    &-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      // justify-content: space-between;
+
+      &-status {
+        margin-right: 8px;
+        display: block;
+        width: 19px;
+        height: 19px;
+        border: 2px solid $buttonBGWhite;
+        border-radius: 50%;
+      }
+
+      &.found {
+
+        .idea__specialty-item {
+          
+          &-status {
+            border: 2px solid #BFB3B3;
+            border-radius: 50%;
+            position: relative;
+            color: #BFB3B3;
+    
+            &::after {
+              content: '';
+              width: 6px;
+              height: 2px;
+              position: absolute;
+              top: 55%;
+              left: 20%;
+              transform: rotate(40deg);
+              background-color: #BFB3B3;
+            }
+            
+            &::before {
+              content: '';
+              width: 11px;
+              height: 2px;
+              position: absolute;
+              top: 45%;
+              left: 33%;
+    
+              transform: rotate(130deg);
+              background-color: #BFB3B3;
+            }
+          }
+
+          &-text {
+            color: #BFB3B3;
+          }
+        }
+        
+      }
+
+      &.all-specialty {
+
+        .idea__specialty-item {
+          &-status {
+            margin-right: 8px;
+
+            width: 19px;
+            height: 19px;
+            background-color: $buttonBGWhite;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  &__metrics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+
+    &-view {
+      
+
+      display: flex;
+      align-items: center;
+
+      &-total {
+        margin-left: 10px;
+      }
+    }
+
+  }
+}

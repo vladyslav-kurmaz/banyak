@@ -1,11 +1,10 @@
+import Idea from "../components/Idea/Idea";
+import Talant from "../components/Talant/Talant";
 
-
-const IdeasAndTalent = ({header}: {header: string}) => {
+const IdeasAndTalent = ({type}: {type: boolean}) => {
   return (
     <>
-      <div>
-        <h1>{header}</h1>
-      </div>
+        {type ? <Idea/> : <Talant/>}
     </>
   )
 }
