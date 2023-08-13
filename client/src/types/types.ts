@@ -2,9 +2,10 @@ export type stateElement = {
   headerSetting: boolean,
   mainLanguage: 'УКР' | 'ENG',
   mainTheam: boolean,
-  mainSlider: number,
   mainPageSlider: 0 | 1
-  statusInstr: 'Власник ідеї' | 'Талант'
+  statusInstr: 'Власник ідеї' | 'Талант',
+  loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ',
+  loginRegistrationForm: boolean
 }
 
 export type userInfo = {

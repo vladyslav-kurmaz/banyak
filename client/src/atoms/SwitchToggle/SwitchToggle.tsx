@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
-import { changeLanguage, changeStatusInstr } from "../../components/SettingMenu/StateElementSlice";
+import { changeLanguage, changeStatusInstr, changeLoginOrSingUp } from "../../components/SettingMenu/StateElementSlice";
 
 import './SwitchToggle.scss';
 
@@ -11,11 +11,11 @@ type SwitchToggle = {
 
 const SwitchToogle: FC <SwitchToggle> = ({prop1, prop2}) => {
   const dispatch = useAppDispatch();
-  const {mainLanguage, statusInstr} = useAppSelector(state => state.stateElement)
+  const {mainLanguage, statusInstr, loginOrSingUp} = useAppSelector(state => state.stateElement)
 
   const changeActiveLanguage = (status: string) => {
     
-    if (status === mainLanguage || status === statusInstr) {
+    if (status === mainLanguage || status === statusInstr || status === loginOrSingUp) {
       return (
         {
           'backgroundColor': '#1C145E',
@@ -38,6 +38,9 @@ const SwitchToogle: FC <SwitchToggle> = ({prop1, prop2}) => {
         break;
       case 'УКР' || 'ENG':
         dispatch(changeLanguage(target.getAttribute('data-prop')));
+        break;
+      case 'РЕЄСТРАЦІЯ' || 'ВХІД':
+        dispatch(changeLoginOrSingUp(target.getAttribute('data-prop')));
         break;
     }
     

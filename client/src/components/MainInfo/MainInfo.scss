@@ -7,18 +7,17 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  flex: 1 1 auto;
   position: relative;
   z-index: 98;
+
+  &-slider {
 
     &__info {
       max-width: 590px;
       display: flex;
-      // flex-direction: column;
       justify-content: center;
       align-items: center;
     
-      // min-height: 100%;
     
       &-container {
     
@@ -62,5 +61,7 @@
         }
       }
     }
+  }
+    
 
 }

@@ -1,6 +1,7 @@
 .footer {
   width: 100%;
   position: relative;
+  flex: 0 0 auto;
 
   &__list {
     max-width: 1200px;
@@ -19,13 +20,17 @@
 
     &-item {
       &-insta {
+        transition: all .3s;
         &:hover svg circle {
+          transition: all .3s;
           fill: #5B23A9;
         }
       }
-      
+
       &-linkid {
+        transition: all .3s;
         &:hover svg path {
+          transition: all .3s;
           fill: #5B23A9;
         }
       }

@@ -5,9 +5,10 @@ const initialState: stateElement = {
   headerSetting: false,
   mainLanguage: "УКР",
   mainTheam: true,
-  mainSlider: 0,
   mainPageSlider: 0,
   statusInstr: 'Власник ідеї',
+  loginRegistrationForm: false,
+  loginOrSingUp: 'ВХІД',
 };
 
 const stateElementSlice = createSlice({
@@ -23,14 +24,17 @@ const stateElementSlice = createSlice({
     changeTheam: (state, action) => {
       state.mainTheam = action.payload;
     },
-    changeSlider: (state, action) => {
-      state.mainSlider = action.payload;
-    },
     changeMainPageSlider: (state, action) => {
       state.mainPageSlider = action.payload;
     },
     changeStatusInstr: (state, action) => {
       state.statusInstr = action.payload;
+    },
+    changeOpenOrCloseLoginPopup: (state, action) => {
+      state.loginRegistrationForm = action.payload;
+    },
+    changeLoginOrSingUp: (state, action) => {
+      state.loginOrSingUp = action.payload;
     }
   },
 });
@@ -41,8 +45,9 @@ export const {
   changeOpenHeaderSeting,
   changeLanguage,
   changeTheam,
-  changeSlider,
   changeMainPageSlider,
   changeStatusInstr,
+  changeOpenOrCloseLoginPopup,
+  changeLoginOrSingUp
 } = actions;
 export default reducer;
