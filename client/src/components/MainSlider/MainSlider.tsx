@@ -39,7 +39,7 @@ const MainSlider = () => {
   const buttonChangeSlide = () => {
     return mainPageSlider === 0 ? (
       <div
-        className="main__container-slider-button"
+        className="main-slider__container-slider-button"
         onClick={(e) => changeMainSlide(e, 1)}
         style={{
           top: "50%",
@@ -61,7 +61,7 @@ const MainSlider = () => {
       </div>
     ) : (
       <div
-        className="main__container-slider-button"
+        className="main-slider__container-slider-button"
         onClick={(e) => changeMainSlide(e, 0)}
         style={{
           top: "50%",
@@ -87,15 +87,15 @@ const MainSlider = () => {
 
 
   return (
-    <div className="main__container">
-      <div className="main__container-slider">
+    <div className="main-slider__container">
+      <div className="main-slider__container-slider">
 
-        <div className="main__container-slider-elem">
+        <div className="main-slider__container-slider-elem">
           <MainInfo />
           <MainSliderImg />
         </div>
 
-        <div className="main__container-slider-elem">
+        <div className="main-slider__container-slider-elem">
           <MainInstruction />
         </div>
 

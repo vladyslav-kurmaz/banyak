@@ -1,0 +1,89 @@
+@import '../../scss//variables';
+
+.talant {
+  padding: 25px 20px;
+  box-shadow: 0px 8px 20px 0px rgba(29, 60, 108, 0.2);
+  border-radius: 8px;
+  max-width: 1200px;
+  height: 147px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+
+  &__img {
+    &-picture {
+      max-width: 96px;
+      max-height: 96px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+    max-width: 454px;
+
+    &-title {
+      font-family: Montserrat;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    &-description {
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__technologies {
+
+    &-item {
+      padding: 2px 8px 2px 6px;
+      color: #FCFCFC;
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      background: #888FC9;
+      margin-bottom: 10px;
+
+      &.all-technologies {
+        display: flex;
+        align-items: flex-end;
+
+
+        height: 10px;
+        background: none;
+        color: #888FC9;
+        font-size: 35px;
+        padding: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__metrics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+
+    &-view {
+      
+
+      display: flex;
+      align-items: center;
+
+      &-total {
+        margin-left: 10px;
+      }
+    }
+
+  }
+}

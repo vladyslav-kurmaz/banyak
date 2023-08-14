@@ -10,6 +10,7 @@
   align-items: center;
   position: relative;
   z-index: 99;
+  margin-bottom: 20px;
 
   &__main-link {
     &-logo {
@@ -36,6 +37,13 @@
           color: #061730;
           text-decoration: none;
 
+          &.active {
+            color: #5B23A9;
+            transition: all .3s;
+            padding-bottom: 7px;
+            border-bottom: 2px solid #5B23A9;
+          }
+
           &:hover {
             color: #5B23A9;
             transition: all .3s;
@@ -58,6 +66,7 @@
     padding-right: 10px;
 
     &-login {
+      text-decoration: none;
       font-size: 16px;
       font-weight: 700;
       padding: 10px 20px;

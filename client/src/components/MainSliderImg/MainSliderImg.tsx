@@ -1,6 +1,5 @@
-import { FC, useEffect, useMemo } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
-import { changeSlider } from '../SettingMenu/StateElementSlice';
+import { FC, useEffect, useMemo, useState } from 'react'
+
 
 
 import compIcon from '../../image/main-page-slider/comp.webp';
@@ -14,8 +13,7 @@ import designerIcon from '../../image/main-page-slider/designer.webp';
 import './MainSliderImg.scss';
 
 const MainSliderImg: FC = () => {
-  const dispatch = useAppDispatch();
-  const {mainSlider} = useAppSelector(state => state.stateElement)
+  const [mainSlider, setMainSlider] = useState(0);
 
   useEffect(() => {
     
@@ -43,9 +41,9 @@ const MainSliderImg: FC = () => {
     })
 
     if (mainSlider >= 3) {
-      setTimeout(() => dispatch(changeSlider(0)), 5000)
+      setTimeout(() => setMainSlider(0), 5000)
     } else {
-      setTimeout(() => dispatch(changeSlider(mainSlider + 1)), 5000)
+      setTimeout(() => setMainSlider(mainSlider + 1), 5000)
     }
     
 

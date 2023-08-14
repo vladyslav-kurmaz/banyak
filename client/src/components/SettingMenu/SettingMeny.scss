@@ -9,6 +9,14 @@
   }
 }
 
+@keyframes showMenu {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
 
 .header__settings-container {
   position: relative;
@@ -25,15 +33,6 @@
       animation-duration: 1s;
       animation-timing-function: ease;
     }    
-  }
-  
-  @keyframes showMenu {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 100;
-    }
   }
 
   &-menu {
@@ -98,14 +97,32 @@
           &-text {
             margin-bottom: 10px;
           }
-          
         }
       }
     }
-    
-  
-   
-  
-    
+  }
+}
+
+@media screen and (min-width: 1650px) {
+  .header__settings-container-menu-container-line {
+    position: absolute;
+    width: 28px;
+    height: 5px;
+    top: -2px;
+    right: 1px;
+    background-color: rgb(255, 255, 255);
+    z-index: 99;
+  }
+}
+
+@media screen and (min-width: 2100px) {
+  .header__settings-container-menu-container-line {
+    position: absolute;
+    width: 28px;
+    height: 5px;
+    top: 0px;
+    right: 2px;
+    background-color: rgb(255, 255, 255);
+    z-index: 99;
   }
 }
