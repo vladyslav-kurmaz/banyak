@@ -5,7 +5,7 @@
   box-shadow: 0px 8px 20px 0px rgba(29, 60, 108, 0.2);
   border-radius: 8px;
   max-width: 1200px;
-  height: 147px;
+  max-height: 147px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -22,116 +22,230 @@
     }
   }
 
-  &__info {
-    max-width: 454px;
-
-    &-title {
-      font-family: Montserrat;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    &-description {
-      font-family: Montserrat;
-      font-size: 15px;
-      font-weight: 400;
-    }
-  }
-
-  &__specialty {
-
-    &-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      font-size: 16px;
-      font-weight: 600;
-      // justify-content: space-between;
-
-      &-status {
-        margin-right: 8px;
-        display: block;
-        width: 19px;
-        height: 19px;
-        border: 2px solid $buttonBGWhite;
-        border-radius: 50%;
-      }
-
-      &.found {
-
-        .idea__specialty-item {
-          
-          &-status {
-            border: 2px solid #BFB3B3;
-            border-radius: 50%;
-            position: relative;
-            color: #BFB3B3;
-    
-            &::after {
-              content: '';
-              width: 6px;
-              height: 2px;
-              position: absolute;
-              top: 55%;
-              left: 20%;
-              transform: rotate(40deg);
-              background-color: #BFB3B3;
-            }
-            
-            &::before {
-              content: '';
-              width: 11px;
-              height: 2px;
-              position: absolute;
-              top: 45%;
-              left: 33%;
-    
-              transform: rotate(130deg);
-              background-color: #BFB3B3;
-            }
-          }
-
-          &-text {
-            color: #BFB3B3;
-          }
-        }
-        
-      }
-
-      &.all-specialty {
-
-        .idea__specialty-item {
-          &-status {
-            margin-right: 8px;
-
-            width: 19px;
-            height: 19px;
-            background-color: $buttonBGWhite;
-            border-radius: 50%;
-          }
-        }
-      }
-    }
-  }
-
-  &__metrics {
+  &__container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    height: 100%;
-
-    &-view {
+    &-info {
+      max-width: 454px;
+  
+      &-title {
+        font-family: Montserrat;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+  
+      &-description {
+        font-family: Montserrat;
+        font-size: 15px;
+        font-weight: 400;
+      }
+    }
+  
+    &-specialty {
+  
+      &-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        // justify-content: space-between;
+  
+        &-status {
+          margin-right: 8px;
+          display: block;
+          width: 19px;
+          height: 19px;
+          border: 2px solid $buttonBGWhite;
+          border-radius: 50%;
+        }
+  
+        &.found {
+  
+          .idea__specialty-item {
+            
+            &-status {
+              border: 2px solid #BFB3B3;
+              border-radius: 50%;
+              position: relative;
+              color: #BFB3B3;
       
+              &::after {
+                content: '';
+                width: 6px;
+                height: 2px;
+                position: absolute;
+                top: 55%;
+                left: 20%;
+                transform: rotate(40deg);
+                background-color: #BFB3B3;
+              }
+              
+              &::before {
+                content: '';
+                width: 11px;
+                height: 2px;
+                position: absolute;
+                top: 45%;
+                left: 33%;
+      
+                transform: rotate(130deg);
+                background-color: #BFB3B3;
+              }
+            }
+  
+            &-text {
+              color: #BFB3B3;
+            }
+          }
+          
+        }
+  
+        &.all-specialty {
+  
+          .idea__container-specialty-item {
+            &-status {
+              margin-right: 8px;
+  
+              width: 19px;
+              height: 19px;
+              background-color: $buttonBGWhite;
+              border-radius: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
 
+  &__metric {
+    display: flex;
+    height: 100%;
+    align-items:center;
+    justify-content: space-between;
+    // max-width: 265px;
+    // width: 100%;
+
+    &-metrics {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 100%;
 
-      &-total {
-        margin-left: 10px;
+      &-view {
+        max-width: 48px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+    }
+    
+
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .idea {
+  
+    &__container {
+      flex-direction: column;
+
+      &-info {
+       margin-bottom: 20px;
+      }
+    
+      &-specialty {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        
+        &-item {
+          margin-bottom: 0;
+        }
+
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .idea {
+    flex-wrap: wrap;
+    max-height: 181px;
+
+    &__metric {
+      flex-direction: column-reverse;
+      justify-content: space-between;  
+      align-items: flex-end;
+      height: 100%;
+      
+      &-metrics {
+        align-items: flex-end;
+        max-height: 52px;
+  
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .idea {
+    flex-wrap: wrap;
+    max-width: 302px;
+    min-height: 412px;
+    position: relative;
+
+    &__img {
+
+      &-picture {
+        max-width: 60px;
+      }
+    }
+  
+    &__container {
+      
+      &-info {
+
+        &-title {
+          font-size: 20px;
+          font-weight: 600;
+          text-align: center;
+          margin: 20px 0;
+        }
+      }
+
+      &-specialty {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        &-item {
+          margin-bottom: 10px;
+        }
       }
     }
 
+    &__metric {
+      align-items: center;
+      height: auto;
+      width: 100%;
+    
+      &-metrics {
+        position: absolute;
+        top: 4%;
+        right: 20px;
+
+        flex-direction: row-reverse;
+        max-width: 186px;
+        width: 100%;
+        justify-content: space-between;
+
+        font-size: 15px;
+        font-weight: 400;
+      }
+    }
   }
 }

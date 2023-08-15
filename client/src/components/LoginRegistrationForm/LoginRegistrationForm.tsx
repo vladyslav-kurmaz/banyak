@@ -92,56 +92,6 @@ const LoginRegistrationForm = () => {
         </form>
       );
     }
-    // return loginOrSingUp === "РЕЄСТРАЦІЯ" ? (
-    //   <form className="registration__popup-form">
-    //     <CustomInput
-    //       value={name}
-    //       handler={(e) => changeValue(e, setName)}
-    //       label={"Ім’я"}
-    //       id="form__name"
-    //     />
-    //     <CustomInput
-    //       value={surName}
-    //       handler={(e) => changeValue(e, setSurName)}
-    //       label={"Прізвище"}
-    //       id="form__surname"
-    //     />
-    //     <CustomInput
-    //       value={email}
-    //       handler={(e) => changeValue(e, setEmail)}
-    //       label={"Електронна пошта"}
-    //       id="form__email"
-    //     />
-    //     <CustomInput
-    //       value={pass}
-    //       handler={(e) => changeValue(e, setPass)}
-    //       label={"Пароль"}
-    //       id="form__pass"
-    //     />
-    //     <ButtonSmall text="Зареєструватись" />
-    //   </form>
-    // ) : (
-    // <form className="registration__popup-form">
-    //   <CustomInput
-    //     value={email}
-    //     handler={(e) => changeValue(e, setEmail)}
-    //     label={"Електронна пошта"}
-    //     id="form__email-login"
-    //   />
-    //   <CustomInput
-    //     value={pass}
-    //     handler={(e) => changeValue(e, setPass)}
-    //     label={"Пароль"}
-    //     id="form__pass-login"
-    //   />
-    //   <ButtonSmall text="Увійти" />
-    //   <div className="registration__popup-form-forgot">
-    //     <a href="#" className="registration__popup-form-forgot-pass">
-    //       Забули пароль?
-    //     </a>
-    //   </div>
-    // </form>
-    // );
   };
 
   return (

@@ -17,7 +17,7 @@ const Talant = () => {
       const itemLengh = item.length < 18 ? `+${item}`:`+${item}...`;
       if (i < 3) {
         return (
-          <li className='talant__technologies-item'>
+          <li className='talant__container-technologies-item'>
             {itemLengh}
           </li>
         ) 
@@ -29,7 +29,7 @@ const Talant = () => {
   }
 
   const allSpecialty = data.length > 3 ?
-    <li className='talant__technologies-item all-technologies'>...</li>
+    <li className='talant__container-technologies-item all-technologies'>...</li>
     :
     null
 
@@ -38,17 +38,24 @@ const Talant = () => {
       <div className="talant__img">
         <img src={plugIcon} alt="" className="talant__img-picture" />
       </div>
-      <div className="talant__info">
-          <h2 className='talant__info-title'>UI/UX Designer</h2>
-          <p className='talant__info-description'>Шукаю цікавий проект для підвищення навичків в командній роботі</p>
-          <ButtonSmall text='Портфоліо'/>
+
+      <div className="talant__container">
+        <div className="talant__container-info">
+            <h2 className='talant__container-info-title'>UI/UX Designer</h2>
+            <p className='talant__container-info-description'>Шукаю цікавий проект для підвищення навичків в командній роботі</p>
+            <div className="talant__container-button">
+              <ButtonSmall text='Портфоліо'/>
+            </div>
+            
+        </div>
+        <ul className="talant__container-technologies">
+          {renderSpecialty(data)}
+          {allSpecialty}
+        </ul>
       </div>
-      <ul className="talant__technologies">
-        {renderSpecialty(data)}
-        {allSpecialty}
-      </ul>
+
       <div className='talant__button'>
-        <ButtonSmall text='Долучитись'/>
+        <ButtonSmall text='Зв’язатись'/>
       </div>
       <div className="talant__metrics">
         <div className="talant__metrics-view">

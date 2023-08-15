@@ -1,0 +1,24 @@
+.ideaAndTalent {
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  padding-bottom: 150px;
+}
+
+@media screen and (max-width: 770px) {
+  .ideaAndTalent {
+    
+  display: flex;
+  justify-content: space-around;
+  
+  
+  }
+}
+
+@media screen and (max-width: 710px) {
+  .ideaAndTalent {
+    flex-direction: column;
+    align-items: center;
+  
+  }
+}

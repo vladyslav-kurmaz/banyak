@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { useAppDispatch } from "../hooks/reduxToolkidHooks";
+import { useAppDispatch } from "../../hooks/reduxToolkidHooks";
 
-import MainSlider from "../components/MainSlider/MainSlider";
+import MainSlider from "../../components/MainSlider/MainSlider";
 const MainPage: FC = () => {
   return (
     <main className="main">

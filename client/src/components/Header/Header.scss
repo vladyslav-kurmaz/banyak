@@ -2,15 +2,13 @@
   padding: 20px 10px;
   margin: 0 auto;
   max-width: 1200px;
-  // max-height: 200px;
-  // height: 100%;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   z-index: 99;
-  margin-bottom: 20px;
+  box-sizing: border-box;
 
   &__main-link {
     &-logo {
@@ -66,6 +64,7 @@
     padding-right: 10px;
 
     &-login {
+      display: block;
       text-decoration: none;
       font-size: 16px;
       font-weight: 700;
@@ -81,14 +80,71 @@
         background-color: #5B23A9;
       }
     }
-
-    
-
-    
-
-    
   }
+}
 
+@media screen and (max-width: 1100px) {
+  .header { 
+    &__settings {
+      max-width: 200px;
+    }
+  }
+}
 
+@media screen and (max-width: 960px) {
+  .header {
+    &__settings {
+      max-width: 150px;
+    }
+  }
+}
 
+@media screen and (max-width: 900px) {
+  .header {
+    &__settings {
+      max-width: 40px;
+      display: flex;
+      justify-content: end;
+      &-login {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &__main-link {
+      order: 1;
+      width: 50%;
+    }
+  
+    &__nav {
+      order: 3;
+      max-width: 100%;
+      width: 100%;
+      text-align: center;
+      margin: 15px 24px;
+    }
+  
+    &__settings {
+      order: 2;
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  
+    &__nav {
+      margin: 15px 0px;
+    }
+
+  }
 }

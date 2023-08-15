@@ -8,10 +8,10 @@
   top: 0;
   left: 0;
   z-index: 100;
+  overflow-y: scroll;
 
   &__popup {
     box-sizing: border-box;
-    max-height: 851px;
     margin: 0 auto;
     padding: 44px 52px;
     max-width: 603px;
@@ -23,11 +23,9 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-
 
     &-logo {
       max-width: 296px;
@@ -133,6 +131,25 @@
         &:hover {
           color: $buttonBGWhite;
           transition: all .3s;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .registration {
+
+    &__popup {
+      padding: 20px;
+      &-logo {
+      
+        &-picture {
+          max-width: 234px;
+        }
+
+        & .cross {
+          right: 0 !important;
         }
       }
     }

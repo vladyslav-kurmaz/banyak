@@ -97,9 +97,34 @@
           &-text {
             margin-bottom: 10px;
           }
-        }
-      }
+
+          &-login {
+              display: none;
+              text-decoration: none;
+              font-size: 16px;
+              font-weight: 700;
+              padding: 10px 20px;
+              color: #FCFCFC;
+              border-radius: 8px;
+              background-color: #061730;
+              cursor: pointer;
+              border: none;
+              transition: all .5s;
+        
+              &:hover {
+                background-color: #5B23A9;
+              }
+            
+           }
+         }
+       }
     }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .header__settings-container-menu-container-list-item-login {
+    display: block;
   }
 }
 
