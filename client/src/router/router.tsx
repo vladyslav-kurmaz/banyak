@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "../components/App/App";
 import IdeasAndTalent from "../pages/IdeasAndTalent/IdeasAndTalentPage";
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import ErrorPage from "../pages/NotFoundPage/NotFoundPage";
 import MainPage from "../pages/MainPage/MainPage";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import SingUpPage from "../pages/SingUpPage/SingUpPage";

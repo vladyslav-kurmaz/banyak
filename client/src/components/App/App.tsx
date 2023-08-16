@@ -8,9 +8,8 @@ import Footer from "../Footer/Footer";
 import MainPage from "../../pages/MainPage/MainPage";
 import AboutUs from "../../pages/AboutUs/AboutUs";
 import SingUpPage from "../../pages/SingUpPage/SingUpPage";
-import ErrorPage from "../../pages/ErrorPage/ErrorPage";
+import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
-
 
 import "./App.scss";
 
@@ -41,13 +40,12 @@ function App() {
         <Header />
         <main className="app__main">
           <Routes>
-            <Route path="/" element={<MainPage/>}/>
-            <Route path="/aboutus" element={<AboutUs/>}/>
-            <Route path="/ideas" element={<IdeasAndTalent type={true}/>}/>
-            <Route path="/talents" element={<IdeasAndTalent type={false}/>}/>
-            <Route path="*" element={<ErrorPage/>}/>
+            <Route path="/" element={<MainPage />} />
+            <Route path="aboutus" element={<AboutUs />} />
+            <Route path="ideas" element={<IdeasAndTalent type={true} />} />
+            <Route path="talents" element={<IdeasAndTalent type={false} />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
-          {/* <Outlet /> */}
         </main>
 
         <Footer />
