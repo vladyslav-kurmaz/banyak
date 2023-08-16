@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header } from './Header';
+// import { Header } from './Header';
 import './page.css';
 
 export const Page = () => {
@@ -8,12 +8,12 @@ export const Page = () => {
 
   return (
     <article>
-      <Header
+      {/* <Header
         user={user}
         onLogin={() => setUser({ name: 'Jane Doe' })}
         onLogout={() => setUser(undefined)}
         onCreateAccount={() => setUser({ name: 'Jane Doe' })}
-      />
+      /> */}
 
       <section>
         <h2>Pages in Storybook</h2>
