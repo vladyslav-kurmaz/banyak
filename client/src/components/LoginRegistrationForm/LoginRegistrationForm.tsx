@@ -32,7 +32,7 @@ const LoginRegistrationForm = () => {
     const value = e.target.value.trim();
     const name = e.target.name;
     
-    document.body.style.overflow = '';
+    
     // console.log(e);
     
     setState(value);
@@ -44,6 +44,7 @@ const LoginRegistrationForm = () => {
     dispatch(changeOpenOrCloseLoginPopup(false));
     const newPath = window.location.pathname;
     window.history.replaceState(null, "", newPath);
+    document.body.style.overflow = '';
 
     // navigate(-1);
   };

@@ -18,7 +18,10 @@ const Talant = () => {
       if (i < 3) {
         return (
           <li className='talant__container-technologies-item'>
-            {itemLengh}
+            <span className='talant__container-technologies-item-teh'>
+              {itemLengh}
+            </span>
+            
           </li>
         ) 
       } else {
@@ -44,7 +47,7 @@ const Talant = () => {
             <h2 className='talant__container-info-title'>UI/UX Designer</h2>
             <p className='talant__container-info-description'>Шукаю цікавий проект для підвищення навичків в командній роботі</p>
             <div className="talant__container-button">
-              <ButtonSmall text='Портфоліо'/>
+              <ButtonSmall text='Портфоліо' style={{'padding-bottom': '2px', 'padding-top': '2px', 'font-size': '15px'}}/>
             </div>
             
         </div>

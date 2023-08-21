@@ -6,6 +6,7 @@
   border-radius: 8px;
   max-width: 1200px;
   max-height: 147px;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -26,6 +27,9 @@
     display: flex;
     &-info {
       max-width: 454px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
   
       &-title {
         font-family: Montserrat;
@@ -51,6 +55,10 @@
         font-weight: 600;
         // justify-content: space-between;
   
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
         &-status {
           margin-right: 8px;
           display: block;
@@ -239,7 +247,7 @@
         right: 20px;
 
         flex-direction: row-reverse;
-        max-width: 186px;
+        max-width: 170px;
         width: 100%;
         justify-content: space-between;
 

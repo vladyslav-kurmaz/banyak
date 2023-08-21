@@ -109,6 +109,13 @@
         display: none;
       }
     }
+
+    &__main-link {
+      &-logo {
+        max-width: 178px;
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -134,6 +141,22 @@
       order: 2;
       width: 50%;
     }
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .header {
+  
+    &__nav {
+      &-list {
+        &-item {
+          & a {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
   }
 }
 

@@ -23,37 +23,7 @@
     transform: translate(-50%, -50%);
   }
 
-  &__back {
-    max-width: 93px;
-    color: $buttonBGWhite;
-    font-size: 16px;
-    font-weight: 700;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all .3s;
-
-    &:hover svg {
-      transform: scale(1.1);
-      transition: all .3s;
-      
-      & path {
-        fill: $buttonHoverBGWhite;
-        transition: all .3s;
-      }
-    }
-
-    &:hover {
-      transition: all .3s;
-      color: $buttonHoverBGWhite;
-
-    }
-  }
+  
 
   &__container {
     z-index: 10;
@@ -166,7 +136,11 @@
   
     &__num {
       font-size: 250px;
-    }    
+    }  
+
+    &__description {
+      display: none;
+    }  
   }
 }
 
@@ -181,9 +155,7 @@
       font-size: 24px;
     }
 
-    &__description {
-      display: none;
-    }
+    
 
     &__goMain {
       max-width: 90%;

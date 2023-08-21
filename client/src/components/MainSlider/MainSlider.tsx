@@ -135,7 +135,7 @@ const MainSlider = () => {
             className="main-slider__container-slider-button"
             onClick={(e) => changeMainSlide(e, 0)}
             style={{
-              top: "45%",
+              top: "46%",
               left: "1%",
               transform: "rotate(180deg)",
             }}
