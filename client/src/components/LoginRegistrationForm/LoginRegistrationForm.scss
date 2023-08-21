@@ -10,6 +10,20 @@
   z-index: 100;
   overflow-y: scroll;
 
+  &::-webkit-scrollbar {
+    width: 8px;              
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $buttonBGWhite;       
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $buttonHoverBGWhite;  
+    border-radius: 20px;       
+    border: 1px solid $buttonBGWhite;  
+  }
+
   &__popup {
     box-sizing: border-box;
     margin: 0 auto;
@@ -22,10 +36,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    top: 5%;
 
     &-logo {
       max-width: 296px;
@@ -133,6 +145,14 @@
           transition: all .3s;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .registration {
+    &__popup {
+      top: 0;
     }
   }
 }

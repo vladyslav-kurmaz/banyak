@@ -74,7 +74,7 @@
   
       &-list {
         width: 165px;
-        padding: 20px;
+        padding: 10px;
         padding-bottom: 14px;
         padding-top: 26px;
         box-sizing: border-box;
@@ -88,6 +88,8 @@
         background-color: #fff;
   
         &-item {
+          max-width: 132px;
+          width: 100%;
           margin-bottom: 28px;
           display: flex;
           flex-direction: column;

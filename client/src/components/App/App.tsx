@@ -30,12 +30,12 @@ function App() {
     }
   }, [shouldShowPopup]);
 
+
+
   return (
     <>
       {loginRegistrationForm && shouldShowPopup && <SingUpPage />}
-      {loginRegistrationForm
-        ? (document.body.style.overflow = "hidden")
-        : (document.body.style.overflow = "")}
+      
       <div className="app">
         <Header />
         <main className="app__main">

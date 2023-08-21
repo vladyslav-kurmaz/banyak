@@ -137,12 +137,31 @@
           }
       
           &-description {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 600;
           }
       
           &-button {
             display: none;
+          }
+        }
+      }
+    }
+      
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .main {
+
+    &-slider {
+  
+      &__info {
+        &-container {
+
+          &-description {
+            font-size: 16px;
           }
         }
       }

@@ -127,7 +127,7 @@
       max-width: 100%;
       width: 100%;
       text-align: center;
-      margin: 15px 24px;
+      margin: 15px 0;
     }
   
     &__settings {
@@ -142,9 +142,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
   
-    &__nav {
-      margin: 15px 0px;
-    }
+    // &__nav {
+    //   margin: 15px 0px;
+    // }
 
   }
 }

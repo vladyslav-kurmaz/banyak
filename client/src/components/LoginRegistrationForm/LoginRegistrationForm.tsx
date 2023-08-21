@@ -7,6 +7,9 @@ import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import CustomInput from "../../atoms/CustomImput/CustomInput";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
+
+import validationForm from "../../untils/validationForm";
+
 import logo from "../../image/logo/LOGO_Banyak.webp";
 
 import "./LoginRegistrationForm.scss";
@@ -16,7 +19,9 @@ const LoginRegistrationForm = () => {
   const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const { loginOrSingUp } = useAppSelector((state) => state.stateElement);
+  const { loginOrSingUp, loginRegistrationForm } = useAppSelector(
+    (state) => state.stateElement
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -24,9 +29,15 @@ const LoginRegistrationForm = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     setState: (value: React.SetStateAction<string>) => void
   ) => {
-    console.log(email);
-
-    setState(e.target.value);
+    const value = e.target.value.trim();
+    const name = e.target.name;
+    
+    document.body.style.overflow = '';
+    // console.log(e);
+    
+    setState(value);
+    // validationForm(e);
+    
   };
 
   const closeLoginForm = () => {
@@ -38,11 +49,12 @@ const LoginRegistrationForm = () => {
   };
 
   const renderForm = () => {
-    if (loginOrSingUp === "РЕЄСТРАЦІЯ") { 
+    if (loginOrSingUp === "РЕЄСТРАЦІЯ") {
       return (
         <form className="registration__popup-form">
           <CustomInput
             value={name}
+            name="name"
             handler={(e) => changeValue(e, setName)}
             label={"Ім’я"}
             id="form__name"
@@ -52,18 +64,21 @@ const LoginRegistrationForm = () => {
             handler={(e) => changeValue(e, setSurName)}
             label={"Прізвище"}
             id="form__surname"
+            name="surname"
           />
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
             label={"Електронна пошта"}
             id="form__email"
+            name="email"
           />
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
             label={"Пароль"}
             id="form__pass"
+            name="pass"
           />
           <ButtonSmall text="Зареєструватись" />
         </form>
@@ -76,12 +91,14 @@ const LoginRegistrationForm = () => {
             handler={(e) => changeValue(e, setEmail)}
             label={"Електронна пошта"}
             id="form__email-login"
+            name="email"
           />
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
             label={"Пароль"}
             id="form__pass-login"
+            name="pass"
           />
           <ButtonSmall text="Увійти" />
           <div className="registration__popup-form-forgot">
@@ -93,6 +110,12 @@ const LoginRegistrationForm = () => {
       );
     }
   };
+
+  {
+    loginRegistrationForm
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "");
+  }
 
   return (
     <div

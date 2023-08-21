@@ -11,6 +11,20 @@ body {
 
 }
 
+body::-webkit-scrollbar {
+  width: 8px;               /* ширина всей полосы прокрутки */
+}
+
+body::-webkit-scrollbar-track {
+  background: $buttonBGWhite;        /* цвет зоны отслеживания */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: $buttonHoverBGWhite;    /* цвет бегунка */
+  border-radius: 20px;       /* округлось бегунка */
+  border: 1px solid $buttonBGWhite;  /* отступ вокруг бегунка */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
