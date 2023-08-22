@@ -13,7 +13,7 @@ const Footer: FC = () => {
           <a href="#">Політика конфіденційності</a>
         </li>
         <li className="footer__list-item">
-          <span className="footer__list-item-mail">banyak.hub@gmail.com</span>
+          <a href="mailto:banyak.hub@gmail.com" className="footer__list-item-mail">banyak.hub@gmail.com</a>
           <span>© 2023 BANYAK</span>
         </li>
         <li className="footer__list-item">
@@ -117,7 +117,7 @@ const Footer: FC = () => {
           <span>© 2023 BANYAK</span>
         </li>
         <li className="footer__list-item">
-          <span className="footer__list-item-mail">banyak.hub@gmail.com</span>
+          <a href="mailto:banyak.hub@gmail.com" className="footer__list-item-mail">banyak.hub@gmail.com</a>
         </li>
       </ul>
 
@@ -168,7 +168,7 @@ const Footer: FC = () => {
               </svg>
             </a>
           </div>
-          <span className="footer__list-item-mail">banyak.hub@gmail.com</span>
+          <a href="mailto:banyak.hub@gmail.com" className="footer__list-item-mail">banyak.hub@gmail.com</a>
           <a className="footer__list-item-polici" href="#">
             Політика конфіденційності
           </a>

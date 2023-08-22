@@ -2,8 +2,9 @@
   width: 100%;
   position: relative;
   flex: 0 0 auto;
-  padding: 0 10px;
+  padding: 0 24px;
   box-sizing: border-box;
+  margin-bottom: 10px;
 
   &__list {
     max-width: 1200px;
@@ -16,8 +17,17 @@
     justify-content: space-between;
     align-content: center;
 
+    &-item {
+      &-mail {
+        transform: translateY(0);
+        top: 0;    
+      }
+    }
+
     &.two {
       display: none;
+
+      
       .footer__list-item:nth-child(2) {
         min-width: 131px;
         display: flex;
@@ -138,6 +148,11 @@
         transform: translateY(-70%);
         top: 50%;
         
+      }
+
+      .footer__list-item-mail {
+        transform: translateY(0);
+        top: 0;    
       }
 
       .footer__list-item-linkid {
