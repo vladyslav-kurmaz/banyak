@@ -1,3 +1,5 @@
+import requests
+from django.shortcuts import render
 from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,10 +10,15 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str, force_bytes, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import filters
 from .models import *
-from .serializer import *
+from .serializers import *
+from .services.google_auth import check_google_auth
 from .utils import Utils
 from .token import token_generator
+from .services import github_auth
 
 
 class UserRegister(generics.GenericAPIView):
@@ -20,6 +27,13 @@ class UserRegister(generics.GenericAPIView):
     serializer_class = UserRegisterSerializer
     permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(
+        request_body=UserRegisterSerializer,
+        responses={
+            status.HTTP_201_CREATED: openapi.Response(description='User registered successfully'),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(description='Invalid input data'),
+        }
+    )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -53,6 +67,22 @@ class UserAuthLogin(ObtainAuthToken):
 
     serializer_class = AuthUserSerializer
 
+    @swagger_auto_schema(
+        request_body=AuthUserSerializer,
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='Login successful',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'token': openapi.Schema(type=openapi.TYPE_STRING)
+                    }
+                )
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(description='Invalid input data'),
+            status.HTTP_404_NOT_FOUND: openapi.Response(description='User not found'),
+        }
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -73,6 +103,15 @@ class TokenDestroy(generics.DestroyAPIView):
 
     queryset = Token.objects.all()
 
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_204_NO_CONTENT: openapi.Response(description='Token invalidated and user logged out'),
+            status.HTTP_404_NOT_FOUND: openapi.Response(description='Token not found'),
+        },
+        manual_parameters=[
+            openapi.Parameter('Authorization', openapi.IN_HEADER, description="Bearer token", type=openapi.TYPE_STRING)
+        ]
+    )
     def delete(self, request, *args, **kwargs):
         try:
             token = Token.objects.get(user=self.request.user)
@@ -88,6 +127,30 @@ class Profile(APIView):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_description="Get a list of published ideas",
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='Successful',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            'id': openapi.Schema(type=openapi.TYPE_INTEGER),
+                            'user': openapi.Schema(type=openapi.TYPE_OBJECT),
+                            'description': openapi.Schema(type=openapi.TYPE_STRING),
+                            'speciality': openapi.Schema(type=openapi.TYPE_OBJECT),
+                            'stack': openapi.Schema(type=openapi.TYPE_OBJECT)
+                        }
+                    )
+                )
+            ),
+            status.HTTP_404_NOT_FOUND: openapi.Response(
+                description='Profile not found'
+            )
+        }
+    )
     def get(self, request):
         current_user = request.user
 
@@ -98,6 +161,20 @@ class Profile(APIView):
         except UserProfile.DoesNotExist:
             return Response({'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    @swagger_auto_schema(
+        request_body=UserProfileSerializer,
+        responses={
+            status.HTTP_201_CREATED: openapi.Response(
+                description='Profile update'
+            ),
+            status.HTTP_404_NOT_FOUND: openapi.Response(
+                description='Profile not found'
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description='Error'
+            )
+        }
+    )
     def post(self, request):
         current_user = request.user
         serializer = self.serializer_class(data=request.data)
@@ -227,10 +304,59 @@ class VerifyUserEmail(generics.GenericAPIView):
         return Response({'message': 'Invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TalentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ('id', '')
+class GoogleAuth(APIView):
+    serializer_class = GoogleAuthSerializer
+
+    def post(self, request):
+        google_data = self.serializer_class(data=request.data)
+        if google_data.is_valid():
+            token = check_google_auth(google_data.data)
+            return Response(token)
+        else:
+            return AuthenticationFailed('Invalid data google', code=403)
+
+
+class GitHubAuth(APIView):
+    def get(self, request):
+        code = request.data.get('code')
+        print('code views:', code)
+        token = github_auth.auth_github(request.query_params.get('code'))
+        return Response(token)
+
+
+class LinkedInAuth(APIView):
+    def get(self):
+        pass
+
+
+class SearchUsers(generics.ListAPIView):
+    queryset = UserProfile.objects.all()
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SearchUsersSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['stack__name']
+
+
+def google_page(request):
+    return render(request, 'google.html')
+
+
+def github_page(request):
+    return render(request, 'github.html')
+
+
+def linkedin_page(request):
+    return render(request, 'linkedin.html')
+
+
+# @api_view(['POST'])
+# def google_auth(request):
+#     google_data = GoogleAuthSerializer()
+#     if google_data.is_valid():
+#         token = check_google_auth(google_data)
+#         return Response(token)
+#     else:
+#         return AuthenticationFailed('Invalid google data', code=403)
 
 
 # class GoogleAuth(generics.GenericAPIView):

@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
-from django.utils.text import slugify
+from slugify import slugify
+# from django.utils.text import slugify
 import uuid
+# pprint.pprint(print(sys.path))
 
 
 class Specialization(models.Model):
@@ -16,8 +18,9 @@ class Idea(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField()
-    specialization = models.ManyToManyField(Specialization, blank=True, null=True)
+    specialization = models.ManyToManyField(Specialization)
     slug = models.SlugField(db_index=True, max_length=78, blank=True, null=True)
+    idea_views = models.IntegerField(default=0)
     is_published = models.BooleanField(default=False)
 
     def __str__(self):

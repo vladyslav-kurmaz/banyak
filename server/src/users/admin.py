@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, UserProfile, Speciality
+from .models import CustomUser, UserProfile, Speciality, Stack
 
 # admin.site.register(CustomUser)
 admin.site.register(UserProfile)
@@ -13,3 +13,6 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Speciality)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('id',)
+
+
+admin.site.register(Stack)

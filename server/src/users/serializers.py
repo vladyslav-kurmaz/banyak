@@ -7,7 +7,6 @@ from django.utils.encoding import force_str, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .register import *
 from .models import *
-from .google import *
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -15,20 +14,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(min_length=8, write_only=True)
-    password_confirm = serializers.CharField(write_only=True)
+    # password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'password_confirm')
+        fields = ('email', 'password')
 
-    def validate(self, attrs):
-        password = attrs.get('password')
-        password_confirm = attrs.get('password_confirm')
-
-        if password != password_confirm:
-            raise AuthenticationFailed('The entered passwords do not match')
-
-        return attrs
+    # def validate(self, attrs):
+    #     password = attrs.get('password')
+    #     password_confirm = attrs.get('password_confirm')
+    #
+    #     if password != password_confirm:
+    #         raise AuthenticationFailed('The entered passwords do not match')
+    #
+    #     return attrs
 
     def create(self, validated_data):
         email = validated_data.get('email')
@@ -51,33 +50,38 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
 
 class GoogleAuthSerializer(serializers.Serializer):
-    """Серіалайзер входу в систему через Google"""
-
+    email = serializers.EmailField()
     auth_token = serializers.CharField()
 
-    def validate_token(self, auth_token):
-        user_data = Google.validate(auth_token)
-        try:
-            user_data['sub']
-        except:
-            raise serializers.ValidationError(
-                'Token invalid'
-            )
 
-        if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
-            raise AuthenticationFailed('Error token')
-
-        user_id = user_data['sub']
-        email = user_data['email']
-        name = user_data['name']
-        provider = 'google'
-
-        return register_google_user(
-            provider=provider,
-            user_id=user_id,
-            name=name,
-            email=email
-        )
+# class GoogleAuthSerializer(serializers.Serializer):
+#     """Серіалайзер входу в систему через Google"""
+#
+#     auth_token = serializers.CharField()
+#
+#     def validate_token(self, auth_token):
+#         user_data = Google.validate(auth_token)
+#         try:
+#             user_data['sub']
+#         except:
+#             raise serializers.ValidationError(
+#                 'Token invalid'
+#             )
+#
+#         if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
+#             raise AuthenticationFailed('Error token')
+#
+#         user_id = user_data['sub']
+#         email = user_data['email']
+#         name = user_data['name']
+#         provider = 'google'
+#
+#         return register_google_user(
+#             provider=provider,
+#             user_id=user_id,
+#             name=name,
+#             email=email
+#         )
 
 
 class ResetPasswordRequestEmailSerializer(serializers.ModelSerializer):
@@ -156,6 +160,14 @@ class StackSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     speciality = SpecialitySerializer(many=True)
+    stack = StackSerializer(many=True)
+
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+
+class SearchUsersSerializer(serializers.ModelSerializer):
     stack = StackSerializer(many=True)
 
     class Meta:

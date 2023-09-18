@@ -22,8 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.authtoken')),
-    path('users/', include('src.users.urls')),
-    path('idea/', include('src.user_idea.urls'))
+    path('api/v1/users/', include('src.users.urls')),
+    path('api/v1/idea/', include('src.user_idea.urls'))
 ]
 
 urlpatterns += doc_url

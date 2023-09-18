@@ -1,6 +1,14 @@
 from rest_framework import serializers
 from ..users.models import CustomUser
+from ..users.models import UserProfile, CustomUser
 from .models import *
+from ..users.serializers import SpecialitySerializer
+
+
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = '__all__'
 
 
 class IdeasListSerializer(serializers.ModelSerializer):
@@ -10,6 +18,8 @@ class IdeasListSerializer(serializers.ModelSerializer):
 
 
 class DetailIdeaSerializer(serializers.ModelSerializer):
+    specialization = SpecializationSerializer(many=True)
+
     class Meta:
         model = Idea
         exclude = ('is_published',)
@@ -50,6 +60,23 @@ class AddUserIdeaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JoinIdea
+        fields = '__all__'
+
+
+class TalentsListSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(many=False, queryset=CustomUser.objects.all(), required=False)
+    speciality = SpecialitySerializer(many=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'user', 'speciality')
+
+
+class DetailTalentSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(many=False, queryset=CustomUser.objects.all(), required=False)
+
+    class Meta:
+        model = UserProfile
         fields = '__all__'
 
 
