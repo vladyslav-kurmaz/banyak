@@ -36,20 +36,104 @@
       transition: all .2s; 
       outline: none;
 
-      &:hover {
+      &.password {
+        padding-right: 43px;
+      }
+      
+
+      .custom-input:hover & {
         border: 2px solid $buttonHoverBGWhite;
+        transition: all .2s; 
+      }
+
+      .custom-input:hover &.error {
+        border: 2px solid #A81818;
+        transition: all .2s; 
+      }
+
+      .custom-input:hover &.done {
+        border: 2px solid #12733F;
         transition: all .2s; 
       }
 
       &.error {
         border: 2px solid #A81818;
         transition: all 1s; 
+        color: #A81818;
       }
       
-      &.good {
+      &.done {
         border: 2px solid #12733F;
         transition: all .2s; 
+        color: #12733F;
       }
+    }
+
+    &__eye {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      transition: all .3s;
+      
+
+      & svg path:last-child {
+
+        .custom-input:hover &.error,
+        &.error {
+          transition: all .3s;
+          stroke: #A81818;
+        }
+
+        .custom-input:hover &.done,
+        &.done {
+          transition: all .3s;
+          stroke: #12733F;
+        }
+      }
+
+      &-false path:nth-child(2) {
+        .custom-input:hover &.error,
+        &.error {
+          transition: all .3s;
+          fill: #A81818;
+        }
+        .custom-input:hover &.done,
+        &.done {
+          transition: all .3s;
+          fill: #12733F;
+        }
+      }
+
+      &-true circle:first-child,
+      &-true circle:nth-child(3) {
+        .custom-input:hover &.error,
+        &.error {
+          fill: #A81818;
+        }
+        .custom-input:hover &.done,
+        &.done {
+          fill: #12733F;
+        }
+      }
+
+      .custom-input:hover & svg path:last-child {
+        transition: all .3s;
+        stroke: $buttonHoverBGWhite;
+      }
+      
+      
+      .custom-input:hover &-false path:nth-child(2) {
+        transition: all .3s;
+        fill: $buttonHoverBGWhite;
+      }
+
+      .custom-input:hover &-true circle:first-child,
+      .custom-input:hover &-true circle:nth-child(3) {
+        fill: $buttonHoverBGWhite;  
+      }
+
+
     }
 
     &__label {
@@ -64,15 +148,14 @@
       font-size: 16px;
       font-weight: 600;
       color: $borderWhiteTheme;
-      transition: all .2s;   
-      
+      transition: all .2s;       
       
       &.error {
         color: #A81818;
         transition: all .2s ; 
       }
       
-      &.good {
+      &.done {
         color: #12733F;
         transition: all .2s; 
       }
@@ -82,11 +165,21 @@
       color: $buttonHoverBGWhite;
       transition: all .2s; 
     }
+
+    &:hover &__label.error {
+      color: #A81818;
+      transition: all .2s; 
+    }
+
+    &:hover &__label.done {
+      color: #12733F;
+      transition: all .2s; 
+    }
   
 
   &__message {
     position: absolute;
-    bottom: -20px;
+    bottom: -25px;
     left: 0;
     
     &-good {

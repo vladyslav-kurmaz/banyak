@@ -75,7 +75,7 @@ const SettingMeny: FC = () => {
                   // to={'/?showPopup=true'}
                   to={{
                     pathname: window.location.pathname,
-                    search: shouldShowPopup ? "" : `${"login"}=true`,
+                    search: shouldShowPopup ? "" : `login`,
                   }}
                   className="header__settings-container-menu-container-list-item-login"
                   onClick={showLoginForm}

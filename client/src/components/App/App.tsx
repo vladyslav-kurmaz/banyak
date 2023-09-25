@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Outlet, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
 import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
 
@@ -14,28 +14,33 @@ import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
 import "./App.scss";
 
 function App() {
-  const { loginRegistrationForm } = useAppSelector(
+  const { loginRegistrationForm, loginOrSingUp } = useAppSelector(
     (state) => state.stateElement
   );
-  // const loginRegistrationFormTraslate = loginOrSingUp === 'ВХІД' ? 'login' : 'singup'
-  const shouldShowPopup =
-    new URLSearchParams(window.location.search).get("login") === "true";
+
+  const location = useLocation();
+  // const popupLocation = location.search === '?login' || location.search === '?singup'
+  const popupLocation = location.search === '?login' || location.search === '?singup'
+  
   const dispatch = useAppDispatch();
+  // console.log(location);
+  
 
-  useEffect(() => {
-    if (shouldShowPopup) {
-      dispatch(changeOpenOrCloseLoginPopup(true));
-    } else {
-      dispatch(changeOpenOrCloseLoginPopup(false));
-    }
-  }, [shouldShowPopup]);
-
-
+  // useEffect(() => {
+  //   console.log(popupLocation);
+    
+  //   if (popupLocation) {
+  //     dispatch(changeOpenOrCloseLoginPopup(true));
+  //   } else {
+  //     dispatch(changeOpenOrCloseLoginPopup(false));
+  //   }
+  // }, [popupLocation]);
+  
 
   return (
     <>
-      {loginRegistrationForm && shouldShowPopup && <SingUpPage />}
-      
+      {popupLocation && <SingUpPage />}
+
       <div className="app">
         <Header />
         <main className="app__main">

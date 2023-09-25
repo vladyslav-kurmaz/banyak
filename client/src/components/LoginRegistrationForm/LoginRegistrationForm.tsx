@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
-import { useNavigate } from "react-router-dom";
+import { changeOpenOrCloseLoginPopup, changeCounterLink, changeLoginOrSingUp } from "../SettingMenu/StateElementSlice";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import CustomInput from "../../atoms/CustomImput/CustomInput";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
-
-import validationForm from "../../untils/validationForm";
 
 import logo from "../../image/logo/LOGO_Banyak.webp";
 
@@ -19,50 +17,63 @@ const LoginRegistrationForm = () => {
   const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const { loginOrSingUp, loginRegistrationForm } = useAppSelector(
+  const location = useLocation();
+
+  const { loginOrSingUp, loginRegistrationForm, counterLink } = useAppSelector(
     (state) => state.stateElement
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+
+  useEffect(() => { 
+    if (loginOrSingUp === 'ВХІД') {   
+      dispatch(changeCounterLink())
+      navigate('?login')
+    } else {
+      dispatch(changeCounterLink())
+      navigate('?singup')
+    }    
+  }, [loginOrSingUp])
+
+  useEffect(() => { 
+    if (location.search === '?login') {   
+      dispatch(changeLoginOrSingUp('ВХІД'))
+    } else if (location.search === '?singup') {
+      dispatch(changeLoginOrSingUp('РЕЄСТРАЦІЯ'))
+    }    
+  }, [location.search])
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: (value: React.SetStateAction<string>) => void
   ) => {
     const value = e.target.value.trim();
-    const name = e.target.name;
-    
-    
-    // console.log(e);
-    
     setState(value);
-    // validationForm(e);
-    
   };
 
   const closeLoginForm = () => {
-    dispatch(changeOpenOrCloseLoginPopup(false));
-    const newPath = window.location.pathname;
-    window.history.replaceState(null, "", newPath);
     document.body.style.overflow = '';
 
-    // navigate(-1);
+    navigate(location.pathname);
   };
 
   const renderForm = () => {
     if (loginOrSingUp === "РЕЄСТРАЦІЯ") {
       return (
-        <form className="registration__popup-form">
+        <form className="registration__popup-form sing-up">
           <CustomInput
             value={name}
             name="name"
             handler={(e) => changeValue(e, setName)}
+            type="text"
             label={"Ім’я"}
             id="form__name"
           />
           <CustomInput
             value={surName}
             handler={(e) => changeValue(e, setSurName)}
+            type="text"
             label={"Прізвище"}
             id="form__surname"
             name="surname"
@@ -70,6 +81,7 @@ const LoginRegistrationForm = () => {
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
+            type="text"
             label={"Електронна пошта"}
             id="form__email"
             name="email"
@@ -77,6 +89,7 @@ const LoginRegistrationForm = () => {
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
+            type="password"
             label={"Пароль"}
             id="form__pass"
             name="pass"
@@ -86,10 +99,11 @@ const LoginRegistrationForm = () => {
       );
     } else {
       return (
-        <form className="registration__popup-form">
+        <form className="registration__popup-form login">
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
+            type="text"
             label={"Електронна пошта"}
             id="form__email-login"
             name="email"
@@ -97,6 +111,7 @@ const LoginRegistrationForm = () => {
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
+            type="password"
             label={"Пароль"}
             id="form__pass-login"
             name="pass"

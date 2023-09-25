@@ -1,91 +1,87 @@
-type TValidatinForm = {
-  errorStatus: boolean;
-  error: string;
-  message: string;
-}
-
-// e: React.ChangeEvent<HTMLInputElement>
+import { TValidatinForm } from "../types/types";
 
 const validationForm = (value: string, name: string): TValidatinForm | null => {
-  // const value = e.target.value.trim();
-  // const name = e.target.name;
-  // const target = e.target
 
   switch(name) {
     case 'name':
-      if (value.length < 3) {
-
-        // target.classList.add('error');
-        // target.classList.remove('good');
-        // target.nextElementSibling?.classList.add('error');
-        // target.nextElementSibling?.classList.remove('good');
-
+      if (value.length <= 2) {
 
         return {
           errorStatus: true,
-          error: '',
-          message: 'Введіть більше 3 символів'
+          message: 'Введіть більше 2 символів',
+          class: 'error'
         }
       } else if (value.length > 2) {
-
-        // target.classList.add('good');
-        // target.classList.remove('error');
-        // target.nextElementSibling?.classList.add('good');
-        // target.nextElementSibling?.classList.remove('error');
-
-
         return {
           errorStatus: false,
-          error: '',
-          message: 'Це поле заповнено правильно'
+          message: 'Ім\'я заповнено правильно',
+          class: 'done'
         }
       } else {
         return {
           errorStatus: false,
-          error: '',
-          message: ''
+          message: 'Ім\'я заповнено правильно',
+          class: ''
         }
       }
-      break;
-    // case 'surname':
-    //   if (value) {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   } else {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   }
-    //   break;
-    // case 'email':
-    //   if (value) {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   } else {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   }
-    //   break;
-    // case 'pass':
-    //   if (value) {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   } else {
-    //     return {
-    //       error: '',
-    //       message: ''
-    //     }
-    //   }
-    //   break;
+    case 'surname':
+      if (value.length <= 2) {
+        return {
+          errorStatus: true,
+          message: 'Введіть більше 2 символів',
+          class: 'error'
+        }
+      } else {
+        return {
+          errorStatus: false,
+          message: 'Прізвище заповнено правильно',
+          class: 'done'
+        }
+      }
+    case 'email':
+      const validValueEmail = value.match(/^[\w\.-]+@[\w\.-]+\.\w+$/);
+      const onlyLatiOrNumnEmail = value.match(/^[a-zA-Z0-9@.\-_]+$/)
+      
+      if (onlyLatiOrNumnEmail === null) {
+        return {
+          errorStatus: true,
+          message: 'Пошта латинецею і цифрами',
+          class: 'error'
+        }
+      } else if (validValueEmail === null) {
+        return {
+          errorStatus: true,
+          message: 'Формат пошти mail@mail.com',
+          class: 'error'
+        }
+      } else {
+        return {
+          errorStatus: false,
+          message: 'Пошта заповнено правильно',
+          class: 'done'
+        }
+      }
+    case 'pass':
+      const onlyLatiOrNumnPass = value.match(/^[a-zA-Z0-9.\-_]+$/)
+      if (onlyLatiOrNumnPass === null) {
+        return {
+          errorStatus: true,
+          message: 'Пароль доступно латинецею і цифрами',
+          class: 'error'
+        }
+      } else if (value.length < 8) {
+        return {
+          errorStatus: true,
+          message: 'Пароль мінімум 8 сиволів',
+          class: 'error'
+        }
+      }  else {
+        return {
+          errorStatus: false,
+          message: 'Пароль заповнено правильно',
+          class: 'done'
+        }
+      }
     default:
       return null;
   }
