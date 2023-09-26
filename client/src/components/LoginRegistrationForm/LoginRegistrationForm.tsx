@@ -30,9 +30,17 @@ const LoginRegistrationForm = () => {
 
   useEffect(() => { 
     if (loginOrSingUp === 'ВХІД') {   
+      setName('');
+      setSurName('');
+      setEmail('');
+      setPass('');
       dispatch(changeCounterLink())
       navigate('?login')
     } else {
+      setName('');
+      setSurName('');
+      setEmail('');
+      setPass('');
       dispatch(changeCounterLink())
       navigate('?singup')
     }    
