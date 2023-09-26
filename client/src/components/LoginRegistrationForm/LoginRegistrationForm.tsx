@@ -17,6 +17,7 @@ const LoginRegistrationForm = () => {
   const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [disabled, setDisabled] = useState(true);
   const location = useLocation();
 
   const { loginOrSingUp, loginRegistrationForm, counterLink } = useAppSelector(
@@ -25,6 +26,7 @@ const LoginRegistrationForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
+    
 
   useEffect(() => { 
     if (loginOrSingUp === 'ВХІД') {   
@@ -94,7 +96,8 @@ const LoginRegistrationForm = () => {
             id="form__pass"
             name="pass"
           />
-          <ButtonSmall text="Зареєструватись" />
+
+          <button disabled={disabled} className="registration__button ">Зареєструватись</button>
         </form>
       );
     } else {
@@ -116,7 +119,7 @@ const LoginRegistrationForm = () => {
             id="form__pass-login"
             name="pass"
           />
-          <ButtonSmall text="Увійти" />
+          <button disabled={disabled} className="registration__button ">Увійти</button>
           <div className="registration__popup-form-forgot">
             <a href="#" className="registration__popup-form-forgot-pass">
               Забули пароль?
@@ -128,7 +131,7 @@ const LoginRegistrationForm = () => {
   };
 
   {
-    loginRegistrationForm
+    loginOrSingUp === 'ВХІД' || loginOrSingUp === 'РЕЄСТРАЦІЯ'
       ? (document.body.style.overflow = "hidden")
       : (document.body.style.overflow = "");
   }
@@ -259,7 +262,8 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          Вже є аккаунт? <a href="">Увійдіть</a>
+          {loginOrSingUp === 'ВХІД' ? 'Ще намає акаунта?' : 'Вже є аккаунт?'} 
+          {loginOrSingUp === 'ВХІД' ? <a href="">Зареєструйтесь</a> :  <a href="">Увійдіть</a>}
         </div>
       </div>
     </div>

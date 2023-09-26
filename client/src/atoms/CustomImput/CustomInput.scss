@@ -179,10 +179,16 @@
 
   &__message {
     position: absolute;
-    bottom: -25px;
+    bottom: -27px;
     left: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 26px;
+    
     
     &-good {
+      justify-content: flex-start;
       padding-left: 24px;
       &-elem {
         position: absolute;
@@ -200,6 +206,7 @@
     }
 
     &-error {
+      justify-content: flex-start;
       // position: absolute;
       padding-left: 24px;
 

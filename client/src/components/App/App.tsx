@@ -35,7 +35,6 @@ function App() {
   //     dispatch(changeOpenOrCloseLoginPopup(false));
   //   }
   // }, [popupLocation]);
-  
 
   return (
     <>

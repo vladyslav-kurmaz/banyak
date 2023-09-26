@@ -8,6 +8,7 @@ const ButtonSmall: FC<{text: string; icon?: string, fn?: () => void, style?: obj
     <a 
       className='buttonSmall'
       onClick={fn}
+    
       style={style}>
       {iconElement}
       {text}
