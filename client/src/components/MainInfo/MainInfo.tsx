@@ -16,7 +16,7 @@ const MainInfo: FC = () => {
         </div>
 
         <Link 
-          to='/ideas' 
+          to='/ideas'
           className='main-slider__info-container-button'>
           Приєднатись до команди
         </Link>

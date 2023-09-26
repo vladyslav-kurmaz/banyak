@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
-import { useNavigate } from "react-router-dom";
+import { changeOpenOrCloseLoginPopup, changeCounterLink, changeLoginOrSingUp } from "../SettingMenu/StateElementSlice";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import CustomInput from "../../atoms/CustomImput/CustomInput";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
+
 import logo from "../../image/logo/LOGO_Banyak.webp";
 
 import "./LoginRegistrationForm.scss";
@@ -16,74 +17,109 @@ const LoginRegistrationForm = () => {
   const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const { loginOrSingUp } = useAppSelector((state) => state.stateElement);
+  const [disabled, setDisabled] = useState(true);
+  const location = useLocation();
+
+  const { loginOrSingUp, loginRegistrationForm, counterLink } = useAppSelector(
+    (state) => state.stateElement
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+    
+
+  useEffect(() => { 
+    if (loginOrSingUp === 'ВХІД') {   
+      dispatch(changeCounterLink())
+      navigate('?login')
+    } else {
+      dispatch(changeCounterLink())
+      navigate('?singup')
+    }    
+  }, [loginOrSingUp])
+
+  useEffect(() => { 
+    if (location.search === '?login') {   
+      dispatch(changeLoginOrSingUp('ВХІД'))
+    } else if (location.search === '?singup') {
+      dispatch(changeLoginOrSingUp('РЕЄСТРАЦІЯ'))
+    }    
+  }, [location.search])
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: (value: React.SetStateAction<string>) => void
   ) => {
-    console.log(email);
-
-    setState(e.target.value);
+    const value = e.target.value.trim();
+    setState(value);
   };
 
   const closeLoginForm = () => {
-    dispatch(changeOpenOrCloseLoginPopup(false));
-    const newPath = window.location.pathname;
-    window.history.replaceState(null, "", newPath);
+    document.body.style.overflow = '';
 
-    // navigate(-1);
+    navigate(location.pathname);
   };
 
   const renderForm = () => {
-    if (loginOrSingUp === "РЕЄСТРАЦІЯ") { 
+    if (loginOrSingUp === "РЕЄСТРАЦІЯ") {
       return (
-        <form className="registration__popup-form">
+        <form className="registration__popup-form sing-up">
           <CustomInput
             value={name}
+            name="name"
             handler={(e) => changeValue(e, setName)}
+            type="text"
             label={"Ім’я"}
             id="form__name"
           />
           <CustomInput
             value={surName}
             handler={(e) => changeValue(e, setSurName)}
+            type="text"
             label={"Прізвище"}
             id="form__surname"
+            name="surname"
           />
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
+            type="text"
             label={"Електронна пошта"}
             id="form__email"
+            name="email"
           />
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
+            type="password"
             label={"Пароль"}
             id="form__pass"
+            name="pass"
           />
-          <ButtonSmall text="Зареєструватись" />
+
+          <button disabled={disabled} className="registration__button ">Зареєструватись</button>
         </form>
       );
     } else {
       return (
-        <form className="registration__popup-form">
+        <form className="registration__popup-form login">
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
+            type="text"
             label={"Електронна пошта"}
             id="form__email-login"
+            name="email"
           />
           <CustomInput
             value={pass}
             handler={(e) => changeValue(e, setPass)}
+            type="password"
             label={"Пароль"}
             id="form__pass-login"
+            name="pass"
           />
-          <ButtonSmall text="Увійти" />
+          <button disabled={disabled} className="registration__button ">Увійти</button>
           <div className="registration__popup-form-forgot">
             <a href="#" className="registration__popup-form-forgot-pass">
               Забули пароль?
@@ -92,57 +128,13 @@ const LoginRegistrationForm = () => {
         </form>
       );
     }
-    // return loginOrSingUp === "РЕЄСТРАЦІЯ" ? (
-    //   <form className="registration__popup-form">
-    //     <CustomInput
-    //       value={name}
-    //       handler={(e) => changeValue(e, setName)}
-    //       label={"Ім’я"}
-    //       id="form__name"
-    //     />
-    //     <CustomInput
-    //       value={surName}
-    //       handler={(e) => changeValue(e, setSurName)}
-    //       label={"Прізвище"}
-    //       id="form__surname"
-    //     />
-    //     <CustomInput
-    //       value={email}
-    //       handler={(e) => changeValue(e, setEmail)}
-    //       label={"Електронна пошта"}
-    //       id="form__email"
-    //     />
-    //     <CustomInput
-    //       value={pass}
-    //       handler={(e) => changeValue(e, setPass)}
-    //       label={"Пароль"}
-    //       id="form__pass"
-    //     />
-    //     <ButtonSmall text="Зареєструватись" />
-    //   </form>
-    // ) : (
-    // <form className="registration__popup-form">
-    //   <CustomInput
-    //     value={email}
-    //     handler={(e) => changeValue(e, setEmail)}
-    //     label={"Електронна пошта"}
-    //     id="form__email-login"
-    //   />
-    //   <CustomInput
-    //     value={pass}
-    //     handler={(e) => changeValue(e, setPass)}
-    //     label={"Пароль"}
-    //     id="form__pass-login"
-    //   />
-    //   <ButtonSmall text="Увійти" />
-    //   <div className="registration__popup-form-forgot">
-    //     <a href="#" className="registration__popup-form-forgot-pass">
-    //       Забули пароль?
-    //     </a>
-    //   </div>
-    // </form>
-    // );
   };
+
+  {
+    loginOrSingUp === 'ВХІД' || loginOrSingUp === 'РЕЄСТРАЦІЯ'
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "");
+  }
 
   return (
     <div
@@ -270,7 +262,8 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          Вже є аккаунт? <a href="">Увійдіть</a>
+          {loginOrSingUp === 'ВХІД' ? 'Ще намає акаунта?' : 'Вже є аккаунт?'} 
+          {loginOrSingUp === 'ВХІД' ? <a href="">Зареєструйтесь</a> :  <a href="">Увійдіть</a>}
         </div>
       </div>
     </div>

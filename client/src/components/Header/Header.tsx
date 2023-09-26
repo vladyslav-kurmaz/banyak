@@ -1,5 +1,5 @@
 import SettingMeny from "../SettingMenu/SettingMeny";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
 import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
 
@@ -9,15 +9,11 @@ import "./Header.scss";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const { loginOrSingUp } = useAppSelector((state) => state.stateElement);
-  // // const {loginRegistrationForm} = useAppSelector(state => state.stateElement);
-  // const loginRegistrationFormTraslate = loginOrSingUp === 'ВХІД' ? 'login' : 'singup'
-  const shouldShowPopup =
-    new URLSearchParams(window.location.search).get('login') ===
-    "true";
+  const navigate = useNavigate();
 
   const showLoginForm = () => {
     dispatch(changeOpenOrCloseLoginPopup(true));
+    navigate('?login')
   };
 
   return (
@@ -69,11 +65,7 @@ const Header = () => {
 
       <div className="header__settings">
         <NavLink
-          // to={'/?showPopup=true'}
-          to={{
-            pathname: window.location.pathname,
-            search: shouldShowPopup ? "" : `${'login'}=true`,
-          }}
+          to={'?login'}
           className="header__settings-login"
           onClick={showLoginForm}
         >

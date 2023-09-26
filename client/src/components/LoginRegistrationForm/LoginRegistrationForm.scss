@@ -8,25 +8,69 @@
   top: 0;
   left: 0;
   z-index: 100;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 8px;              
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $buttonBGWhite;       
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $buttonHoverBGWhite;  
+    border-radius: 20px;       
+    border: 1px solid $buttonBGWhite;  
+  }
+
+  &__button {
+    // max-width: 286px;
+    width: 100%;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px 0;
+    background-color: #1C145E;
+    cursor: pointer;
+    transition: all .3s;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+
+    &:hover {
+      background-color: #5B23A9;
+      transition: all .3s;
+      box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+    }
+
+    &:disabled {
+      background-color: #888FC9;
+      transition: all .3s;
+      cursor: auto;
+      border: none;
+    }
+  }
 
   &__popup {
     box-sizing: border-box;
-    max-height: 851px;
-    margin: 0 auto;
     padding: 44px 52px;
     max-width: 603px;
     width: 100%;
+    // height: 100%;  
     border-radius: 8px;
     border: 2px solid $buttonBGWhite;
     background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    top: 50%;
+    position: relative;
+    top: 50px;
     left: 50%;
-    transform: translate(-50%, -50%);
-
+    transform: translateX(-50%);
+    // transform: translateY(-50%);
+    
+    // margin-bottom: 50px;
 
 
     &-logo {
@@ -48,9 +92,12 @@
     }
 
     &-form {
+      // position: relative;
       max-width: 296px;
       width: 100%;
       margin-bottom: 40px;
+      height: 100%;
+      background-color: #fff;
 
       &-forgot {
         margin-top: 20px;
@@ -66,6 +113,14 @@
             transition: all .3s;
           }
         }
+      }
+
+      .sing-up {
+        max-height: 819px;
+      }
+
+      .login {
+        max-height: 819px;
       }
     }
 
@@ -129,10 +184,34 @@
       & a {
         color: $buttonHoverBGWhite;
         transition: all .3s;
+        margin-left: 12px;
 
         &:hover {
           color: $buttonBGWhite;
           transition: all .3s;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .registration {
+
+    &__popup {
+      top: 0 ;
+      // transform: translateY(-50%);
+      // left: 0;
+      padding: 10% 20px;
+
+      &-logo {
+      
+        &-picture {
+          max-width: 234px;
+        }
+
+        & .cross {
+          right: 0 !important;
         }
       }
     }

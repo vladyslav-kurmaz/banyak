@@ -1,0 +1,33 @@
+@import '../../scss/variables';
+
+.button__back {
+  max-width: 93px;
+  color: $buttonBGWhite;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all .3s;
+
+  &:hover svg {
+    transform: scale(1.1);
+    transition: all .3s;
+    
+    & path {
+      fill: $buttonHoverBGWhite;
+      transition: all .3s;
+    }
+  }
+
+  &:hover {
+    transition: all .3s;
+    color: $buttonHoverBGWhite;
+
+  }
+}

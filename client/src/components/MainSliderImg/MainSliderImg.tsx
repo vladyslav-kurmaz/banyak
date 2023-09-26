@@ -66,9 +66,9 @@ const MainSliderImg: FC = () => {
           <img src={designerIcon} alt="design icon" className='main-slider__content-slide-img' />
         </div>
       </div>
-        <img src={compIcon} alt="copm" className='main-sliderImg__comp' />
-        <img src={blickIcon} alt="bick" className='main-sliderImg__blick' />
-        <img src={flowerIcon} alt="bick" className='main-sliderImg__flower' />
+      <img src={compIcon} alt="copm" className='main-sliderImg__comp' />
+      <img src={blickIcon} alt="bick" className='main-sliderImg__blick' />
+      <img src={flowerIcon} alt="bick" className='main-sliderImg__flower' />
     </div>
   )
 }

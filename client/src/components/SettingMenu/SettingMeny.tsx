@@ -1,6 +1,8 @@
 import { FC, useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+import { NavLink } from "react-router-dom";
+import { changeOpenOrCloseLoginPopup } from "./StateElementSlice";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
@@ -17,7 +19,12 @@ const SettingMeny: FC = () => {
   const dispatch = useAppDispatch();
   const { headerSetting } = useAppSelector((state) => state.stateElement);
   const { userId } = useAppSelector((state) => state.userInfo);
-  let counterViev = 0;
+  const shouldShowPopup =
+    new URLSearchParams(window.location.search).get("login") === "true";
+
+  const showLoginForm = () => {
+    dispatch(changeOpenOrCloseLoginPopup(true));
+  };
 
   const test = () => {
     console.log(1);
@@ -61,6 +68,21 @@ const SettingMeny: FC = () => {
               {userId ? (
                 <ButtonSmall text="Вийти" icon={exitIcon} fn={test} />
               ) : null}
+            </li>
+            <li className="header__settings-container-menu-container-list-item">
+              {userId ? null : (
+                <NavLink
+                  // to={'/?showPopup=true'}
+                  to={{
+                    pathname: window.location.pathname,
+                    search: shouldShowPopup ? "" : `login`,
+                  }}
+                  className="header__settings-container-menu-container-list-item-login"
+                  onClick={showLoginForm}
+                >
+                  Увійти
+                </NavLink>
+              )}
             </li>
           </ul>
         </div>

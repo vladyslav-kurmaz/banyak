@@ -2,6 +2,7 @@
 
 .main {
   max-width: 1200px;
+  padding: 0 24px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -13,7 +14,8 @@
   &-slider {
 
     &__info {
-      max-width: 590px;
+      padding-left: 10px;
+      max-width: 580px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -64,4 +66,107 @@
   }
     
 
+}
+
+@media screen and (max-width: 1100px) {
+  
+  .main-slider__info {
+    padding-left: 10px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 550px; //cha
+
+    &-container {
+
+      &-title {
+        // margin-top: 160px;
+        margin-bottom: 40px;
+        font-size: 64px;
+        font-weight: 600;
+      }
+
+      &-description {
+        margin-bottom: 40px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #5D7497;
+      }
+
+      &-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 30px 0;
+        text-decoration: none;
+        color: #fff;
+        background-color: $borderWhiteTheme;
+        border-radius: 64px;
+        transition: all .3s;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+
+        &.prev {
+          transform: rotate(180deg);
+        }
+
+        &:hover {
+          box-shadow: 0px 8px 20px 0px rgba(6, 23, 48, 0.20);
+          background-color: $buttonHoverBGWhite;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .main {
+
+    &-slider {
+  
+      &__info {
+        padding: 0 10px;
+
+        &-container {
+      
+          &-title {
+            display: none;
+          }
+      
+          &-description {
+            font-size: 20px;
+            font-weight: 600;
+          }
+      
+          &-button {
+            display: none;
+          }
+        }
+      }
+    }
+      
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .main {
+
+    &-slider {
+  
+      &__info {
+        &-container {
+
+          &-description {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+      
+  }
 }

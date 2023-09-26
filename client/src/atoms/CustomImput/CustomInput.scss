@@ -18,7 +18,7 @@
   }
 }
 
-.custom-input__line {
+.custom-input {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -26,21 +26,117 @@
   margin-bottom: 50px;
   position: relative;
 
-  // &__line {
-    position: relative;
-    // width: 80%;
-
-    &-input {
+    &__input {
       box-sizing: border-box;
       padding: 10px;
       width: 100%;
       height: 40px;
       border-radius: 8px;
       border: 2px solid $borderWhiteTheme;
+      transition: all .2s; 
+      outline: none;
+
+      &.password {
+        padding-right: 43px;
+      }
+      
+
+      .custom-input:hover & {
+        border: 2px solid $buttonHoverBGWhite;
+        transition: all .2s; 
+      }
+
+      .custom-input:hover &.error {
+        border: 2px solid #A81818;
+        transition: all .2s; 
+      }
+
+      .custom-input:hover &.done {
+        border: 2px solid #12733F;
+        transition: all .2s; 
+      }
+
+      &.error {
+        border: 2px solid #A81818;
+        transition: all 1s; 
+        color: #A81818;
+      }
+      
+      &.done {
+        border: 2px solid #12733F;
+        transition: all .2s; 
+        color: #12733F;
+      }
+    }
+
+    &__eye {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      transition: all .3s;
+      
+
+      & svg path:last-child {
+
+        .custom-input:hover &.error,
+        &.error {
+          transition: all .3s;
+          stroke: #A81818;
+        }
+
+        .custom-input:hover &.done,
+        &.done {
+          transition: all .3s;
+          stroke: #12733F;
+        }
+      }
+
+      &-false path:nth-child(2) {
+        .custom-input:hover &.error,
+        &.error {
+          transition: all .3s;
+          fill: #A81818;
+        }
+        .custom-input:hover &.done,
+        &.done {
+          transition: all .3s;
+          fill: #12733F;
+        }
+      }
+
+      &-true circle:first-child,
+      &-true circle:nth-child(3) {
+        .custom-input:hover &.error,
+        &.error {
+          fill: #A81818;
+        }
+        .custom-input:hover &.done,
+        &.done {
+          fill: #12733F;
+        }
+      }
+
+      .custom-input:hover & svg path:last-child {
+        transition: all .3s;
+        stroke: $buttonHoverBGWhite;
+      }
+      
+      
+      .custom-input:hover &-false path:nth-child(2) {
+        transition: all .3s;
+        fill: $buttonHoverBGWhite;
+      }
+
+      .custom-input:hover &-true circle:first-child,
+      .custom-input:hover &-true circle:nth-child(3) {
+        fill: $buttonHoverBGWhite;  
+      }
+
 
     }
 
-    &-label {
+    &__label {
       position: absolute;
       left: 10px;
       top: 50%;
@@ -52,18 +148,86 @@
       font-size: 16px;
       font-weight: 600;
       color: $borderWhiteTheme;
+      transition: all .2s;       
+      
+      &.error {
+        color: #A81818;
+        transition: all .2s ; 
+      }
+      
+      &.done {
+        color: #12733F;
+        transition: all .2s; 
+      }
+    }
 
-    // }
-  }
+    &:hover &__label {
+      color: $buttonHoverBGWhite;
+      transition: all .2s; 
+    }
+
+    &:hover &__label.error {
+      color: #A81818;
+      transition: all .2s; 
+    }
+
+    &:hover &__label.done {
+      color: #12733F;
+      transition: all .2s; 
+    }
   
 
- 
-
-  &__error {
+  &__message {
     position: absolute;
-    left: 35px;
-    bottom: -25px;
-    color: red;
+    bottom: -27px;
+    left: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 26px;
+    
+    
+    &-good {
+      justify-content: flex-start;
+      padding-left: 24px;
+      &-elem {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+      }
+
+      &-text {
+        font-family: Montserrat;
+        font-size: 13px;
+        font-weight: 600;
+        color: #12733F;
+      }
+    }
+
+    &-error {
+      justify-content: flex-start;
+      // position: absolute;
+      padding-left: 24px;
+
+
+      &-elem {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+      }
+
+      &-text {
+        font-family: Montserrat;
+        font-size: 13px;
+        font-weight: 600;
+        color: #A81818;
+      }
+    }
+
+    
   }
+  
 
 }

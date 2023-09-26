@@ -6,22 +6,21 @@
     left: 0;
   }
   100% {
-    left: -1200px;
-    // opacity: 1;
+    left: -100%;
   }
 }
 
 @keyframes swipeEnd {
   0% {
-    left: -1200px;
+    left: -100%;
   }
   100% {
-    left: 0px;
+    left: 0px;    
   }
 }
 
 .main-slider {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -32,77 +31,149 @@
   z-index: 98;
 
   &__container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    overflow: hidden;  
+    justify-content: center;
+
+    &-button {
       display: flex;
-      // max-width: 1200px;
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+      padding: 30px 0;
+      text-decoration: none;
+      color: #fff;
+      background-color: #1C145E;
+      border-radius: 64px;
+      transition: all 0.3s;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 48px;
+      margin-top: 20px;
+      display: none;
+    }
+
+
+    &-slider {
+        // max-width: 2400px;
+        // width: 2400px;
       width: 100%;
-      flex-wrap: wrap;
-      overflow: hidden;  
-
-
-      &-slider {
-        max-width: 2400px;
-        left: 0px;
-        // width: 100%;
-        display: flex;
-        // justify-content: space-between;
-        position: relative;
-
-        &.active {
-          animation-name: swipeStart;
-          animation-duration: 1.5s;
-          animation-fill-mode: ease-in;
-          animation-fill-mode: forwards;
-        }
-
-        &.inert {
-          animation-name: swipeEnd;
-          animation-duration: 1s;
-          animation-fill-mode: ease-in;
-          animation-fill-mode: forwards;
-        }
-
-        &-elem {
-          position: relative;
-          width: 1200px;
-          display: flex;
-
-        }
-
-        &-button {
+      left: 0px;
+      display: flex;
       
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 2px solid $buttonBGWhite;
-          transition: all .3s;
-          cursor: pointer;
-          position: absolute;
-          transform: translateY(-50%);
-          z-index: 101;
+      position: relative;
+      flex: 1 0 auto;
+
+      &.active {
+        animation-name: swipeStart;
+        animation-duration: 1.5s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+      }
+
+      &.inert {
+        animation-name: swipeEnd;
+        animation-duration: 1.5s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+      }
+
+      &-elem {
+        position: relative;
+        max-width: 1200px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex: 1 0 auto;
+
+      }
+
+      &-button {
     
-          &:hover {
-            border: 2px solid $buttonHoverBGWhite;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid $buttonBGWhite;
+        transition: all .3s;
+        cursor: pointer;
+        position: absolute;
+        transform: translateY(-50%);
+        z-index: 101;
+  
+        &:hover {
+          border: 2px solid $buttonHoverBGWhite;
+          transition: all .3s;
+        }
+        
+        & {
+          background-color: #fff;
+
+          & svg  {
+            fill: $buttonBGWhite;
             transition: all .3s;
           }
-          
-          & {
-            background-color: #fff;
-
+    
+          & svg:hover path {
+            fill: $buttonHoverBGWhite;
+            transition: all .3s;
             
+          }
+        } 
+      }
+    }
+  }
+}
 
-            & svg  {
-              fill: $buttonBGWhite;
-              transition: all .3s;
-              
-            }
+@media screen and (max-width: 770px) {
+  .main-slider {
+
+    &__container {
+
+      &-button {
+        display: flex;
+        margin-bottom: 30px;
+      }
+  
+      &-slider {
+
+        &-elem {
+          margin-top: 20px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+            
+        }
+
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .main-slider {
+
+  
+    &__container {
+
+      &-button {
+        font-size: 16px;
+        font-weight: 700;
+        padding: 16px 0;
+      }
+  
+      &-slider {
       
-            & svg:hover path {
-              fill: $buttonHoverBGWhite;
-              transition: all .3s;
-              
-            }
-          } 
+        &-elem {
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+            
         }
       }
     }
+  }
 }
+

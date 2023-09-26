@@ -1,9 +1,55 @@
 @import '../../scss//variables';
 
+@keyframes toggled-forward {
+  0% {
+    left: 3%;
+  }
+  25% {
+    left: 20.5%;
+  }
+  50% {
+    left: 38%;
+    border: 1px solid #fff;
+    background-color: #615f77;
+  }
+  75% {
+    left: 55.5%;
+    border: 1px solid #fff;
+    background-color: #433e6c;
+  }
+  100% {
+    left: 71%;
+    border: 1px solid #fff;
+    background-color: #1C145E;
+  }
+}
 
+@keyframes toggled-backward {
+  0% {
+    left: 71%;
+    border: 1px solid #fff;
+    background-color: #1C145E;
+  }
+  25% {
+    left: 55.5%;
+    border: 1px solid #fff;
+    background-color: #433e6c;
+  }
+  50% {
+    left: 38%;
+    border: 1px solid #fff;
+    background-color: #615f77;
+  }
+  75% {
+    left: 20.5%;
+  }
+  100% {
+    left: 3%;
+  }
+}
 
 .toggle-theam {
-  max-width: 132px;
+  // max-width: 132px;
   width: 100%;
   background-color: #fff;
 
@@ -15,55 +61,6 @@
     border: 1px solid $borderWhiteTheme;
     border-radius: 32px;
     background-color: #fff;
-    
-
-    @keyframes toggled-forward {
-      0% {
-        transform: translate(0%, -50%);
-      }
-      25% {
-        transform: translate(50%, -50%);
-      }
-      50% {
-        transform: translate(100%, -50%);
-        border: 1px solid #fff;
-        background-color: #615f77;
-      }
-      75% {
-        transform: translate(150%, -50%);
-        border: 1px solid #fff;
-        background-color: #433e6c;
-      }
-      100% {
-        transform: translate(200%, -50%);
-        border: 1px solid #fff;
-        background-color: #1C145E;
-      }
-    }
-
-    @keyframes toggled-backward {
-      0% {
-        transform: translate(200%, -50%);
-        border: 1px solid #fff;
-        background-color: #1C145E;
-      }
-      25% {
-        transform: translate(150%, -50%);
-        border: 1px solid #fff;
-        background-color: #433e6c;
-      }
-      50% {
-        transform: translate(100%, -50%);
-        border: 1px solid #fff;
-        background-color: #615f77;
-      }
-      75% {
-        transform: translate(50%, -50%);
-      }
-      100% {
-        transform: translate(0%, -50%);
-      }
-    }
 
     &-elem {
       display: block;
@@ -74,7 +71,7 @@
       background-color: #fff;
       position: absolute;
       top: 50%;
-      left: 5px;
+      left: 3%;
       transform: translateY(-50%);
 
       &-icon {
