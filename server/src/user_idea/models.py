@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from slugify import slugify
-# from django.utils.text import slugify
 import uuid
 # pprint.pprint(print(sys.path))
 

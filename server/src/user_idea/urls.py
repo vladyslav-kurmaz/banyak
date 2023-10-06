@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 router = DefaultRouter()
-router.register('ideas', IdeaViewSet, basename='ideas')
+router.register('ideas/', IdeaViewSet, basename='ideas')
 
 
 urlpatterns = [

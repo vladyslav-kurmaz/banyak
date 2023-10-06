@@ -5,8 +5,14 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.authtoken.models import Token
 from django.utils.encoding import force_str, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from .register import *
+# from .register import *
 from .models import *
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'email')
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

@@ -2,13 +2,21 @@ from rest_framework import serializers
 from ..users.models import CustomUser
 from ..users.models import UserProfile, CustomUser
 from .models import *
-from ..users.serializers import SpecialitySerializer
+from ..users.serializers import SpecialitySerializer, CustomUserSerializer, UserProfileSerializer
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialization
         fields = '__all__'
+
+
+# class SpecializationField(serializers.RelatedField):
+#     def to_representation(self, value):
+#         return value
+#
+#     def to_internal_value(self, data):
+#         return SpecializationSerializer(data)
 
 
 class IdeasListSerializer(serializers.ModelSerializer):
@@ -19,6 +27,7 @@ class IdeasListSerializer(serializers.ModelSerializer):
 
 class DetailIdeaSerializer(serializers.ModelSerializer):
     specialization = SpecializationSerializer(many=True)
+    user = CustomUserSerializer(many=False)
 
     class Meta:
         model = Idea
@@ -29,6 +38,10 @@ class UpdateCreateIdeaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Idea
         fields = '__all__'
+        extra_kwargs = {
+            'title': {'required': False},
+            'specialization': {'required': False}
+        }
 
     def create(self, validated_data):
         user = self.context['request'].user
