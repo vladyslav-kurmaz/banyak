@@ -8,7 +8,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title='Banyak',
         default_version='v1',
-        description='Baza Trainee UA',
+        description='Banyak',
         license=openapi.License(name='BSD License')
     ),
     public=True,

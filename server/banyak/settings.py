@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 # from .asgi import application
-# from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'src.users',
     'src.user_idea',
-    'src.chat'
+    'src.chat',
+    'src.talent'
 ]
 
 MIDDLEWARE = [
@@ -145,23 +146,23 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
-# load_dotenv(find_dotenv())
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# load_dotenv(find_dotenv())
-GOOGLE_CLIENT_ID = '714270885630-08kfdsf1logsk7it8snk5t2cph9negjt.apps.googleusercontent.com'
-GOOGLE_SECRET_KEY = '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'
+load_dotenv()
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_SECRET_KEY = os.getenv('GOOGLE_SECRET_KEY')
 
-GITHUB_CLIENT_ID = '5899da931edcaf3e2ecf'
-GITHUB_SECRET_KEY = '8574ed2f356298e8e2d9c615f4c0c6b4e036de92'
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
+GITHUB_SECRET_KEY = os.getenv('GITHUB_SECRET_KEY')
 
-LINKEDIN_CLIENT_ID = '867zw67i9v7et9'
-LINKEDIN_SECRET_KEY = 'qMlfzdgRZZ92uquU'
+LINKEDIN_CLIENT_ID = os.getenv('LINKEDIN_CLIENT_ID')
+LINKEDIN_SECRET_KEY = os.getenv('LINKEDIN_SECRET_KEY')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'levkovich.vlad.2004@gmail.com'
-EMAIL_HOST_PASSWORD = 'lytfdwvcrxolskql'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
@@ -176,15 +177,15 @@ SWAGGER_SETTINGS = {
 }
 
 #   Redis
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
+#
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#         },
+#     },
+# }
 
 # CHANNEL_LAYERS = {
 #     'default': {
