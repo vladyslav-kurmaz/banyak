@@ -6,7 +6,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title='Feeda',
+        title='Banyak',
         default_version='v1',
         description='Baza Trainee UA',
         license=openapi.License(name='BSD License')
