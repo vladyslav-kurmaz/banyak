@@ -1,7 +1,17 @@
-import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup, changeCounterLink, changeLoginOrSingUp } from "../SettingMenu/StateElementSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, FormEvent } from "react";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxToolkidHooks";
+import {
+  changeOpenOrCloseLoginPopup,
+  changeCounterLink,
+  changeLoginOrSingUp,
+} from "../SettingMenu/StateElementSlice";
+import { useNavigate, useLocation} from "react-router-dom";
+import { changeActiveId } from "../../store/userSlice";
+
+import ServiceBanyak from "../../service/ServiceBanyak";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import CustomInput from "../../atoms/CustomImput/CustomInput";
@@ -11,6 +21,7 @@ import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
 import logo from "../../image/logo/LOGO_Banyak.webp";
 
 import "./LoginRegistrationForm.scss";
+import validationForm from "../../untils/validationForm";
 
 const LoginRegistrationForm = () => {
   const [name, setName] = useState("");
@@ -19,40 +30,54 @@ const LoginRegistrationForm = () => {
   const [pass, setPass] = useState("");
   const [disabled, setDisabled] = useState(true);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [modalLocation, setModalLocation] = useState<string[]>([])
+  
+
+  const { singUpNewUser, loginUser, profileUser } = ServiceBanyak();
 
   const { loginOrSingUp, loginRegistrationForm, counterLink } = useAppSelector(
     (state) => state.stateElement
   );
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  
-    
 
-  useEffect(() => { 
-    if (loginOrSingUp === 'ВХІД') {   
-      setName('');
-      setSurName('');
-      setEmail('');
-      setPass('');
-      dispatch(changeCounterLink())
-      navigate('?login')
+
+  useEffect(() => {
+    if (loginOrSingUp === "ВХІД") {
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
+      dispatch(changeCounterLink());
+      navigate("?login");
+
+
+      setModalLocation(state => [...state, '?login'])
+
     } else {
-      setName('');
-      setSurName('');
-      setEmail('');
-      setPass('');
-      dispatch(changeCounterLink())
-      navigate('?singup')
-    }    
-  }, [loginOrSingUp])
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
+      dispatch(changeCounterLink());
+      navigate("?singup");
 
-  useEffect(() => { 
-    if (location.search === '?login') {   
-      dispatch(changeLoginOrSingUp('ВХІД'))
-    } else if (location.search === '?singup') {
-      dispatch(changeLoginOrSingUp('РЕЄСТРАЦІЯ'))
-    }    
-  }, [location.search])
+
+      setModalLocation(state => [...state, '?singup'])
+
+    }
+  }, [loginOrSingUp]);
+
+  useEffect(() => {
+    if (location.search === "?login") {
+      dispatch(changeLoginOrSingUp("ВХІД"));
+      setDisabled(true);
+    } else if (location.search === "?singup") {
+      dispatch(changeLoginOrSingUp("РЕЄСТРАЦІЯ"));
+      setDisabled(true);
+    }
+  }, [location.search]);
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -60,18 +85,99 @@ const LoginRegistrationForm = () => {
   ) => {
     const value = e.target.value.trim();
     setState(value);
+    // disablebButton()
   };
 
+  useEffect(() => {
+    const nameValid = validationForm(name, "name")?.errorStatus;
+    const surNameValid = validationForm(surName, "surname")?.errorStatus;
+    const emailValid = validationForm(email, "email")?.errorStatus;
+    const passValid = validationForm(pass, "pass")?.errorStatus;
+
+    if (location.search === "?login") {
+      if (!emailValid && !passValid) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+    } else {
+      if (!nameValid && !surNameValid && !emailValid && !passValid) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+    }
+  }, [name, surName, email, pass]);
+
   const closeLoginForm = () => {
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
+    // console.log(modalLocation.length);
+
+    // navigate(-modalLocation.length)
+    
+    // console.log(location.pathname);
+    
+    modalLocation.forEach((loc) => {
+      navigate(location.pathname, { replace: true });  
+    });
+    
+
 
     navigate(location.pathname);
+    setModalLocation([])
+  };
+
+  const submitSingUpForm = (e: FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      name,
+      surName,
+      email,
+      password: pass,
+    };
+
+    singUpNewUser(JSON.stringify(data))
+      
+      .then((res) => loginUser(JSON.stringify({ email, password: pass })))
+      .then((res) => profileUser(res, "POST"))
+      .then((res) => navigate("/chose-profile"))
+      // .finally(() => {
+      //   setName("");
+      //   setSurName("");
+      //   setEmail("");
+      //   setPass("");
+      // });
+      .catch(e => console.log(e))
+  };
+
+  const submitLoginUser = (e: FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      email,
+      password: pass,
+    };
+
+    loginUser(JSON.stringify(data))
+      .then((res: { token: string }) => {
+        console.log(res);
+        dispatch(changeActiveId(res.token));
+        navigate(location.pathname);
+      })
+      .finally(() => {
+        setEmail("");
+        setPass("");
+      });
   };
 
   const renderForm = () => {
     if (loginOrSingUp === "РЕЄСТРАЦІЯ") {
       return (
-        <form className="registration__popup-form sing-up">
+        <form
+          className="registration__popup-form sing-up"
+          onSubmit={(e) => submitSingUpForm(e)}
+        >
           <CustomInput
             value={name}
             name="name"
@@ -105,12 +211,17 @@ const LoginRegistrationForm = () => {
             name="pass"
           />
 
-          <button disabled={disabled} className="registration__button ">Зареєструватись</button>
+          <button disabled={disabled} className="registration__button ">
+            Зареєструватись
+          </button>
         </form>
       );
     } else {
       return (
-        <form className="registration__popup-form login">
+        <form
+          className="registration__popup-form login"
+          onSubmit={(e) => submitLoginUser(e)}
+        >
           <CustomInput
             value={email}
             handler={(e) => changeValue(e, setEmail)}
@@ -127,7 +238,9 @@ const LoginRegistrationForm = () => {
             id="form__pass-login"
             name="pass"
           />
-          <button disabled={disabled} className="registration__button ">Увійти</button>
+          <button disabled={disabled} className="registration__button ">
+            Увійти
+          </button>
           <div className="registration__popup-form-forgot">
             <a href="#" className="registration__popup-form-forgot-pass">
               Забули пароль?
@@ -139,7 +252,7 @@ const LoginRegistrationForm = () => {
   };
 
   {
-    loginOrSingUp === 'ВХІД' || loginOrSingUp === 'РЕЄСТРАЦІЯ'
+    loginOrSingUp === "ВХІД" || loginOrSingUp === "РЕЄСТРАЦІЯ"
       ? (document.body.style.overflow = "hidden")
       : (document.body.style.overflow = "");
   }
@@ -270,8 +383,12 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          {loginOrSingUp === 'ВХІД' ? 'Ще намає акаунта?' : 'Вже є аккаунт?'} 
-          {loginOrSingUp === 'ВХІД' ? <a href="">Зареєструйтесь</a> :  <a href="">Увійдіть</a>}
+          {loginOrSingUp === "ВХІД" ? "Ще намає акаунта?" : "Вже є аккаунт?"}
+          {loginOrSingUp === "ВХІД" ? (
+            <a href="">Зареєструйтесь</a>
+          ) : (
+            <a href="">Увійдіть</a>
+          )}
         </div>
       </div>
     </div>

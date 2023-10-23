@@ -30,9 +30,6 @@ const CustomInput = ({
   };
 
   const labelStyle = (): CSSProperties => {
-    // const styleLable = validationForm(value, name)?.errorStatus
-    //   ? "color: #A81818, transition: all .2s"
-    //   : "color: #12733F, transition: all .2s";
 
     if (!inputFocus && value !== "") {
       return { top: 0, transition: "all .2s" };

@@ -1,6 +1,9 @@
 import SettingMeny from "../SettingMenu/SettingMeny";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxToolkidHooks";
 import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
 
 import logo from "../../image/logo/LOGO_Banyak.webp";
@@ -10,10 +13,11 @@ import "./Header.scss";
 const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { userId } = useAppSelector((state) => state.userInfo);
 
   const showLoginForm = () => {
     dispatch(changeOpenOrCloseLoginPopup(true));
-    navigate('?login')
+    navigate("?login");
   };
 
   return (
@@ -25,53 +29,66 @@ const Header = () => {
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="header__nav-list-item">
-            <NavLink 
-              to="/aboutus" 
-              className={({ isActive, isPending }) => 
-                isActive
-                  ? "active"
-                  : isPending
-                  ? "pending"
-                  : ""
+            <NavLink
+              to="/aboutus"
+              className={({ isActive, isPending }) =>
+                isActive ? "active" : isPending ? "pending" : ""
               }
-            >Про нас</NavLink>
+            >
+              Про нас
+            </NavLink>
           </li>
           <li className="header__nav-list-item">
-            <NavLink 
-              to="/ideas" 
-              className={({ isActive, isPending }) => 
-                isActive
-                  ? "active"
-                  : isPending
-                  ? "pending"
-                  : ""
+            <NavLink
+              to="/ideas"
+              className={({ isActive, isPending }) =>
+                isActive ? "active" : isPending ? "pending" : ""
               }
-            >Ідеї</NavLink>
+            >
+              Ідеї
+            </NavLink>
           </li>
           <li className="header__nav-list-item">
-            <NavLink 
+            <NavLink
               to="/talents"
-              className={({ isActive, isPending }) => 
-                isActive
-                  ? "active"
-                  : isPending
-                  ? "pending"
-                  : ""
+              className={({ isActive, isPending }) =>
+                isActive ? "active" : isPending ? "pending" : ""
               }
-            >Таланти</NavLink>
+            >
+              Таланти
+            </NavLink>
           </li>
         </ul>
       </nav>
 
       <div className="header__settings">
-        <NavLink
-          to={'?login'}
-          className="header__settings-login"
-          onClick={showLoginForm}
-        >
-          Увійти
-        </NavLink>
-
+        {userId === null ? (
+          <NavLink
+            to={"?login"}
+            className="header__settings-login"
+            onClick={showLoginForm}
+          >
+            Увійти
+          </NavLink>
+        ) : (
+          <NavLink
+            to={"/profile"}
+            className="header__settings-login"
+            onClick={showLoginForm}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <circle cx="10" cy="8" r="5" fill="#FCFCFC" />
+              <rect x="4" y="14" width="12" height="2" fill="#FCFCFC" />
+            </svg>
+            Мій профіль
+          </NavLink>
+        )}
         <SettingMeny />
       </div>
     </header>

@@ -75,6 +75,13 @@
       cursor: pointer;
       border: none;
       transition: all .5s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & svg {
+        margin-right: 5px;
+      }
 
       &:hover {
         background-color: #5B23A9;

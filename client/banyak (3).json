@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Feeda",
+        "title": "Banyak",
         "description": "Baza Trainee UA",
         "license": {
             "name": "BSD License"
@@ -12,7 +12,7 @@
     "schemes": [
         "http"
     ],
-    "basePath": "/",
+    "basePath": "/api/v1",
     "consumes": [
         "application/json"
     ],
@@ -32,158 +32,75 @@
         }
     ],
     "paths": {
-        "/idea/add-user-idea/<str:idea_url/": {
-            "put": {
-                "operationId": "idea_add-user-idea_<str:idea_url_update",
-                "description": "\u0414\u043e\u0434\u0430\u0432\u0430\u043d\u043d\u044f \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430 \u043d\u0430 \u043f\u0440\u043e\u0435\u043a\u0442",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "idea"
-                ]
-            },
-            "parameters": []
-        },
-        "/idea/detail-talent/{talent_id}/": {
-            "get": {
-                "operationId": "idea_detail-talent_read",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "idea"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "talent_id",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                }
-            ]
-        },
-        "/idea/idea/{idea_url}/": {
-            "get": {
-                "operationId": "idea_idea_read",
-                "description": "Get a list of published ideas",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "title": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "specialization": {
-                                        "type": "object"
-                                    },
-                                    "slug": {
-                                        "type": "slug"
-                                    },
-                                    "idea_views": {
-                                        "type": "number"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Idea not found"
-                    }
-                },
-                "tags": [
-                    "idea"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "idea_url",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                }
-            ]
-        },
         "/idea/ideas/": {
             "get": {
                 "operationId": "idea_ideas_list",
-                "description": "Get a list of published ideas",
-                "parameters": [],
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful",
+                        "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "title": {
-                                        "type": "string"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/IdeasList"
                                     }
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Error"
                     }
                 },
                 "tags": [
                     "idea"
                 ]
             },
-            "parameters": []
-        },
-        "/idea/join-idea/": {
             "post": {
-                "operationId": "idea_join-idea_create",
-                "description": "",
+                "operationId": "idea_ideas_create",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "required": [
-                                "idea"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "idea": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/IdeasList"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Join successfully"
-                    },
-                    "400": {
-                        "description": "Invalid input data"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
                     }
                 },
                 "tags": [
@@ -192,20 +109,80 @@
             },
             "parameters": []
         },
-        "/idea/list-join-user-idea/{idea_url}/": {
+        "/idea/ideas/{slug}/": {
             "get": {
-                "operationId": "idea_list-join-user-idea_read",
-                "description": "",
+                "operationId": "idea_ideas_read",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "Successful",
+                        "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ListJoinUserIdea"
-                            }
+                            "$ref": "#/definitions/IdeasList"
                         }
+                    }
+                },
+                "tags": [
+                    "idea"
+                ]
+            },
+            "put": {
+                "operationId": "idea_ideas_update",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                },
+                "tags": [
+                    "idea"
+                ]
+            },
+            "patch": {
+                "operationId": "idea_ideas_partial_update",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                },
+                "tags": [
+                    "idea"
+                ]
+            },
+            "delete": {
+                "operationId": "idea_ideas_delete",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
                     }
                 },
                 "tags": [
@@ -214,28 +191,12 @@
             },
             "parameters": [
                 {
-                    "name": "idea_url",
+                    "name": "slug",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 }
             ]
-        },
-        "/idea/talents-list/": {
-            "get": {
-                "operationId": "idea_talents-list_list",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "idea"
-                ]
-            },
-            "parameters": []
         },
         "/users/activate-email/{user_id}/{token}/": {
             "get": {
@@ -265,6 +226,54 @@
                     "type": "string"
                 }
             ]
+        },
+        "/users/github-auth/": {
+            "get": {
+                "operationId": "users_github-auth_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
+        "/users/google-auth/": {
+            "post": {
+                "operationId": "users_google-auth_create",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
+        "/users/linkedin-auth/": {
+            "get": {
+                "operationId": "users_linkedin-auth_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
         },
         "/users/login/": {
             "post": {
@@ -444,6 +453,72 @@
             },
             "parameters": []
         },
+        "/users/search/": {
+            "get": {
+                "operationId": "users_search_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "A search term.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/SearchUsers"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
         "/users/user-profile/": {
             "get": {
                 "operationId": "users_user-profile_list",
@@ -487,10 +562,25 @@
             "post": {
                 "operationId": "users_user-profile_create",
                 "description": "\u041f\u0440\u043e\u0444\u0456\u043b\u044c \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserProfile"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "Profile update"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    },
+                    "400": {
+                        "description": "Error"
                     }
                 },
                 "tags": [
@@ -555,11 +645,9 @@
         }
     },
     "definitions": {
-        "DetailIdea": {
+        "IdeasList": {
             "required": [
-                "title",
-                "description",
-                "specialization"
+                "title"
             ],
             "type": "object",
             "properties": {
@@ -574,66 +662,6 @@
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
-                },
-                "description": {
-                    "title": "Description",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "slug": {
-                    "title": "Slug",
-                    "type": "string",
-                    "format": "slug",
-                    "pattern": "^[-a-zA-Z0-9_]+$",
-                    "maxLength": 78,
-                    "x-nullable": true
-                },
-                "idea_views": {
-                    "title": "Idea views",
-                    "type": "integer"
-                },
-                "user": {
-                    "title": "User",
-                    "type": "string",
-                    "format": "uuid",
-                    "x-nullable": true
-                },
-                "specialization": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "format": "uuid"
-                    },
-                    "uniqueItems": true
-                }
-            }
-        },
-        "ListJoinUserIdea": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "Id",
-                    "type": "string",
-                    "format": "uuid",
-                    "readOnly": true
-                },
-                "user": {
-                    "title": "User",
-                    "type": "string",
-                    "format": "uuid"
-                },
-                "idea": {
-                    "$ref": "#/definitions/DetailIdea"
-                },
-                "created": {
-                    "title": "Created",
-                    "type": "string",
-                    "format": "date-time",
-                    "readOnly": true
-                },
-                "is_accepted": {
-                    "title": "Is accepted",
-                    "type": "boolean"
                 }
             }
         },
@@ -732,6 +760,164 @@
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 1
+                }
+            }
+        },
+        "Stack": {
+            "required": [
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 15,
+                    "minLength": 1
+                }
+            }
+        },
+        "SearchUsers": {
+            "required": [
+                "stack",
+                "speciality"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "stack": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Stack"
+                    }
+                },
+                "avatar": {
+                    "title": "Avatar",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "is_talent": {
+                    "title": "Is talent",
+                    "type": "boolean"
+                },
+                "user": {
+                    "title": "User",
+                    "type": "string",
+                    "format": "uuid",
+                    "x-nullable": true
+                },
+                "ideas": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
+                },
+                "speciality": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "uniqueItems": true
+                }
+            }
+        },
+        "Speciality": {
+            "required": [
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                }
+            }
+        },
+        "UserProfile": {
+            "required": [
+                "speciality",
+                "stack"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "speciality": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Speciality"
+                    }
+                },
+                "stack": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Stack"
+                    }
+                },
+                "avatar": {
+                    "title": "Avatar",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "is_talent": {
+                    "title": "Is talent",
+                    "type": "boolean"
+                },
+                "user": {
+                    "title": "User",
+                    "type": "string",
+                    "format": "uuid",
+                    "x-nullable": true
+                },
+                "ideas": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
                 }
             }
         },

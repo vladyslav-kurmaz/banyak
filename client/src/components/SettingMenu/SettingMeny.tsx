@@ -1,13 +1,20 @@
 import { FC, useCallback } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { NavLink } from "react-router-dom";
-import { changeOpenOrCloseLoginPopup } from "./StateElementSlice";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxToolkidHooks";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import ToggleTheam from "../../atoms/ToggleTheam/ToggleTheam";
-import { changeOpenHeaderSeting } from "./StateElementSlice";
+import {
+  changeOpenHeaderSeting,
+  changeOpenOrCloseLoginPopup,
+} from "./StateElementSlice";
+
+import ServiceBanyak from "../../service/ServiceBanyak";
 
 import settingIconBlue from "../../image/header/setting_icon-blue.webp";
 import chatIcon from "../../image/header/chat.svg";
@@ -17,8 +24,11 @@ import "./SettingMeny.scss";
 
 const SettingMeny: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { headerSetting } = useAppSelector((state) => state.stateElement);
   const { userId } = useAppSelector((state) => state.userInfo);
+  const { exitUser } = ServiceBanyak();
   const shouldShowPopup =
     new URLSearchParams(window.location.search).get("login") === "true";
 
@@ -26,8 +36,11 @@ const SettingMeny: FC = () => {
     dispatch(changeOpenOrCloseLoginPopup(true));
   };
 
-  const test = () => {
-    console.log(1);
+  const exitUserProfil = () => {
+    if (userId) {
+      exitUser(userId);
+      navigate("/");
+    }
   };
 
   const openCloseSettingMenu = useCallback(
@@ -66,7 +79,11 @@ const SettingMeny: FC = () => {
             </li>
             <li className="header__settings-container-menu-container-list-item">
               {userId ? (
-                <ButtonSmall text="Вийти" icon={exitIcon} fn={test} />
+                <ButtonSmall
+                  text="Вийти"
+                  icon={exitIcon}
+                  fn={() => exitUserProfil()}
+                />
               ) : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">

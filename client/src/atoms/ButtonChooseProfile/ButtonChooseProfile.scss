@@ -1,0 +1,39 @@
+.button-chose-profile {
+  color: #C3C8FF;
+  font-family: Montserrat;
+  border-radius: 8px;
+  transition: all .3s;
+  background-color: #061730;
+  border: none;
+  color: #C3C8FF;
+  font-size: 20px;
+  font-weight: 700;
+  max-width: 319px;
+  width: 100%;
+  padding: 20px 40px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all .3s;
+    background: #061730;
+    box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+  }
+}
+
+@media screen and (max-width: 562px) {
+  .button-chose-profile {
+    font-size: 16px;
+    max-width: 200px;
+    width: 100%;
+    padding: 10px 20px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .button-chose-profile {
+    font-size: 12px;
+    max-width: 200px;
+    width: 100%;
+    padding: 10px 20px;
+  }
+}

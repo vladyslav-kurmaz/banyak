@@ -10,7 +10,8 @@ export type stateElement = {
 }
 
 export type userInfo = {
-  userId: null | string
+  userId: null | string,
+  typeUser: 'Я власник ідеї' | 'Я талант'
 }
 
 export type TValidatinForm = {

@@ -1,0 +1,15 @@
+.profile {
+  max-width: 1200px;
+  width: 100%;
+  
+  &__inside {
+    padding: 40px;
+    box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__outside {
+    margin-bottom: 40px;
+  }
+}
