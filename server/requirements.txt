@@ -19,5 +19,6 @@ python-slugify
 Requests
 six
 python-slugify
+python-dotenv
 Pillow
 oauthlib

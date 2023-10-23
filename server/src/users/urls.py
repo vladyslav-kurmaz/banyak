@@ -18,5 +18,6 @@ urlpatterns = [
     path('linkedin-auth/', LinkedInAuth.as_view()),
     path('github/', github_page),
     path('linkedin/', linkedin_page),
-    path('search/', SearchUsers.as_view())
+    path('search/', SearchUsers.as_view()),
+    path('test/', private)
 ]
