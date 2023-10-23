@@ -15,6 +15,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email')
 
 
+class CustomUserTalentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'first_name', 'last_name', 'email')
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     """Серіалайзер реєстрації користувача"""
 
@@ -179,3 +185,6 @@ class SearchUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+
+
