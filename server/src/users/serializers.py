@@ -187,4 +187,10 @@ class SearchUsersSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AllUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
+
+
 

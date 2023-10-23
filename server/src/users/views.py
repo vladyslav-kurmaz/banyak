@@ -1,24 +1,23 @@
-import requests
 from django.shortcuts import render
 from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, permissions, generics
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.authtoken.views import ObtainAuthToken
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import force_str, force_bytes, smart_str, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters
+from datetime import datetime, timedelta
 from .models import *
 from .serializers import *
 from .services.google_auth import check_google_auth
 from .utils import Utils
 from .token import token_generator
 from .services import github_auth
+import jwt
 
 
 class UserRegister(generics.GenericAPIView):
@@ -90,12 +89,27 @@ class UserAuthLogin(ObtainAuthToken):
 
         try:
             user = CustomUser.objects.get(email=email)
+            user_profile = UserProfile.objects.get(user=user)
+            user_avatar = user_profile.avatar.url if user_profile.avatar else None
+            payload = {
+                'user_email': user_profile.user.email,
+                'user_first_name': user.first_name,
+                'user_last_name': user.last_name,
+                'user_description': user_profile.description,
+                'user_is_talent': user_profile.is_talent,
+                'user_avatar': user_avatar,
+                'exp': datetime.utcnow() + timedelta(minutes=2)
+            }
+            access_token = jwt.encode(payload, key='secret key', algorithm='HS256')
+            return Response({
+                'access_token': access_token
+            }, status=status.HTTP_201_CREATED)
         except CustomUser.DoesNotExist:
             return Response({'message': 'Invalid data'}, status=status.HTTP_404_NOT_FOUND)
 
-        token, created = Token.objects.get_or_create(user=user)
-
-        return Response({'token': token.key})
+        # token, created = Token.objects.get_or_create(user=user)
+        #
+        # return Response({'token': token.key})
 
 
 class TokenDestroy(generics.DestroyAPIView):
@@ -153,6 +167,9 @@ class Profile(APIView):
     )
     def get(self, request):
         current_user = request.user
+        token = request.META.get('HTTP_AUTHORIZATION', None)
+        if not token:
+            return Response({'message': 'error'})
 
         try:
             user_profile = UserProfile.objects.get(user=current_user)
@@ -379,4 +396,13 @@ def linkedin_page(request):
 #
 #     serializer = UserProfileSerializer(user_profile, many=False)
 #     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def private(request):
+    if request.user.is_authenticated:
+        return Response({'message': 'error'})
+    users = CustomUser.objects.all()
+    serializer = AllUsersSerializer(users, many=True)
+    return Response(serializer.data)
 
