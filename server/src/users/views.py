@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, permissions, generics
+from rest_framework import status, permissions, generics, views
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.utils.encoding import force_bytes
@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from .models import *
 from .serializers import *
 from .services.google_auth import check_google_auth
+from .authentication import JWTAuthentication
 from .utils import Utils
 from .token import token_generator
 from .services import github_auth
@@ -61,10 +62,11 @@ class UserRegister(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class UserAuthLogin(ObtainAuthToken):
+class UserAuthLogin(views.APIView):
     """Логін"""
 
     serializer_class = AuthUserSerializer
+    permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(
         request_body=AuthUserSerializer,
@@ -86,55 +88,27 @@ class UserAuthLogin(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         email = serializer.data['email']
+        password = serializer.data['password']
 
-        try:
-            user = CustomUser.objects.get(email=email)
-            user_profile = UserProfile.objects.get(user=user)
-            user_avatar = user_profile.avatar.url if user_profile.avatar else None
-            payload = {
-                'user_email': user_profile.user.email,
-                'user_first_name': user.first_name,
-                'user_last_name': user.last_name,
-                'user_description': user_profile.description,
-                'user_is_talent': user_profile.is_talent,
-                'user_avatar': user_avatar,
-                'exp': datetime.utcnow() + timedelta(minutes=2)
-            }
-            access_token = jwt.encode(payload, key='secret key', algorithm='HS256')
-            return Response({
-                'access_token': access_token
-            }, status=status.HTTP_201_CREATED)
-        except CustomUser.DoesNotExist:
-            return Response({'message': 'Invalid data'}, status=status.HTTP_404_NOT_FOUND)
+        user = CustomUser.objects.filter(email=email).first()
+        if not user:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        # token, created = Token.objects.get_or_create(user=user)
-        #
-        # return Response({'token': token.key})
+        if not user.check_password(password):
+            return Response({'message': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+        access_token = JWTAuthentication.create_access(user)
+        refresh_token = JWTAuthentication.create_refresh(user)
+        return Response({'access_token': access_token, 'refresh_token': refresh_token})
 
 
-class TokenDestroy(generics.DestroyAPIView):
-    """Вихід з системи"""
-
-    queryset = Token.objects.all()
-
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_204_NO_CONTENT: openapi.Response(description='Token invalidated and user logged out'),
-            status.HTTP_404_NOT_FOUND: openapi.Response(description='Token not found'),
-        },
-        manual_parameters=[
-            openapi.Parameter('Authorization', openapi.IN_HEADER, description="Bearer token", type=openapi.TYPE_STRING)
-        ]
-    )
-    def delete(self, request, *args, **kwargs):
-        try:
-            token = Token.objects.get(user=self.request.user)
-        except Token.DoesNotExist:
-            return Response('Token invalid', status=status.HTTP_404_NOT_FOUND)
-
-        token.delete()
-        return Response({'message': 'Delete'})
-
+class UpdateAccessToken(views.APIView):
+    def put(self, request):
+        serializer = UpdateAccessTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = serializer.data['refresh_token']
+        new_access_token = JWTAuthentication.update_access_token(token)
+        return Response({'access_token': new_access_token}, status=status.HTTP_200_OK)
 
 class Profile(APIView):
     """Профіль користувача"""
@@ -167,10 +141,7 @@ class Profile(APIView):
     )
     def get(self, request):
         current_user = request.user
-        token = request.META.get('HTTP_AUTHORIZATION', None)
-        if not token:
-            return Response({'message': 'error'})
-
+        print(current_user)
         try:
             user_profile = UserProfile.objects.get(user=current_user)
             serializer = self.serializer_class(user_profile, many=False)
