@@ -4,7 +4,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../hooks/reduxToolkidHooks";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
@@ -13,6 +13,8 @@ import {
   changeOpenHeaderSeting,
   changeOpenOrCloseLoginPopup,
 } from "./StateElementSlice";
+
+import workWithCookies from "../../untils/workWithCookies";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 
@@ -27,8 +29,9 @@ const SettingMeny: FC = () => {
   const navigate = useNavigate();
 
   const { headerSetting } = useAppSelector((state) => state.stateElement);
-  const { userId } = useAppSelector((state) => state.userInfo);
+  const { userProfile } = useAppSelector((state) => state.userInfo);
   const { exitUser } = ServiceBanyak();
+  const {getCookies} = workWithCookies()
   const shouldShowPopup =
     new URLSearchParams(window.location.search).get("login") === "true";
 
@@ -37,10 +40,11 @@ const SettingMeny: FC = () => {
   };
 
   const exitUserProfil = () => {
-    if (userId) {
-      exitUser(userId);
+
+      exitUser();
+      
       navigate("/");
-    }
+
   };
 
   const openCloseSettingMenu = useCallback(
@@ -48,6 +52,7 @@ const SettingMeny: FC = () => {
       dispatch(changeOpenHeaderSeting(status));
       // eslint-disable-next-line
     },
+    // eslint-disable-next-line
     [headerSetting]
   );
 
@@ -63,7 +68,7 @@ const SettingMeny: FC = () => {
           <span className="header__settings-container-menu-container-line"></span>
           <ul className="header__settings-container-menu-container-list">
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? <ButtonSmall text="Чат" icon={chatIcon} /> : null}
+              {userProfile ? <ButtonSmall text="Чат" icon={chatIcon} /> : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">
@@ -78,7 +83,7 @@ const SettingMeny: FC = () => {
               <ToggleTheam />
             </li>
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? (
+              {userProfile ? (
                 <ButtonSmall
                   text="Вийти"
                   icon={exitIcon}
@@ -87,7 +92,7 @@ const SettingMeny: FC = () => {
               ) : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? null : (
+              {userProfile ? null : (
                 <NavLink
                   // to={'/?showPopup=true'}
                   to={{

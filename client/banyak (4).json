@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Banyak",
-        "description": "Baza Trainee UA",
+        "description": "Banyak",
         "license": {
             "name": "BSD License"
         },
@@ -32,9 +32,9 @@
         }
     ],
     "paths": {
-        "/idea/ideas/": {
+        "/ideas/ideas/": {
             "get": {
-                "operationId": "idea_ideas_list",
+                "operationId": "Idea list",
                 "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
                 "parameters": [
                     {
@@ -79,19 +79,48 @@
                     }
                 },
                 "tags": [
-                    "idea"
+                    "ideas"
                 ]
             },
             "post": {
-                "operationId": "idea_ideas_create",
-                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "operationId": "Idea create",
+                "description": "Creation of a new idea",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "required": [
+                                "title",
+                                "description"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "description": "title",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "description",
+                                    "type": "string"
+                                },
+                                "specialization": {
+                                    "description": "specialization",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "slug": {
+                                    "description": "slug",
+                                    "type": "string"
+                                },
+                                "is_published": {
+                                    "description": "idea is public",
+                                    "type": "boolean"
+                                }
+                            }
                         }
                     }
                 ],
@@ -99,43 +128,485 @@
                     "201": {
                         "description": "",
                         "schema": {
+                            "required": [
+                                "title",
+                                "description"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "description": "title",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "description",
+                                    "type": "string"
+                                },
+                                "specialization": {
+                                    "description": "specialization",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "slug": {
+                                    "description": "slug",
+                                    "type": "string"
+                                },
+                                "is_published": {
+                                    "description": "idea is public",
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Some fields are invalid"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "ideas"
+                ]
+            },
+            "parameters": []
+        },
+        "/ideas/ideas/{slug}/": {
+            "get": {
+                "operationId": "Idea retrieve",
+                "description": "Get detailed information about the idea",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "Idea not found"
+                    },
+                    "200": {
+                        "description": "Successful",
+                        "schema": {
+                            "required": [
+                                "title",
+                                "description"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "description": "title",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "description",
+                                    "type": "string"
+                                },
+                                "specialization": {
+                                    "description": "specialization",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "slug": {
+                                    "description": "slug",
+                                    "type": "string"
+                                },
+                                "is_published": {
+                                    "description": "idea is public",
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "ideas"
+                ]
+            },
+            "put": {
+                "operationId": "ideas_ideas_update",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
                             "$ref": "#/definitions/IdeasList"
                         }
                     }
                 },
                 "tags": [
-                    "idea"
+                    "ideas"
+                ]
+            },
+            "patch": {
+                "operationId": "Idea partial_update",
+                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IdeasList"
+                        }
+                    },
+                    "400": {
+                        "description": "Some fields are invalid"
+                    },
+                    "404": {
+                        "description": "Object not found"
+                    }
+                },
+                "tags": [
+                    "ideas"
+                ]
+            },
+            "delete": {
+                "operationId": "Idea destroy",
+                "description": "Deletes the idea. Only the author can delete an idea",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Destroyed successfully"
+                    },
+                    "404": {
+                        "description": "Idea not found"
+                    },
+                    "200": {
+                        "description": "Delete"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "ideas"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "slug",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/talents/talent-create/{talent_id}/": {
+            "post": {
+                "operationId": "talents_talent-create_create",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "talent_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/talents/talent/": {
+            "get": {
+                "operationId": "talents_talent_list",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ListTalent"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "post": {
+                "operationId": "talents_talent_create",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
                 ]
             },
             "parameters": []
         },
-        "/idea/ideas/{slug}/": {
+        "/talents/talent/list-invites-owner/": {
             "get": {
-                "operationId": "idea_ideas_read",
-                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "operationId": "talents_talent_list_invite_owner_idea",
+                "description": "List of invitations for owner",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ListTalent"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": []
+        },
+        "/talents/talent/list-invites-talent/": {
+            "get": {
+                "operationId": "talents_talent_list_invite_talent",
+                "description": "List of invitations for talent",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ListTalent"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": []
+        },
+        "/talents/talent/talent_send_invite_idea/": {
+            "post": {
+                "operationId": "talents_talent_talent_send_invite_idea",
+                "description": "Talent sends an invitation to join the idea",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": []
+        },
+        "/talents/talent/{id}/": {
+            "get": {
+                "operationId": "talents_talent_read",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
                 "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "$ref": "#/definitions/ListTalent"
                         }
                     }
                 },
                 "tags": [
-                    "idea"
+                    "talents"
                 ]
             },
             "put": {
-                "operationId": "idea_ideas_update",
-                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "operationId": "talents_talent_update",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "$ref": "#/definitions/ListTalent"
                         }
                     }
                 ],
@@ -143,24 +614,24 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "$ref": "#/definitions/ListTalent"
                         }
                     }
                 },
                 "tags": [
-                    "idea"
+                    "talents"
                 ]
             },
             "patch": {
-                "operationId": "idea_ideas_partial_update",
-                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "operationId": "talents_talent_partial_update",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "$ref": "#/definitions/ListTalent"
                         }
                     }
                 ],
@@ -168,17 +639,17 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/IdeasList"
+                            "$ref": "#/definitions/ListTalent"
                         }
                     }
                 },
                 "tags": [
-                    "idea"
+                    "talents"
                 ]
             },
             "delete": {
-                "operationId": "idea_ideas_delete",
-                "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+                "operationId": "talents_talent_delete",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
                 "parameters": [],
                 "responses": {
                     "204": {
@@ -186,12 +657,82 @@
                     }
                 },
                 "tags": [
-                    "idea"
+                    "talents"
                 ]
             },
             "parameters": [
                 {
-                    "name": "slug",
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/talents/talent/{id}/accept_talent_invite/": {
+            "patch": {
+                "operationId": "talents_talent_accept_talent_invite",
+                "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/talents/talent/{id}/send-invite-idea-talent/": {
+            "post": {
+                "operationId": "talents_talent_owner_send_invite_talent",
+                "description": "The client sends an invitation for talent to join the idea",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ListTalent"
+                        }
+                    }
+                },
+                "tags": [
+                    "talents"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -314,24 +855,14 @@
             },
             "parameters": []
         },
-        "/users/logout/": {
-            "delete": {
-                "operationId": "users_logout_delete",
-                "description": "\u0412\u0438\u0445\u0456\u0434 \u0437 \u0441\u0438\u0441\u0442\u0435\u043c\u0438",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer token",
-                        "type": "string"
-                    }
-                ],
+        "/users/new-access/": {
+            "put": {
+                "operationId": "users_new-access_update",
+                "description": "",
+                "parameters": [],
                 "responses": {
-                    "204": {
-                        "description": "Token invalidated and user logged out"
-                    },
-                    "404": {
-                        "description": "Token not found"
+                    "200": {
+                        "description": ""
                     }
                 },
                 "tags": [
@@ -519,6 +1050,22 @@
             },
             "parameters": []
         },
+        "/users/test/": {
+            "get": {
+                "operationId": "users_test_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
         "/users/user-profile/": {
             "get": {
                 "operationId": "users_user-profile_list",
@@ -665,6 +1212,54 @@
                 }
             }
         },
+        "CustomUserTalent": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "first_name": {
+                    "title": "First name",
+                    "type": "string",
+                    "maxLength": 150
+                },
+                "last_name": {
+                    "title": "Last name",
+                    "type": "string",
+                    "maxLength": 150
+                },
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254,
+                    "minLength": 1
+                }
+            }
+        },
+        "ListTalent": {
+            "required": [
+                "user"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string",
+                    "format": "uuid",
+                    "readOnly": true
+                },
+                "user": {
+                    "$ref": "#/definitions/CustomUserTalent"
+                }
+            }
+        },
         "AuthUser": {
             "required": [
                 "email",
@@ -682,12 +1277,6 @@
                     "title": "Password",
                     "type": "string",
                     "minLength": 2
-                },
-                "created": {
-                    "title": "Created",
-                    "type": "string",
-                    "format": "date-time",
-                    "readOnly": true
                 }
             }
         },
@@ -864,10 +1453,6 @@
             }
         },
         "UserProfile": {
-            "required": [
-                "speciality",
-                "stack"
-            ],
             "type": "object",
             "properties": {
                 "id": {

@@ -1,7 +1,8 @@
 import { useAppDispatch } from "../hooks/reduxToolkidHooks";
 import useHttp from "../hooks/httpHook";
 
-import { changeActiveId } from "../store/userSlice";
+import { changeUserProfile } from "../store/userSlice";
+import { changreMainPreloader } from "../components/SettingMenu/StateElementSlice";
 
 import workWithCookies from "../untils/workWithCookies";
 
@@ -13,6 +14,7 @@ const ServiceBanyak = () => {
   
 
   const _baseUlr = "http://localhost:8000";
+  // const _baseUlr = 'https://banyak-api.onrender.com'
 
   const singUpNewUser = (body: BodyInit | null | undefined) => {
     const req = request(`${_baseUlr}/api/v1/users/register/`, {
@@ -20,6 +22,10 @@ const ServiceBanyak = () => {
       headers: { "Content-Type": "application/json" },
       body: body,
     });
+
+    console.log(req);
+    
+
     return req;
   };
 
@@ -29,50 +35,130 @@ const ServiceBanyak = () => {
       headers: { "Content-Type": "application/json" },
       body: body,
     });
-
-    try {
-      if (typeof req === "object") {
-        setCookies("_id", req.token, 30);
-        setCookies("test", "sdfsdfsfsffsd", 30);
-      }
-      return req;
-    } catch (e) {console.log(e);
-    }
+    return req;
   };
 
-  const exitUser = (token: string) => {
-    const req = request(`${_baseUlr}/api/v1/users/logout/`, {
-      method: "DELETE",
-      headers: { authorization: `Token ${token}` },
-      body: null,
-    });
-
-    try {
-      dispatch(changeActiveId(null));
-      return req;
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const profileUser = (
+  const profileUser = async (
     token: string,
     method: string,
     body?: BodyInit | null | undefined
   ) => {
-    const req = request(`${_baseUlr}/api/v1/users/login/`, {
-      method: method,
-      headers: { authorization: `Token ${token}` },
-      body: body,
-    });
-    return req;
+
+    try {
+      const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
+        method: method,
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: body,
+      });
+      const reqJson = await req.json()
+      dispatch(changeUserProfile(await reqJson))
+      return await reqJson;
+    } catch (e) {
+      if (typeof e === 'object' && e !== null && 'status' in e) {
+        console.log(e.status);
+        if (e.status === 403) {
+          newAccess()
+        }
+        dispatch(changreMainPreloader(false));
+      }
+      console.error(e);
+    }    
   };
+
+  const exitUser = async () => {
+    const tokensesion = getCookies('sessiontokenid');
+    const tokenid = getCookies('tokenid');
+    
+    try {
+      const req = await request(`${_baseUlr}/api/v1/users/logout/`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${tokensesion}`, 'Content-Type': 'application/json'},
+        body: JSON.stringify({refresh_token: tokenid}),
+      });
+      // console.log(req);
+      // console.log(await req.json());
+      
+      
+
+      
+      dispatch(changeUserProfile(null));
+      deleteCookie('sessiontokenid');
+      deleteCookie('tokenid');
+      // return req;
+      dispatch(changreMainPreloader(false));
+    } catch (e) {
+      if (typeof e === 'object' && e !== null && 'status' in e) {
+        console.log(e.status);
+        if (e.status === 403) {
+          newAccess()
+        }
+        
+      }
+      console.error(e);
+      dispatch(changreMainPreloader(false));
+    }
+  };
+
+
+  // const exitUser = (token: string, body?: BodyInit) => {
+  //   const token = getCookies('sessiontokenid')
+  //   const req = request(`${_baseUlr}/api/v1/users/logout/`, {
+  //     method: "DELETE",
+  //     headers: { authorization: `Token ${token}` },
+  //     body: ,
+  //   });
+
+  //   try {
+  //     dispatch(changeUserProfile(null));
+  //     deleteCookie('sessiontokenid');
+  //     deleteCookie('tokenid');
+  //     return req;
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+
+  
+
+  const newAccess = async () => {
+    const tokensesion = getCookies('sessiontokenid')
+    const tokenid = getCookies('tokenid')
+    
+    try {
+      const req = await request(`${_baseUlr}/api/v1/users/new-access/`, {
+        method: "PUT",
+        headers: {Authorization: `Bearer ${tokenid}`, 'Content-Type': 'application-json' },
+        body: JSON.stringify({refresh_token: tokenid}),
+      });
+      const newToken = await req.json()
+
+      setCookies('sessiontokenid', await newToken.access_token, 1)
+      // dispatch(changeUserProfile(null));
+      // deleteCookie('sessiontokenid');
+      // deleteCookie('tokenid');
+      // return req;
+      dispatch(changreMainPreloader(false));
+    } catch (e) {
+      if (typeof e === 'object' && e !== null && 'status' in e) {
+        if (e.status === 403) {
+          dispatch(changeUserProfile(null));
+          deleteCookie('sessiontokenid');
+          deleteCookie('tokenid');
+        }
+        console.log(e.status);
+        dispatch(changreMainPreloader(false));
+      }
+      console.error(e);
+    }
+  };
+
 
   return {
     singUpNewUser,
     loginUser,
     exitUser,
     profileUser,
+    newAccess
   };
 };
 

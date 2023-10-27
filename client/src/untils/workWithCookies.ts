@@ -8,12 +8,13 @@ const workWithCookies = () => {
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
 
     const expires = `expires=${date.toUTCString()}`;
-    document.cookie = `${name}=${token}; ${expires}; path=/`;
+    document.cookie = `${name}=${token}; ${expires}; path=/; samesite=strict`;
   }
 
   const getCookies = (name: string) => {
     const value = `${document.cookie}`;
-    const parts = value.split(`;`);
+    
+    const parts = value.split(`; `);
     const cookieValue = parts.filter((cookie) => cookie.startsWith(name))[0];
     
     return cookieValue === undefined ? null : cookieValue.slice(name.length + 1);

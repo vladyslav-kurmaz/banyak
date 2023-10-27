@@ -13,7 +13,7 @@ import "./Header.scss";
 const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { userId } = useAppSelector((state) => state.userInfo);
+  const { userProfile } = useAppSelector((state) => state.userInfo);
 
   const showLoginForm = () => {
     dispatch(changeOpenOrCloseLoginPopup(true));
@@ -62,7 +62,7 @@ const Header = () => {
       </nav>
 
       <div className="header__settings">
-        {userId === null ? (
+        {userProfile === null ? (
           <NavLink
             to={"?login"}
             className="header__settings-login"
@@ -89,7 +89,7 @@ const Header = () => {
             Мій профіль
           </NavLink>
         )}
-        <SettingMeny />
+        <SettingMeny/>
       </div>
     </header>
   );

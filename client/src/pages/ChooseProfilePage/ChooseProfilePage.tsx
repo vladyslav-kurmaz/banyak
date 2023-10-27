@@ -1,7 +1,13 @@
 
+import { useEffect } from 'react';
 import './ChooseProfilePage.scss';
 
 const ChooseProfilePage = ({buttonOne, buttonTwo}: {buttonOne: React.ReactNode, buttonTwo: React.ReactNode}) => {
+
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <div className="choose-profile-page">

@@ -1,7 +1,9 @@
+import { useAppDispatch } from "../hooks/reduxToolkidHooks";
+import { changreMainPreloader } from "../components/SettingMenu/StateElementSlice";
 
 
 const useHttp = () => {
-
+  const dispatch = useAppDispatch();
 
   const request = async (
     url: string,
@@ -10,23 +12,26 @@ const useHttp = () => {
       headers,
       body,
     }: {
-      method: string;
-      headers: HeadersInit | undefined;
-      body: BodyInit | null | undefined;
+      method?: string;
+      headers?: HeadersInit | undefined;
+      body?: BodyInit | null | undefined;
     }
   ) => {
-    const rec = await fetch(url, { method, headers, body });
+    dispatch(changreMainPreloader(true));
 
     try {
-      if (!rec.ok) {
-        throw new Error('this fatch is bad, repeat later')
+      const req = await fetch(url, { method, headers, body });
+      if (!req.ok) {
+        
+        return Promise.reject(req);
       }
-
-      return await rec.json()
+      
+      return await Promise.resolve(req);
     } catch (e) {
-      console.error(e)
+      return Promise.reject(e);
     }
   };
+
 
 
   return  {

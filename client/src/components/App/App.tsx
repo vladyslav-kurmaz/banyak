@@ -4,7 +4,8 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
+import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
+import { changeUserProfile } from "../../store/userSlice";
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -13,6 +14,7 @@ import AboutUs from "../../pages/AboutUs/AboutUs";
 import SingUpPage from "../../pages/SingUpPage/SingUpPage";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
+import Preloader from "../Preloader/Preloader";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 import workWithCookies from "../../untils/workWithCookies";
@@ -23,7 +25,7 @@ import ChooseProfilePage from "../../pages/ChooseProfilePage/ChooseProfilePage";
 import ButtonChooseProfile from "../../atoms/ButtonChooseProfile/ButtonChooseProfile";
 
 function App() {
-  const { loginRegistrationForm, loginOrSingUp } = useAppSelector(
+  const { mainPreloader } = useAppSelector(
     (state) => state.stateElement
   );
 
@@ -31,22 +33,34 @@ function App() {
   // const popupLocation = location.search === '?login' || location.search === '?singup'
   const popupLocation =
     location.search === "?login" || location.search === "?singup";
-  const whyAreYou = location.search === "?why-are-you";
-  const { loginUser } = ServiceBanyak();
+  const { profileUser } = ServiceBanyak();
   const { getCookies } = workWithCookies();
 
   const dispatch = useAppDispatch();
-  // console.log(location);
 
   useEffect(() => {
-    if (getCookies("_id") !== null) {
+    const token = getCookies("sessiontokenid")
+    if (token !== null) {
+      dispatch(changreMainPreloader(true))
+      try {
+        profileUser(token, "GET")
+        dispatch(changreMainPreloader(false))
+      } catch (e) {
+        dispatch(changreMainPreloader(false))
+        console.error(e);
+      }
+      // profileUser(token, "GET")
+      //   .then((res) => )
+      //   // .then(() => dispatch(changreMainPreloader(false)))
+      //   .catch((e) => console.error(e))
     }
+    // eslint-disable-next-line 
   }, []);
 
   return (
     <>
-      {popupLocation && <SingUpPage />}
-      {whyAreYou}
+      {popupLocation && <SingUpPage/>}
+      {mainPreloader && <Preloader/>}
 
       <div className="app">
         <Header />
