@@ -26,20 +26,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(min_length=8, write_only=True)
-    # password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
         fields = ('email', 'password')
-
-    # def validate(self, attrs):
-    #     password = attrs.get('password')
-    #     password_confirm = attrs.get('password_confirm')
-    #
-    #     if password != password_confirm:
-    #         raise AuthenticationFailed('The entered passwords do not match')
-    #
-    #     return attrs
 
     def create(self, validated_data):
         email = validated_data.get('email')
@@ -57,8 +47,12 @@ class AuthUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(min_length=2)
 
     class Meta:
-        model = Token
-        fields = ('email', 'password', 'created')
+        model = CustomUser
+        fields = ('email', 'password')
+
+
+class UpdateAccessTokenSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField(min_length=1)
 
 
 class GoogleAuthSerializer(serializers.Serializer):
@@ -171,8 +165,8 @@ class StackSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    speciality = SpecialitySerializer(many=True)
-    stack = StackSerializer(many=True)
+    speciality = SpecialitySerializer(many=True, required=False)
+    stack = StackSerializer(many=True, required=False)
 
     class Meta:
         model = UserProfile
