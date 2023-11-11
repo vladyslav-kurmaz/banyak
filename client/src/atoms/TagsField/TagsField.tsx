@@ -3,9 +3,13 @@ import { useEffect, useRef } from "react";
 import Tags from "@yaireo/tagify/dist/react.tagify";
 // import { TagifySettings, TagData, AddEventData  } from "@yaireo/tagify";
 import Tagify from '@yaireo/tagify';
+
+import ServiceBanyak from "../../service/ServiceBanyak";
+
 // import 'tagify/dist/tagify.css';
 import '@yaireo/tagify/src/tagify.scss'
 import './TagsField.scss';
+import { TUserProfile } from "../../types/types";
 
 const initialValue = [
   'qa',
@@ -15,7 +19,11 @@ const initialValue = [
 ];
 
 
-const TagsField = () => {
+const TagsField = ({stackUser, allStack}: {stackUser: {name:string}[], allStack: string[]}) => {
+  
+  const {workWithAllStack} = ServiceBanyak();
+
+  
 
   const tagifyRef = useRef(null);
 
@@ -25,7 +33,10 @@ const TagsField = () => {
     if (tagifyRef.current !== null) {
       const tagify = new Tagify(tagifyRef.current, {
         enforceWhitelist: true, // Дозволяє додавати тільки технології з білих списків
-        whitelist: ['React', 'JavaScript', 'HTML', 'CSS', 'Adobe Ilistratore'], // Список доступних технологій
+        whitelist: ['sdf', 'sdf'],
+        // stackList(),
+      
+        // ['React', 'JavaScript', 'HTML', 'CSS', 'Adobe Ilistratore'], // Список доступних технологій
         placeholder: "Введіть технології",
         dropdown: {
           maxItems: 20, // Максимальна кількість елементів в спадному списку
@@ -86,6 +97,7 @@ const TagsField = () => {
         className="tags-field__textarea" 
         name="" 
         id="" 
+        // value={stackList()}
         ref={tagifyRef}
         
       >

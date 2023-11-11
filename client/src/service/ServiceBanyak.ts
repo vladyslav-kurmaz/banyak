@@ -134,10 +134,7 @@ const ServiceBanyak = () => {
       console.log('try');
       
       setCookies('sessiontokenid', await newToken.access_token, 1)
-      // dispatch(changeUserProfile(null));
-      // deleteCookie('sessiontokenid');
-      // deleteCookie('tokenid');
-      // return req;
+      
       dispatch(changreMainPreloader(false));
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
@@ -154,12 +151,47 @@ const ServiceBanyak = () => {
   };
 
 
+  const workWithAllStack  = async (url: string, method: string, stack?: string) => {
+    const tokensesion = getCookies('sessiontokenid')
+    // const tokenid = getCookies('tokenid')
+    
+    try {
+      const req = await request(`${_baseUlr}/api/v1/users/${url}/`, {
+        method: method,
+        headers: {'Content-Type': 'application-json' },
+        body: JSON.stringify({name: stack}),
+      });
+      
+      if (!req.ok) {
+        return Promise.reject(req)
+      }
+
+      return req.json()
+    } catch (e) {
+    //   if (typeof e === 'object' && e !== null && 'status' in e) {
+    //     if (e.status === 403) {
+    //       dispatch(changeUserProfile(null));
+    //       deleteCookie('sessiontokenid');
+    //       deleteCookie('tokenid');
+    //     }
+    //     console.log(e.status);
+    //     dispatch(changreMainPreloader(false));
+    //   }
+    //   console.error(e);
+      return Promise.reject(e);
+    }
+    
+  };
+
+
+
   return {
     singUpNewUser,
     loginUser,
     exitUser,
     profileUser,
-    newAccess
+    newAccess,
+    workWithAllStack
   };
 };
 

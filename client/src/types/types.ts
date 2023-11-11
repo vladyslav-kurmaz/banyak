@@ -24,8 +24,16 @@ export type TUserProfile = {
     ],
     description: string,
     is_talent: boolean,
-    user: string,
-    ideas: string[]
+    user: {
+      email: string,
+      first_name: string,
+      last_name: string
+    },
+    is_military: boolean,
+    is_vpo: boolean,
+    ideas: string[],
+    avatar: string,
+    portfolio: string
 }
 
 export type userInfo = {
