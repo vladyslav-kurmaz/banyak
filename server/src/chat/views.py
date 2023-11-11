@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import permissions, status, viewsets, generics
 from rest_framework.response import Response
-from .serializer import *
+from .serializers import *
 from .models import *
 
 
@@ -11,8 +11,8 @@ class Chats(APIView):
 
     def get(self, request):
         try:
-            rooms = Chat.objects.filter(user=request.user)
-            serializer = self.serializer_class(rooms, many=True)
+            chats = Chat.objects.filter(user=request.user)
+            serializer = self.serializer_class(chats, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Chat.DoesNotExist:
             return Response({'message': 'Rooms not found'}, status=status.HTTP_404_NOT_FOUND)

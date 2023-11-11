@@ -1,7 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
 from django.http import HttpResponse
-# from banyak.server.src.decorators.decorators import swagger_decorator
 from ..decorators.decorators import swagger_decorator
 from .documentation.schema_setting import ideas_doc
 from .paginate_class import CustomPaginate

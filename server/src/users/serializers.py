@@ -1,18 +1,18 @@
 from rest_framework import serializers
-from django.conf import settings
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from rest_framework.authtoken.models import Token
 from django.utils.encoding import force_str, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-# from .register import *
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+# from src.user_idea.serializers import IdeasListSerializer
 from .models import *
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'email')
+        fields = ('id', 'email', 'first_name', 'last_name')
 
 
 class CustomUserTalentSerializer(serializers.ModelSerializer):
@@ -24,17 +24,21 @@ class CustomUserTalentSerializer(serializers.ModelSerializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     """Серіалайзер реєстрації користувача"""
 
-    email = serializers.EmailField(write_only=True)
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(min_length=8, write_only=True)
+    first_name = serializers.CharField(min_length=1, required=False)
+    last_name = serializers.CharField(min_length=1, required=False)
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'first_name', 'last_name')
 
     def create(self, validated_data):
         email = validated_data.get('email')
         password = validated_data.get('password')
-        user = CustomUser.objects.create(email=email)
+        first_name = validated_data.get('first_name', '')
+        last_name = validated_data.get('last_name', '')
+        user = CustomUser.objects.create(email=email, first_name=first_name, last_name=last_name)
         user.set_password(password)
         user.save()
         return user
@@ -51,6 +55,20 @@ class AuthUserSerializer(serializers.ModelSerializer):
         fields = ('email', 'password')
 
 
+class LogoutSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField()
+
+    def validate(self, attr):
+        self.token = attr['refresh_token']
+        return attr
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            raise AuthenticationFailed('Invalid token')
+
+
 class UpdateAccessTokenSerializer(serializers.Serializer):
     refresh_token = serializers.CharField(min_length=1)
 
@@ -58,36 +76,6 @@ class UpdateAccessTokenSerializer(serializers.Serializer):
 class GoogleAuthSerializer(serializers.Serializer):
     email = serializers.EmailField()
     auth_token = serializers.CharField()
-
-
-# class GoogleAuthSerializer(serializers.Serializer):
-#     """Серіалайзер входу в систему через Google"""
-#
-#     auth_token = serializers.CharField()
-#
-#     def validate_token(self, auth_token):
-#         user_data = Google.validate(auth_token)
-#         try:
-#             user_data['sub']
-#         except:
-#             raise serializers.ValidationError(
-#                 'Token invalid'
-#             )
-#
-#         if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
-#             raise AuthenticationFailed('Error token')
-#
-#         user_id = user_data['sub']
-#         email = user_data['email']
-#         name = user_data['name']
-#         provider = 'google'
-#
-#         return register_google_user(
-#             provider=provider,
-#             user_id=user_id,
-#             name=name,
-#             email=email
-#         )
 
 
 class ResetPasswordRequestEmailSerializer(serializers.ModelSerializer):
@@ -165,6 +153,7 @@ class StackSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer(many=False, required=False)
     speciality = SpecialitySerializer(many=True, required=False)
     stack = StackSerializer(many=True, required=False)
 

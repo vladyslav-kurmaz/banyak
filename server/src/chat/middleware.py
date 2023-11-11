@@ -2,6 +2,8 @@ from django.contrib.auth.models import AnonymousUser
 from rest_framework.authtoken.models import Token
 from channels.db import database_sync_to_async
 from channels.middleware import BaseMiddleware
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from urllib.parse import parse_qs
 
 
@@ -14,15 +16,21 @@ def get_user(token_key):
         return AnonymousUser()
 
 
-class TokenMiddlewareAuthentication(BaseMiddleware):
+class JWTMiddlewareAuthentication(BaseMiddleware):
     def __init__(self, inner):
         super().__init__(inner)
 
     async def __call__(self, scope, receive, send):
-        query_string = scope['query_string']
-        query_params = query_string.decode()
-        query_dict = parse_qs(query_params)
-        token = query_dict['token'][0]
-        user = await get_user(token)
+        headers = dict(scope['headers'])
+        if b'authorization' in headers:
+            auth_headers = headers['authorization']
+            if auth_headers.startswith('Bearer '):
+                token = auth_headers[7:]
+                try:
+                    user, value = JWTAuthentication().authenticate(token)
+                    scope['user'] = user
+                except AuthenticationFailed:
+                    return None
         return await super().__call__(scope, receive, send)
+
 

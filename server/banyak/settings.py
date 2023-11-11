@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,24 +33,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
-    # 'daphne',
     'django.contrib.staticfiles',
 
+    # 'daphne',
+    'channels',
     'rest_framework',
     'rest_framework_simplejwt',
-    # 'rest_framework.authtoken',
     'drf_yasg',
-    'channels',
     'corsheaders',
 
+    'src.chat',
     'src.users',
     'src.user_idea',
-    'src.chat',
     'src.talent'
 ]
 
@@ -88,12 +90,24 @@ ASGI_APPLICATION = 'banyak.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+load_dotenv()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.getenv('POSTGRES_NAME'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -147,10 +161,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
-
 AUTH_USER_MODEL = 'users.CustomUser'
 
-load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_SECRET_KEY = os.getenv('GOOGLE_SECRET_KEY')
 
@@ -188,11 +200,16 @@ SWAGGER_SETTINGS = {
 #     },
 # }
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': "channels.layers.InMemoryChannelLayer"
-#         }
-# }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'ROUTING': 'banyak.asgi.application',
+        'CONFIG': {
+            'hosts': [(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))],
+        },
+    },
+}
 
 #   Cors
 
@@ -217,9 +234,7 @@ CORS_ALLOWED_HEADERS = (
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
-
 ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 48
 
 SECRET_JWT_KEY = os.getenv('SECRET_JWT_KEY')
-
