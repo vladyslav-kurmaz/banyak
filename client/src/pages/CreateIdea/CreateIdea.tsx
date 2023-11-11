@@ -88,7 +88,7 @@ const CreateIdea = () => {
 
           </div>
 
-          <ButtonSmall text="Опублікувати ідею" />
+          <ButtonSmall style={{position: "relative"}} text="Опублікувати ідею" />
         </div>
 
 

@@ -51,7 +51,7 @@ const ProfileStackInfo = () => {
         
       </div>
 
-      <ButtonSmall text="Зберегти"/>
+      <ButtonSmall style={{position: "relative"}} text="Зберегти"/>
     </div>
   )
 }
