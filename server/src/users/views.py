@@ -3,40 +3,40 @@ from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, permissions, generics, views
-from rest_framework.decorators import permission_classes, api_view
-from rest_framework.authtoken.views import ObtainAuthToken
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.conf import settings
 from rest_framework import filters
-from datetime import datetime, timedelta
-from .models import *
 from .serializers import *
 from .services.google_auth import check_google_auth
 from .authentication import JWTAuthentication
 from .utils import Utils
 from .token import token_generator
 from .services import github_auth
-import jwt
+from .documentation.users_schema_setting import users_doc
+from .documentation.profile_schema_setting import profile_doc
+from ..decorators.decorators import swagger_decorator
+from .services.verify_military_vpo import verify
 
 
+@swagger_decorator(['post'], 'Users', users_doc)
 class UserRegister(generics.GenericAPIView):
     """Реєстрація користувача"""
 
     serializer_class = UserRegisterSerializer
     permission_classes = [permissions.AllowAny]
 
-    @swagger_auto_schema(
-        request_body=UserRegisterSerializer,
-        responses={
-            status.HTTP_201_CREATED: openapi.Response(description='User registered successfully'),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(description='Invalid input data'),
-        }
-    )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data.get('email')
+        user = CustomUser.objects.filter(email=email)
+        if user:
+            return Response({'message': 'Such a user exists'}, status=status.HTTP_409_CONFLICT)
+
         user = serializer.save()
 
         #  Activate email
@@ -62,28 +62,13 @@ class UserRegister(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+@swagger_decorator(['post'], 'Users', users_doc)
 class UserAuthLogin(views.APIView):
     """Логін"""
 
     serializer_class = AuthUserSerializer
     permission_classes = [permissions.AllowAny]
 
-    @swagger_auto_schema(
-        request_body=AuthUserSerializer,
-        responses={
-            status.HTTP_200_OK: openapi.Response(
-                description='Login successful',
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'token': openapi.Schema(type=openapi.TYPE_STRING)
-                    }
-                )
-            ),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(description='Invalid input data'),
-            status.HTTP_404_NOT_FOUND: openapi.Response(description='User not found'),
-        }
-    )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -102,6 +87,20 @@ class UserAuthLogin(views.APIView):
         return Response({'access_token': access_token, 'refresh_token': refresh_token})
 
 
+class Logout(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = serializer.data['refresh_token']
+        JWTAuthentication.logout(user, token)
+        return Response({'message': f'User {user} logout'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@swagger_decorator(['put'], 'Users', users_doc)
 class UpdateAccessToken(views.APIView):
     def put(self, request):
         serializer = UpdateAccessTokenSerializer(data=request.data)
@@ -110,38 +109,15 @@ class UpdateAccessToken(views.APIView):
         new_access_token = JWTAuthentication.update_access_token(token)
         return Response({'access_token': new_access_token}, status=status.HTTP_200_OK)
 
+
+@swagger_decorator(['get', 'post', 'put'], 'Users', profile_doc)
 class Profile(APIView):
     """Профіль користувача"""
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_description="Get a list of published ideas",
-        responses={
-            status.HTTP_200_OK: openapi.Response(
-                description='Successful',
-                schema=openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=openapi.Schema(
-                        type=openapi.TYPE_OBJECT,
-                        properties={
-                            'id': openapi.Schema(type=openapi.TYPE_INTEGER),
-                            'user': openapi.Schema(type=openapi.TYPE_OBJECT),
-                            'description': openapi.Schema(type=openapi.TYPE_STRING),
-                            'speciality': openapi.Schema(type=openapi.TYPE_OBJECT),
-                            'stack': openapi.Schema(type=openapi.TYPE_OBJECT)
-                        }
-                    )
-                )
-            ),
-            status.HTTP_404_NOT_FOUND: openapi.Response(
-                description='Profile not found'
-            )
-        }
-    )
     def get(self, request):
         current_user = request.user
-        print(current_user)
         try:
             user_profile = UserProfile.objects.get(user=current_user)
             serializer = self.serializer_class(user_profile, many=False)
@@ -149,20 +125,6 @@ class Profile(APIView):
         except UserProfile.DoesNotExist:
             return Response({'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    @swagger_auto_schema(
-        request_body=UserProfileSerializer,
-        responses={
-            status.HTTP_201_CREATED: openapi.Response(
-                description='Profile update'
-            ),
-            status.HTTP_404_NOT_FOUND: openapi.Response(
-                description='Profile not found'
-            ),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(
-                description='Error'
-            )
-        }
-    )
     def post(self, request):
         current_user = request.user
         serializer = self.serializer_class(data=request.data)
@@ -177,9 +139,37 @@ class Profile(APIView):
         current_user = request.user
         user_profile = UserProfile.objects.get(user=current_user)
         serializer = self.serializer_class(user_profile, data=request.data)
+        context = {}
+        path = None
 
         if serializer.is_valid():
-            serializer.save()
+            upd_profile = serializer.save()
+            if upd_profile.upload_military:
+                path = upd_profile.upload_military.path
+                context.update({
+                    'upload': upd_profile.upload_military,
+                    'url': verify(user=current_user, request=request)
+                })
+            elif upd_profile.upload_vpo:
+                path = upd_profile.upload_vpo.path
+                context.update({
+                    'upload': upd_profile.upload_vpo,
+                    'url': verify(user=current_user, request=request)
+                })
+
+            email = current_user.email
+            template_letter = render_to_string('email.html', context)
+            data_message = strip_tags(template_letter)
+            subject = 'Verify Banyak'
+            message = EmailMultiAlternatives(
+                subject=subject,
+                body=data_message,
+                from_email=email,
+                to=[settings.EMAIL_HOST_USER]
+            )
+            message.attach_file(path, 'image/jpg')
+            message.attach_alternative(template_letter, 'text/html')
+            message.send()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -251,7 +241,7 @@ class NewPassword(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response({'message': 'Password reset'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Password reset'}, status=status.HTTP_200_OK)
 
 
 class VerifyEmail(generics.GenericAPIView):
@@ -292,6 +282,21 @@ class VerifyUserEmail(generics.GenericAPIView):
         return Response({'message': 'Invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class VerifyUser(generics.GenericAPIView):
+    def get(self, request, user_id, token):
+        pass
+
+
+class StackList(generics.ListAPIView):
+    queryset = Stack.objects.all()
+    serializer_class = StackSerializer
+
+
+class SpecialityList(generics.ListAPIView):
+    queryset = Speciality.objects.all()
+    serializer_class = SpecialitySerializer
+
+
 class GoogleAuth(APIView):
     serializer_class = GoogleAuthSerializer
 
@@ -319,7 +324,7 @@ class LinkedInAuth(APIView):
 
 class SearchUsers(generics.ListAPIView):
     queryset = UserProfile.objects.all()
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = SearchUsersSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['stack__name']
@@ -367,13 +372,4 @@ def linkedin_page(request):
 #
 #     serializer = UserProfileSerializer(user_profile, many=False)
 #     return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(['GET'])
-def private(request):
-    if request.user.is_authenticated:
-        return Response({'message': 'error'})
-    users = CustomUser.objects.all()
-    serializer = AllUsersSerializer(users, many=True)
-    return Response(serializer.data)
 

@@ -2,6 +2,8 @@ from rest_framework.views import status
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import F, Case, When, Value
+from django.db.models import IntegerField
 from src.users.models import UserProfile
 from src.user_idea.models import Idea
 from .serializers import ListTalentSerializer, InviteTalentIdeaSerializer, AcceptInviteTalentIdeaSerializer
@@ -43,6 +45,14 @@ class TalentsViews(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         talents = self.get_queryset()
+        # talents = self.get_queryset().annotate(priority=Case(
+        #     When(is_military=True, then=Value(1)),
+        #     When(is_vpo=True, then=Value(1)),
+        #     When(is_military=False, then=Value(2)),
+        #     When(is_vpo=False, then=Value(2)),
+        #     default=Value(2),
+        #     output_field=IntegerField()
+        # )).order_by('priority')
         serializer = self.serializer_class(talents, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

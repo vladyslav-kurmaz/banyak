@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    image: 'python:3.11'
+    container_name: banyak
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+  db:
+    image: 'postgres:latest'
+    container_name: db-banyak
+    restart: always
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db-banyak"]
+    volumes:
+      - .:/docker-endpoint-initdb.d
+    ports:
+      - "5432:5432"
+  redis:
+    image: 'redis:latest'
+    container_name: rd-banyak
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli" ]
+    ports:
+      - "6379:6379"

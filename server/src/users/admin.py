@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, UserProfile, Speciality, Stack
+from .models import CustomUser, UserProfile, Speciality, Stack, BlackListToken
 
 # admin.site.register(CustomUser)
 # admin.site.register(UserProfile)
@@ -18,6 +18,11 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Speciality)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('id',)
+
+
+@admin.register(BlackListToken)
+class BlackListAdmin(admin.ModelAdmin):
+    list_display = ('id', )
 
 
 admin.site.register(Stack)
