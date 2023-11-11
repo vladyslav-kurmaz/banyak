@@ -6,7 +6,7 @@ import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
 // class знайденого елементу це found
 
 
-const Idea = () => {
+const Idea = ({myIdea}: {myIdea: boolean}) => {
 
   const data = ['Frontend developer', 'Backend developer', 'Backend developer']
 
@@ -56,7 +56,7 @@ const Idea = () => {
 
       <div className="idea__metric">
         <div className='idea__metric-button'>
-            <ButtonSmall text='Долучитись'/>
+            {myIdea ? null : <ButtonSmall text='Долучитись'/>}
           </div>
           
           <div className="idea__metric-metrics">

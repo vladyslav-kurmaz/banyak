@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { TUserProfile } from "../../types/types";
 
 
-const ProfilePersonalInfo = () => {
+const ProfilePersonalInfo = ({fc}: {fc: React.Dispatch<React.SetStateAction<boolean>>}) => {
   // const [name, setName] = useState(true);
   // const [nameWrite, setNameWrite] = useState("Катерина Білокур");
 
@@ -92,7 +92,7 @@ const ProfilePersonalInfo = () => {
           </div>
           
           <div className="personal-info__button-outside personal-info__my-idea">
-            <ButtonSmall text="Мої ідеї" icon={lampIcon}/>
+            <ButtonSmall text="Мої ідеї" fn={() => fc(true)} icon={lampIcon}/>
           </div>
           <div className="personal-info__button-outside personal-info__add-idea">
             {/* <Link to={'/create-idea'} > */}
