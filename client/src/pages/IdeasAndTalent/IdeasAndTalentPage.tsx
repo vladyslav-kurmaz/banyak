@@ -7,8 +7,8 @@ import './IdeasAndTalent.scss';
 const IdeasAndTalent = ({ type }: { type: boolean }) => {
   return (
     <div className="ideaAndTalent">
-      {type ? <Idea /> : <Talant />}
-      {type ? <Idea /> : <Talant />}
+      {type ? <Idea myIdea={false}/> : <Talant />}
+      {type ? <Idea myIdea={false}/> : <Talant />}
 
       {type ? <ButtonMoreLoading text={'ідей'}/> : <ButtonMoreLoading text={'талантів'}/>}
     </div>

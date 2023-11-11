@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
   useAppSelector,
@@ -16,6 +16,7 @@ import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
 import CreateIdea from "../../pages/CreateIdea/CreateIdea";
 import Preloader from "../Preloader/Preloader";
+import IdeasPopup from "../IdeasPopup/IdeasPopup";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 import workWithCookies from "../../untils/workWithCookies";
@@ -36,6 +37,8 @@ function App() {
     location.search === "?login" || location.search === "?singup";
   const { profileUser } = ServiceBanyak();
   const { getCookies } = workWithCookies();
+  const [showPopup, setShowPopup] = useState(true);
+
 
   const dispatch = useAppDispatch();
 
@@ -62,6 +65,7 @@ function App() {
     <>
       {popupLocation && <SingUpPage/>}
       {mainPreloader && <Preloader/>}
+      {showPopup ? <IdeasPopup closeModal={setShowPopup}/> : null}
 
       <div className="app">
         <Header />
@@ -71,7 +75,7 @@ function App() {
             <Route path="aboutus" element={<AboutUs />} />
             <Route path="ideas" element={<IdeasAndTalent type={true} />} />
             <Route path="talents" element={<IdeasAndTalent type={false} />} />
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile" element={<ProfilePage fc={setShowPopup}/>} />
             <Route path="create-idea" element={<CreateIdea/>}/>
             <Route
               path="chose-profile"
