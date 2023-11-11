@@ -19,7 +19,7 @@ import ServiceBanyak from "../../service/ServiceBanyak";
 import workWithCookies from "../../untils/workWithCookies";
 
 // Components
-import CustomInput from "../../atoms/CustomImput/CustomInput";
+import CustomInput from "../../atoms/CustomInput/CustomInput";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
 

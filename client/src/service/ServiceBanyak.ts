@@ -127,11 +127,12 @@ const ServiceBanyak = () => {
     try {
       const req = await request(`${_baseUlr}/api/v1/users/new-access/`, {
         method: "PUT",
-        headers: {Authorization: `Bearer ${tokenid}`, 'Content-Type': 'application-json' },
+        headers: {'Content-Type': 'application-json' },
         body: JSON.stringify({refresh_token: tokenid}),
       });
       const newToken = await req.json()
-
+      console.log('try');
+      
       setCookies('sessiontokenid', await newToken.access_token, 1)
       // dispatch(changeUserProfile(null));
       // deleteCookie('sessiontokenid');

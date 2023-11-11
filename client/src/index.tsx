@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 // import router from './router/router';
 
 import {
-  RouterProvider, BrowserRouter
+  BrowserRouter
 } from "react-router-dom";
 
 

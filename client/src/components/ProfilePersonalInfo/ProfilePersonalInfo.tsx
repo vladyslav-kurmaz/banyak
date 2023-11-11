@@ -1,14 +1,18 @@
-import { useState, useRef } from "react";
 
-import ChangeInputSpan from "../../atoms/ChangeInputSpan/ChangeInputSpan";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import logo from "../../image/logo/small_logo.webp";
 
 import "./ProfilePersonalInfo.scss";
+import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
+
+import chat from '../../image/header/chat.svg';
+import lampIcon from '../../image/icon/idea.svg';
+import plusIcon from '../../image/icon/PLUS.svg';
+import { Link } from "react-router-dom";
 
 const ProfilePersonalInfo = () => {
-  const [name, setName] = useState(true);
-  const [nameWrite, setNameWrite] = useState("Катерина Білокур");
+  // const [name, setName] = useState(true);
+  // const [nameWrite, setNameWrite] = useState("Катерина Білокур");
 
   // const inputRef = useRef(null);
 
@@ -20,59 +24,62 @@ const ProfilePersonalInfo = () => {
 
       <div className="personal-info__main-info">
         <img src={logo} className="personal-info__avatar" alt="User avatar" />
-        <label
-          htmlFor="avatar-change"
-          className="personal-info__changed-avatar"
-        >
-          Замінити фото
-          <input type="file" id="avatar-change" />
-        </label>
+        
 
-        <ChangeInputSpan value="Катерина Білокур"/>
-        {/* <label
-          
-          htmlFor="personal__name"
-          
-        >
-
-          {name ? (
-            <span className="personal__name-span">{nameWrite}</span>
-          ) : (
-            <input
-              type="text"
-              className="personal__name-span"
-              id="personal__name"
-              value={nameWrite}
-            />
-          )}
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 40 40"
-            fill="none"
-            onClick={(e) => {
-              setName(!name);
-              console.log(e);
-              
-            }}
+        <div className="personal-info__container">
+          <label
+            htmlFor="avatar-change"
+            className="personal-info__changed-avatar"
           >
-            <path
-              d="M11.4244 23.5756L22.3052 12.6948L27.1539 17.5435L16.2731 28.4244L11.4346 28.4346L11.4244 23.5756Z"
-              fill="#1C145E"
-            />
-            <rect
-              x="23.5562"
-              y="11.4639"
-              width="3.42857"
-              height="6.85714"
-              transform="rotate(-45 23.5562 11.4639)"
-              fill="#1C145E"
-            />
-          </svg>
+            Замінити фото
+            <input className="personal-info__input" type="file" id="avatar-change" />
+          </label>
+          <span className="personal-info__name">Катерина Білокур</span>
+          <span className="personal-info__email">mail@gmail.com</span>
 
-        </label> */}
+
+        </div>
+
+        <div className="personal-info__statuses">
+          <div className="personal-info__statuses-container">
+            <label
+              htmlFor="vpo"
+              className="personal-info__special-status"
+            >
+              Статус ВПО
+              <input className="personal-info__input" type="file" id="vpo" />
+            </label>
+          </div>
+       
+          <div className="personal-info__statuses-container">
+            <label
+              htmlFor="soldie"
+              className="personal-info__special-status"
+            >
+              Статус Військовий
+              <input className="personal-info__input" type="file" id="soldier" />
+            </label>
+          </div>
+         
+        </div>
+
+
+        <div className="personal-info__buttons">
+          <div className="personal-info__button-outside personal-info__chat">
+            <ButtonSmall text="Чат" icon={chat}/>
+          </div>
+          
+          <div className="personal-info__button-outside personal-info__my-idea">
+            <ButtonSmall text="Мої ідеї" icon={lampIcon}/>
+          </div>
+          <div className="personal-info__button-outside personal-info__add-idea">
+            <Link to={'/create-idea'} >
+              <ButtonSmall text="Додати ідею" icon={plusIcon}/>
+            </Link>
+            
+          </div>
+        </div>
+      
 
         
       </div>

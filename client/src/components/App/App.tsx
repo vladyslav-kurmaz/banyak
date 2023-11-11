@@ -14,6 +14,7 @@ import AboutUs from "../../pages/AboutUs/AboutUs";
 import SingUpPage from "../../pages/SingUpPage/SingUpPage";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
+import CreateIdea from "../../pages/CreateIdea/CreateIdea";
 import Preloader from "../Preloader/Preloader";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
@@ -71,6 +72,7 @@ function App() {
             <Route path="ideas" element={<IdeasAndTalent type={true} />} />
             <Route path="talents" element={<IdeasAndTalent type={false} />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="create-idea" element={<CreateIdea/>}/>
             <Route
               path="chose-profile"
               element={
