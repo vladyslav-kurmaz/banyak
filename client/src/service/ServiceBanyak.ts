@@ -47,7 +47,7 @@ const ServiceBanyak = () => {
     try {
       const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
         method: method,
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        headers: {Authorization: `Bearer ${token}`},
         body: body,
       });
       const reqJson = await req.json()

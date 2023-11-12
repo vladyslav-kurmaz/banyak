@@ -18,7 +18,7 @@ const TagsField = ({
   allStack,
   changeStack
 }: {
-  stackUser: { name: string }[];
+  stackUser: string[];
   allStack: { name: string; id: string }[];
   changeStack: React.Dispatch<React.SetStateAction<TprofileChange>>
 }) => {
@@ -31,7 +31,7 @@ const TagsField = ({
   useEffect(() => {
     // Ініціалізація бібліотеки Tagify
 
-    console.log(allStack);
+    // console.log(allStack);
 
     if (tagifyRef.current !== null && allStack.length > 1) {
       const tagify = new Tagify(tagifyRef.current, {
@@ -54,15 +54,13 @@ const TagsField = ({
           const addedTags = e.detail.data.value
           const searchId = allStack.filter(item => {
             if (item.name === addedTags) {
-              return item
+              return item.id
             }
-          })
-          console.log(searchId);
-          
+          })          
 
             changeStack(stack => ({
               ...stack,
-              stack: [...stack.stack, searchId[0]]
+              stack: [...stack.stack, searchId[0].id]
             }))
           // }
           
@@ -109,6 +107,30 @@ const TagsField = ({
   //   }
   // };
 
+  const renderTags = () => {
+    // console.log(stackUser);
+    
+    if (stackUser.length > 0) {
+      let stack: string[] = []
+      const test = allStack.filter((item, i) => {
+   
+        stackUser.forEach(userStack => {
+          if (userStack === item.id) {
+            stack.push(item.name)
+          }
+        })
+
+        return stack;
+      })
+
+      return stack;
+      
+    } else {
+      return []
+    }
+    
+  }
+
   return (
     <div className="tags-field">
       {/* <Tags settings={settings}  showDropdown='true'/> */}
@@ -116,7 +138,7 @@ const TagsField = ({
         className="tags-field__textarea"
         name=""
         id=""
-        value={stackUser.map(item => item.name)}
+        value={renderTags()}
         onChange={() => {''}}
         ref={tagifyRef}
       ></textarea>

@@ -1,30 +1,43 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from "react";
 import ServiceBanyak from "../../service/ServiceBanyak";
+import { useAppDispatch } from "../../hooks/reduxToolkidHooks";
+
+
+import { Talent } from "../../types/types";
+import { changreMainPreloader } from "../../components/SettingMenu/StateElementSlice";
 
 import ButtonMoreLoading from "../../atoms/ButtonMoreLoading/ButtonMoreLoading";
 import Idea from "../../components/Idea/Idea";
 import Talant from "../../components/Talant/Talant";
 
-import './IdeasAndTalent.scss';
+import "./IdeasAndTalent.scss";
 
 const IdeasAndTalent = ({ type }: { type: boolean }) => {
-  const [talents, setTalents] = useState()
+  const [talents, setTalents] = useState();
 
-  const {getTalents} = ServiceBanyak();
+  const { getTalents } = ServiceBanyak();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     getTalents()
-      .then(res => res.json())
-      .then(res => setTalents(res))
-  }, [])
+      .then((res) => res.json())
+      .then((res) => setTalents(res))
+      .then(() => dispatch(changreMainPreloader(false)))
+  }, []);
 
-  // const renderItems = (type: boolean, data: ) => {
-  //   return (
-  //     <>
+  
+  const renderItems = (type: boolean, data: Talent[]) => {
+    
+    
 
-  //     </>
-  //   )
-  // }
+    return data.map(item => {
+      return (
+        <>
+          {type ? <Idea myIdea={false} /> : <Talant dataUser={item}/>} 
+        </>
+      )
+    })
+  };
 
   return (
     <div className="ideaAndTalent">
@@ -32,7 +45,13 @@ const IdeasAndTalent = ({ type }: { type: boolean }) => {
       {/* {type ? <Idea myIdea={false}/> : <Talant />}
       {type ? <Idea myIdea={false}/> : <Talant />} */}
 
-      {type ? <ButtonMoreLoading text={'ідей'}/> : <ButtonMoreLoading text={'талантів'}/>}
+      {talents ? renderItems(type, talents) : null}
+
+      {type ? (
+        <ButtonMoreLoading text={"ідей"} />
+      ) : (
+        <ButtonMoreLoading text={"талантів"} />
+      )}
     </div>
   );
 };

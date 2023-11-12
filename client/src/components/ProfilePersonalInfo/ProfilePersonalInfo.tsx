@@ -33,22 +33,24 @@ const ProfilePersonalInfo = ({
       const file = target.files[0];
       changeData((state) => ({
         ...state,
-        type: file,
+        avatar: file,
       }));
     }
   };
 
   const renderUserInfo = () => {
     if (userProfile !== null) {
-      const { user, avatar } = userProfile;
+      const { user, avatar, is_military, is_vpo } = userProfile;
+      const militaty = is_military ? 'military' : '';
+      const vpo = is_vpo ? 'vpo' : '';
 
       const avatarOrPlug =
         avatar === null ? (
           <img src={logo} className="personal-info__avatar" alt="User avatar" />
         ) : (
           <img
-            src={avatar}
-            className="personal-info__avatar"
+            src={`http://localhost:8000${avatar}`}
+            className={`personal-info__avatar ${militaty} ${vpo}`} 
             alt="User avatar"
           />
         );
