@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "../../hooks/reduxToolkidHooks";
+import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
+import { changeUserProfile } from "../../store/userSlice";
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -10,35 +14,58 @@ import AboutUs from "../../pages/AboutUs/AboutUs";
 import SingUpPage from "../../pages/SingUpPage/SingUpPage";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
+import CreateIdea from "../../pages/CreateIdea/CreateIdea";
+import Preloader from "../Preloader/Preloader";
+import IdeasPopup from "../IdeasPopup/IdeasPopup";
+
+import ServiceBanyak from "../../service/ServiceBanyak";
+import workWithCookies from "../../untils/workWithCookies";
 
 import "./App.scss";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import ChooseProfilePage from "../../pages/ChooseProfilePage/ChooseProfilePage";
+import ButtonChooseProfile from "../../atoms/ButtonChooseProfile/ButtonChooseProfile";
 
 function App() {
-  const { loginRegistrationForm, loginOrSingUp } = useAppSelector(
+  const { mainPreloader } = useAppSelector(
     (state) => state.stateElement
   );
 
   const location = useLocation();
   // const popupLocation = location.search === '?login' || location.search === '?singup'
-  const popupLocation = location.search === '?login' || location.search === '?singup'
-  
-  const dispatch = useAppDispatch();
-  // console.log(location);
-  
+  const popupLocation =
+    location.search === "?login" || location.search === "?singup";
+  const { profileUser } = ServiceBanyak();
+  const { getCookies } = workWithCookies();
+  const [showPopup, setShowPopup] = useState(false);
 
-  // useEffect(() => {
-  //   console.log(popupLocation);
-    
-  //   if (popupLocation) {
-  //     dispatch(changeOpenOrCloseLoginPopup(true));
-  //   } else {
-  //     dispatch(changeOpenOrCloseLoginPopup(false));
-  //   }
-  // }, [popupLocation]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const token = getCookies("sessiontokenid")
+    if (token !== null) {
+      dispatch(changreMainPreloader(true))
+      try {
+        profileUser(token, "GET")
+        dispatch(changreMainPreloader(false))
+      } catch (e) {
+        dispatch(changreMainPreloader(false))
+        console.error(e);
+      }
+      // profileUser(token, "GET")
+      //   .then((res) => )
+      //   // .then(() => dispatch(changreMainPreloader(false)))
+      //   .catch((e) => console.error(e))
+    }
+    // eslint-disable-next-line 
+  }, []);
 
   return (
     <>
-      {popupLocation && <SingUpPage />}
+      {popupLocation && <SingUpPage/>}
+      {mainPreloader && <Preloader/>}
+      {showPopup ? <IdeasPopup closeModal={setShowPopup}/> : null}
 
       <div className="app">
         <Header />
@@ -48,6 +75,27 @@ function App() {
             <Route path="aboutus" element={<AboutUs />} />
             <Route path="ideas" element={<IdeasAndTalent type={true} />} />
             <Route path="talents" element={<IdeasAndTalent type={false} />} />
+            <Route path="profile" element={<ProfilePage fc={setShowPopup}/>} />
+            <Route path="create-idea" element={<CreateIdea/>}/>
+            <Route
+              path="chose-profile"
+              element={
+                <ChooseProfilePage
+                  buttonOne={
+                    <ButtonChooseProfile
+                      text="Опублікувати ідею та знайти фахівців для реалізації проєкта"
+                      type={false}
+                    />
+                  }
+                  buttonTwo={
+                    <ButtonChooseProfile
+                      text="Знайти проєкт для отримання досвіду роботи в IT команді"
+                      type={true}
+                    />
+                  }
+                />
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

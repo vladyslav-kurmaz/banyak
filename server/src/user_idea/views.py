@@ -1,158 +1,103 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions, generics, status
-from rest_framework.decorators import api_view, permission_classes
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from uuid import UUID
-from django.shortcuts import get_object_or_404
-from .models import *
-from .serializer import *
+from rest_framework import permissions, status, viewsets
+from django.http import HttpResponse
+# from banyak.server.src.decorators.decorators import swagger_decorator
+from ..decorators.decorators import swagger_decorator
+from .documentation.schema_setting import ideas_doc
+from .paginate_class import CustomPaginate
+from .serializers import *
+import requests
+import json
 
 
-class ListIdeas(APIView):
-    permission_classes = [permissions.AllowAny]
+@swagger_decorator(
+    ['list', 'retrieve', 'create', 'partial_update', 'destroy'], 'Idea', ideas_doc
+)
+class IdeaViewSet(viewsets.ModelViewSet):
+    """
+    GET - Отримуємо список ідей,
+    GET <slug> - Отримуємо детальну інформацію про ідею за допомогою її slug,
+    POST - Створення нової ідеї
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = IdeasListSerializer
+    pagination_class = CustomPaginate
+    lookup_field = 'slug'
 
-    def get(self, request):
-        ideas = Idea.objects.filter(is_published=True)
-        serializer = IdeasListSerializer(ideas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            ideas = Idea.objects.all()
+        else:
+            ideas = Idea.objects.filter(is_published=True)
+        return ideas
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
-class DetailIdea(APIView):
-
-    def get(self, request, idea_url):
+    def retrieve(self, request, *args, **kwargs):
+        slug = kwargs.get('slug')
         try:
-            idea = Idea.objects.get(slug=idea_url)
-            serializer = DetailIdeaSerializer(idea, many=False)
+            # idea = Idea.objects.get(slug=slug)
+            idea = self.get_queryset().get(slug=slug)
+            serializer = DetailIdeaSerializer(idea)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Idea.DoesNotExist:
-            return Response({'message': 'Idea not found'})
+            return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
 
-
-class CreateUpdateDeleteIdea(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UpdateCreateIdeaSerializer
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
+    def create(self, request, *args, **kwargs):
+        specialization = request.data.pop('specialization', [])
+        serializer = UpdateCreateIdeaSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
+        idea = serializer.save()
+        idea.specialization.set(specialization)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def put(self, request, idea_url):
+    def partial_update(self, request, *args, **kwargs):
+        user = request.user
+        print(user)
+        slug = kwargs.get('slug')
         try:
-            idea = Idea.objects.get(slug=idea_url)
-
-            if idea.user == request.user:
-                serializer = self.serializer_class(idea, data=request.data)
-                serializer.is_valid(raise_exception=True)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Idea.DoesNotExist:
-            return Response({'message': 'Idea not found'})
-
-    def delete(self, request, idea_url):
-        try:
-            idea = Idea.ibjects.get(slug=idea_url)
-
-            if idea.user == request.user:
-                idea.delete()
-                return Response({'message': 'Delete'})
-            return Response({'message': 'error'})
-        except Idea.DoesNotExist:
-            return Response({'message': 'Idea not found'})
-
-
-class JoinUserIdea(APIView):
-    serializer_class = JoinUserIdeaSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    @swagger_auto_schema(
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'idea': openapi.Schema(type=openapi.TYPE_STRING)
-            },
-            required=[
-                'idea'
-            ]
-        ),
-        responses={
-            status.HTTP_201_CREATED: openapi.Response(description='Join successfully'),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(description='Invalid input data'),
-        }
-    )
-    def post(self, request):
-        current_user = request.user
-        idea_id = request.data.get('idea')
-
-        print(idea_id)
-
-        # print(idea)
-
-        try:
-            idea = Idea.objects.get(id=UUID(idea_id))
-            print(idea.id)
-            serializer = self.serializer_class(data=request.data)
-
+            specialization = request.data.pop('specialization', [])
+            title = request.data.pop('title', None)
+            idea = self.get_queryset().get(user=user, slug=slug)
+            serializer = UpdateCreateIdeaSerializer(idea, data=request.data)
             if serializer.is_valid():
-                # serializer.idea = idea
-                serializer.save(idea=idea, user=current_user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                upd_idea = serializer.save()
 
-            return Response(serializer.errors)
-
-        except Idea.DoesNotExist:
-            return Response({'message': 'Idea not found'})
-
-
-class ListJoinUser(APIView):
-    serializer_class = ListJoinUserIdeaSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, idea_url):
-        current_user = request.user
-        user_idea = Idea.objects.get(slug=idea_url)
-
-        if current_user == user_idea.user:
-            idea = JoinIdea.objects.filter(idea=user_idea)
-            serializer = self.serializer_class(idea, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({'message': 'It is not your idea'})
-
-
-class AddUserIdea(APIView):
-    """Додавання користувача на проект"""
-
-    serializer_class = AddUserIdeaSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def put(self, request, idea_url):
-        current_user = request.user
-        idea_join = JoinIdea.objects.get(slug=idea_url)
-
-        if idea_join.idea.user == current_user:
-            serializer = self.serializer_class(idea_join, data=request.data)
-
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                if title:
+                    upd_idea.slug = slugify(title)
+                    upd_idea.save()
+                upd_idea.specialization.set(specialization)
+                return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'message': 'It is not your idea'})
+        except Idea.DoesNotExist:
+            return Response({'message': 'Idea not found'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # def post(self, request, idea_url):
-    #     current_user = request.user
-    #     idea = Idea.objects.get(slug=idea_url)
-    #
-    #     if current_user == idea.user:
-    #         serializer = self.serializer_class(data=request.data)
-    #         if serializer.is_valid():
-    #             serializer.save(idea=idea)
-    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     else:
-    #         return Response({'message': 'You do not have access to the idea'})
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        slug = kwargs.get('slug')
+        try:
+            idea = self.get_queryset().get(user=user, slug=slug)
+            idea.delete()
+            return Response({'message': 'Delete'})
+        except Idea.DoesNotExist:
+            return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+def downland_swagger(request):
+    url = 'http://127.0.0.1:8000/swagger.json'
+    response = requests.get(url)
 
+    if response.status_code == 200:
+        json_schema = response.json()
+        json_string = json.dumps(json_schema, indent=4)
+
+        filename = 'banyak.json'
+        response = HttpResponse(json_string, content_type='application/json')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+        return response
+    else:
+        return HttpResponse(status=response.status_code)
 

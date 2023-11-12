@@ -92,7 +92,7 @@
     }
 
     &-form {
-      // position: relative;
+      position: relative;
       max-width: 296px;
       width: 100%;
       margin-bottom: 40px;
@@ -115,12 +115,14 @@
         }
       }
 
-      .sing-up {
+      &.sing-up {
         max-height: 819px;
+        position: relative;
       }
 
-      .login {
+      &.login {
         max-height: 819px;
+        position: relative;
       }
     }
 
@@ -192,6 +194,26 @@
         }
       }
     }
+  }
+
+  .form__error {
+    position: absolute;
+    font-family: Montserrat;
+    font-size: 13px;
+    font-weight: 600;
+    color: #A81818;
+    height: 26px;
+    
+  }
+
+  & .login .form__error {
+    bottom: 87px;
+
+  }
+
+  & .sing-up .form__error {
+    bottom: 50px;
+    
   }
 }
 

@@ -6,20 +6,67 @@ import uuid
 
 class Chat(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    slug = models.SlugField(unique=True, blank=True, null=True)
+    initiator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True, null=True,
+        on_delete=models.PROTECT,
+        related_name='initiated_chat'
+    )   # відправник
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True, null=True,
+        on_delete=models.PROTECT,
+        related_name='receiver_chat'
+    )   # отримувач
+    messages = models.ManyToManyField('Message', related_name='message')
+    slug = models.SlugField(db_index=True, unique=True, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user}'
+        return self.users
 
-    def save(self, *args, **kwargs):
-        super(Chat, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.id)
+    #     return super().save(*args, **kwargs)
 
 
 class Message(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    message = models.TextField()
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT,
+        related_name='author_message'
+    )
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.PROTECT)
+    chat = models.ForeignKey(Chat, blank=True, null=True, on_delete=models.CASCADE)
+    body = models.TextField()
+    attachment = models.FileField(blank=True, null=True, upload_to='attachment/')
+    seen = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user} - {self.message}'
+        return self.body
+
+
+# class Chat(models.Model):
+#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     user = models.ManyToManyField(settings.AUTH_USER_MODEL)
+#     slug = models.SlugField(unique=True, blank=True, null=True)
+#
+#     def __str__(self):
+#         return f'{self.user}'
+#
+#     def save(self, *args, **kwargs):
+#         super(Chat, self).save(*args, **kwargs)
+#
+#
+# class Message(models.Model):
+#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+#     message = models.TextField()
+#
+#     def __str__(self):
+#         return f'{self.user} - {self.message}'

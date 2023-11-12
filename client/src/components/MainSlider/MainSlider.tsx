@@ -1,6 +1,9 @@
 import { MouseEvent } from "react";
 import MainSliderStatus from "../../atoms/MainSliderStatus/MainSliderStatus";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxToolkidHooks";
 import { Link } from "react-router-dom";
 
 import MainInfo from "../MainInfo/MainInfo";
@@ -22,7 +25,10 @@ const MainSlider = () => {
     const target = e.currentTarget;
 
     if (mainPageSlider === 0) {
-      if (target && !target.parentElement?.parentElement?.classList.contains("active")) {
+      if (
+        target &&
+        !target.parentElement?.parentElement?.classList.contains("active")
+      ) {
         target.parentElement?.parentElement?.classList.add("active");
         target.parentElement?.parentElement?.classList.remove("inert");
       }
@@ -91,7 +97,7 @@ const MainSlider = () => {
     } else {
       return window.screen.width * 2;
     }
-  };
+  }
 
   return (
     <div className="main-slider__container">
@@ -99,9 +105,7 @@ const MainSlider = () => {
         className="main-slider__container-slider"
         style={{ maxWidth: `${sliderWidth()}px` }}
       >
-        <div
-          className="main-slider__container-slider-elem"
-        >
+        <div className="main-slider__container-slider-elem">
           <MainInfo />
           <MainSliderImg />
 
@@ -126,7 +130,6 @@ const MainSlider = () => {
               />
             </svg>
           </div>
-          
         </div>
 
         <div className="main-slider__container-slider-elem">
@@ -160,9 +163,7 @@ const MainSlider = () => {
 
       <MainSliderStatus />
 
-      <Link 
-        to='/ideas' 
-        className='main-slider__container-button'>
+      <Link to="/ideas" className="main-slider__container-button">
         Приєднатись до команди
       </Link>
     </div>

@@ -39,31 +39,26 @@ const MainInstruction: FC = () => {
     });
   };
 
-
-  return ( 
+  return (
     <div className="instruction">
       <div className="instruction__switcher">
         <SwitchToogle prop1={"Власник ідеї"} prop2={"Талант"} />
       </div>
-      
+
       <div className="instruction__item">
         <div className="instruction__item-img">
           <img src={mainPhoto} alt="instruction" />
         </div>
         <div className="instruction__item-info">
           <ul className="instruction__item-info-list">
-            {
-              statusInstr === "Власник ідеї"
-                ? renderInstr(instrution[0])
-                : renderInstr(instrution[1])
-            }
+            {statusInstr === "Власник ідеї"
+              ? renderInstr(instrution[0])
+              : renderInstr(instrution[1])}
           </ul>
         </div>
       </div>
     </div>
   );
-
-  
 };
 
 export default MainInstruction;

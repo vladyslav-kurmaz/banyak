@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from .manager import CustomUserManager
+from ..user_idea.models import Idea
 from datetime import timezone
 import uuid
 
@@ -12,7 +13,7 @@ class CustomUser(AbstractUser):
     username = None
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = CustomUserManager()
 
@@ -45,9 +46,11 @@ class Stack(models.Model):
 class UserProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
-    description = models.TextField()
+    avatar = models.ImageField(blank=True, null=True, upload_to='avatars/')
+    ideas = models.ManyToManyField(Idea, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     speciality = models.ManyToManyField(Speciality)
-    stack = models.ManyToManyField(Stack, blank=True, null=True)
+    stack = models.ManyToManyField(Stack)
     is_talent = models.BooleanField(default=False)
 
     def __str__(self):

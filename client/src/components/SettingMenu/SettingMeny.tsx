@@ -1,13 +1,22 @@
 import { FC, useCallback } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { NavLink } from "react-router-dom";
-import { changeOpenOrCloseLoginPopup } from "./StateElementSlice";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/reduxToolkidHooks";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
 import ToggleTheam from "../../atoms/ToggleTheam/ToggleTheam";
-import { changeOpenHeaderSeting } from "./StateElementSlice";
+import {
+  changeOpenHeaderSeting,
+  changeOpenOrCloseLoginPopup,
+} from "./StateElementSlice";
+
+import workWithCookies from "../../untils/workWithCookies";
+
+import ServiceBanyak from "../../service/ServiceBanyak";
 
 import settingIconBlue from "../../image/header/setting_icon-blue.webp";
 import chatIcon from "../../image/header/chat.svg";
@@ -17,8 +26,12 @@ import "./SettingMeny.scss";
 
 const SettingMeny: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { headerSetting } = useAppSelector((state) => state.stateElement);
-  const { userId } = useAppSelector((state) => state.userInfo);
+  const { userProfile } = useAppSelector((state) => state.userInfo);
+  const { exitUser } = ServiceBanyak();
+  const {getCookies} = workWithCookies()
   const shouldShowPopup =
     new URLSearchParams(window.location.search).get("login") === "true";
 
@@ -26,8 +39,12 @@ const SettingMeny: FC = () => {
     dispatch(changeOpenOrCloseLoginPopup(true));
   };
 
-  const test = () => {
-    console.log(1);
+  const exitUserProfil = () => {
+
+      exitUser();
+      
+      navigate("/");
+
   };
 
   const openCloseSettingMenu = useCallback(
@@ -35,6 +52,7 @@ const SettingMeny: FC = () => {
       dispatch(changeOpenHeaderSeting(status));
       // eslint-disable-next-line
     },
+    // eslint-disable-next-line
     [headerSetting]
   );
 
@@ -50,7 +68,7 @@ const SettingMeny: FC = () => {
           <span className="header__settings-container-menu-container-line"></span>
           <ul className="header__settings-container-menu-container-list">
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? <ButtonSmall text="Чат" icon={chatIcon} /> : null}
+              {userProfile ? <ButtonSmall text="Чат" icon={chatIcon} /> : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">
@@ -65,12 +83,16 @@ const SettingMeny: FC = () => {
               <ToggleTheam />
             </li>
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? (
-                <ButtonSmall text="Вийти" icon={exitIcon} fn={test} />
+              {userProfile ? (
+                <ButtonSmall
+                  text="Вийти"
+                  icon={exitIcon}
+                  fn={() => exitUserProfil()}
+                />
               ) : null}
             </li>
             <li className="header__settings-container-menu-container-list-item">
-              {userId ? null : (
+              {userProfile ? null : (
                 <NavLink
                   // to={'/?showPopup=true'}
                   to={{

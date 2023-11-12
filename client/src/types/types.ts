@@ -6,11 +6,32 @@ export type stateElement = {
   statusInstr: 'Власник ідеї' | 'Талант',
   loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ',
   loginRegistrationForm: boolean,
-  counterLink: number
+  counterLink: number,
+  mainPreloader: boolean,
+  errorStatus: null | number,
+}
+
+export type TUserProfile = {
+    speciality: [
+      {
+        name: string
+      }
+    ],
+    stack: [
+      {
+        name: string
+      }
+    ],
+    description: string,
+    is_talent: boolean,
+    user: string,
+    ideas: string[]
 }
 
 export type userInfo = {
-  userId: null | string
+  // userId: null | string,
+  userProfile: null | TUserProfile,
+  typeUser: 'Я власник ідеї' | 'Я талант'
 }
 
 export type TValidatinForm = {
