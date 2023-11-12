@@ -74,7 +74,7 @@ const ProfilePersonalInfo = ({fc}: {fc: React.Dispatch<React.SetStateAction<bool
           </div>
           <div className="personal-info__button-outside personal-info__add-idea">
             <Link to={'/create-idea'} >
-              <ButtonSmall text="Додати ідею" icon={plusIcon}/>
+              <ButtonSmall style={{position: "relative"}} text="Додати ідею" icon={plusIcon}/>
             </Link>
             
           </div>
