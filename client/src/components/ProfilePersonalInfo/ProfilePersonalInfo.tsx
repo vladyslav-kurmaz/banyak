@@ -66,11 +66,11 @@ const ProfilePersonalInfo = ({fc}: {fc: React.Dispatch<React.SetStateAction<bool
 
         <div className="personal-info__buttons">
           <div className="personal-info__button-outside personal-info__chat">
-            <ButtonSmall text="Чат" icon={chat}/>
+            <ButtonSmall style={{position: "relative"}} text="Чат" icon={chat}/>
           </div>
           
           <div className="personal-info__button-outside personal-info__my-idea">
-            <ButtonSmall text="Мої ідеї" fn={() => fc(true)} icon={lampIcon}/>
+            <ButtonSmall style={{position: "relative"}} text="Мої ідеї" fn={() => fc(true)} icon={lampIcon}/>
           </div>
           <div className="personal-info__button-outside personal-info__add-idea">
             <Link to={'/create-idea'} >
