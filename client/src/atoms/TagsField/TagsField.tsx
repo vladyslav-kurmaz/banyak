@@ -2,26 +2,27 @@ import { useEffect, useRef } from "react";
 
 import Tags from "@yaireo/tagify/dist/react.tagify";
 // import { TagifySettings, TagData, AddEventData  } from "@yaireo/tagify";
-import Tagify from '@yaireo/tagify';
+import Tagify from "@yaireo/tagify";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 
 // import 'tagify/dist/tagify.css';
-import '@yaireo/tagify/src/tagify.scss'
-import './TagsField.scss';
-import { TUserProfile } from "../../types/types";
+import "@yaireo/tagify/src/tagify.scss";
+import "./TagsField.scss";
+import { TUserProfile, TprofileChange } from "../../types/types";
 
-const initialValue = [
-  'qa',
-  'front',
-  'back',
-  'design'
-];
+// const initialValue = ["qa", "front", "back", "design"];
 
-
-const TagsField = ({stackUser, allStack}: {stackUser: {name:string}[], allStack: string[]}) => {
-  
-  const {workWithAllStack} = ServiceBanyak();
+const TagsField = ({
+  stackUser,
+  allStack,
+  changeStack
+}: {
+  stackUser: { name: string }[];
+  allStack: { name: string; id: string }[];
+  changeStack: React.Dispatch<React.SetStateAction<TprofileChange>>
+}) => {
+  const { workWithAllStack } = ServiceBanyak();
 
   
 
@@ -30,12 +31,15 @@ const TagsField = ({stackUser, allStack}: {stackUser: {name:string}[], allStack:
   useEffect(() => {
     // Ініціалізація бібліотеки Tagify
 
-    if (tagifyRef.current !== null) {
+    console.log(allStack);
+
+    if (tagifyRef.current !== null && allStack.length > 1) {
       const tagify = new Tagify(tagifyRef.current, {
         enforceWhitelist: true, // Дозволяє додавати тільки технології з білих списків
-        whitelist: ['sdf', 'sdf'],
+        whitelist: allStack.map((item) => item.name),
+        // ['sdf', 'sdf'],
         // stackList(),
-      
+
         // ['React', 'JavaScript', 'HTML', 'CSS', 'Adobe Ilistratore'], // Список доступних технологій
         placeholder: "Введіть технології",
         dropdown: {
@@ -43,17 +47,34 @@ const TagsField = ({stackUser, allStack}: {stackUser: {name:string}[], allStack:
         },
       });
 
-      tagify.on('add', e => {
-        if (e.detail.data !== undefined && Array.isArray(e.detail.data)) {
-          const addedTags = e.detail.data.map(tag => tag.value);
-          console.log('Додано технології:', addedTags);
+      tagify.on("add", (e) => {
+
+        if (e.detail.data !== undefined ) {
+          
+          const addedTags = e.detail.data.value
+          const searchId = allStack.filter(item => {
+            if (item.name === addedTags) {
+              return item
+            }
+          })
+          console.log(searchId);
+          
+
+            changeStack(stack => ({
+              ...stack,
+              stack: [...stack.stack, searchId[0]]
+            }))
+          // }
+          
+          
+          // 
+          // workWithAllStack('stack-list/', 'PUT', searchId[0])
+          //   .then(res => console.log(res))
+
         }
-        
       });
     }
-
-    
-  })
+  });
   // const baseTagifySettings: TagifySettings<TagData> = {
   //   blacklist: [],
   //   // maxTags: 6,
@@ -88,23 +109,19 @@ const TagsField = ({stackUser, allStack}: {stackUser: {name:string}[], allStack:
   //   }
   // };
 
-  
-
   return (
     <div className="tags-field">
       {/* <Tags settings={settings}  showDropdown='true'/> */}
-      <textarea 
-        className="tags-field__textarea" 
-        name="" 
-        id="" 
-        // value={stackList()}
+      <textarea
+        className="tags-field__textarea"
+        name=""
+        id=""
+        value={stackUser.map(item => item.name)}
+        onChange={() => {''}}
         ref={tagifyRef}
-        
-      >
-
-      </textarea>
+      ></textarea>
     </div>
-  )
-}
+  );
+};
 
 export default TagsField;

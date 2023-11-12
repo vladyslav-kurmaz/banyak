@@ -12,16 +12,16 @@ export type stateElement = {
 }
 
 export type TUserProfile = {
-    speciality: [
+    speciality: 
       {
         name: string
-      }
-    ],
-    stack: [
-      {
-        name: string
-      }
-    ],
+        id: string
+      }[]
+    ,
+    stack: {
+      name: string
+      id: string
+    }[],
     description: string,
     is_talent: boolean,
     user: {
@@ -34,6 +34,17 @@ export type TUserProfile = {
     ideas: string[],
     avatar: string,
     portfolio: string
+}
+
+export type TprofileChange = {
+  speciality: [],
+  stack: {name: string, id: string}[],
+  avatar?: File | null,
+  description: string,
+  is_talent: false,
+  is_military: false,
+  is_vpo: false,
+  ideas: [],
 }
 
 export type userInfo = {

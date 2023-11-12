@@ -5,53 +5,79 @@ import logo from "../../image/logo/small_logo.webp";
 import "./ProfilePersonalInfo.scss";
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 
-import chat from '../../image/header/chat.svg';
-import lampIcon from '../../image/icon/idea.svg';
-import plusIcon from '../../image/icon/PLUS.svg';
+import { TUserProfile, TprofileChange } from "../../types/types";
+
+import chat from "../../image/header/chat.svg";
+import lampIcon from "../../image/icon/idea.svg";
+import plusIcon from "../../image/icon/PLUS.svg";
 import { Link } from "react-router-dom";
-import { TUserProfile } from "../../types/types";
 
-
-const ProfilePersonalInfo = ({fc}: {fc: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const ProfilePersonalInfo = ({
+  fc,
+  changeData,
+}: {
+  fc: React.Dispatch<React.SetStateAction<boolean>>;
+  changeData: React.Dispatch<React.SetStateAction<TprofileChange>>;
+}) => {
   // const [name, setName] = useState(true);
   // const [nameWrite, setNameWrite] = useState("Катерина Білокур");
 
   // const inputRef = useRef(null);
 
-  const {userProfile} = useAppSelector((state) => state.userInfo);
+  const { userProfile } = useAppSelector((state) => state.userInfo);
   // const {} = userProfile as TUserProfile
 
+  const changeFile = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+    const target = e.target;
+    if (target && target.files !== null) {
+      const file = target.files[0];
+      changeData((state) => ({
+        ...state,
+        type: file,
+      }));
+    }
+  };
+
   const renderUserInfo = () => {
-
     if (userProfile !== null) {
-      const {user, avatar,} = userProfile
+      const { user, avatar } = userProfile;
 
-      const avatarOrPlug = avatar === null ? 
+      const avatarOrPlug =
+        avatar === null ? (
           <img src={logo} className="personal-info__avatar" alt="User avatar" />
-          :
-          <img src={avatar} className="personal-info__avatar" alt="User avatar" />
+        ) : (
+          <img
+            src={avatar}
+            className="personal-info__avatar"
+            alt="User avatar"
+          />
+        );
       return (
         <>
           {avatarOrPlug}
-          
-  
+
           <div className="personal-info__container">
             <label
               htmlFor="avatar-change"
               className="personal-info__changed-avatar"
             >
               Замінити фото
-              <input className="personal-info__input" type="file" id="avatar-change" />
+              <input
+                className="personal-info__input"
+                type="file"
+                id="avatar-change"
+                onChange={(e) => changeFile(e, "avatar")}
+              />
             </label>
-            <span className="personal-info__name">{user.first_name} {user.last_name}</span>
+            <span className="personal-info__name">
+              {user.first_name} {user.last_name}
+            </span>
             <span className="personal-info__email">{user.email}</span>
-  
           </div>
         </>
-      )
+      );
     }
-   
-  }
+  };
 
   return (
     <div className="personal-info">
@@ -64,46 +90,48 @@ const ProfilePersonalInfo = ({fc}: {fc: React.Dispatch<React.SetStateAction<bool
 
         <div className="personal-info__statuses">
           <div className="personal-info__statuses-container">
-            <label
-              htmlFor="vpo"
-              className="personal-info__special-status"
-            >
+            <label htmlFor="vpo" className="personal-info__special-status">
               Статус ВПО
-              <input className="personal-info__input" type="file" id="vpo" />
+              <input
+                className="personal-info__input"
+                onChange={(e) => changeFile(e, "upload_vpo")}
+                type="file"
+                id="vpo"
+              />
             </label>
           </div>
-       
-          <div className="personal-info__statuses-container">
-            <label
-              htmlFor="soldie"
-              className="personal-info__special-status"
-            >
-              Статус Військовий
-              <input className="personal-info__input" type="file" id="soldier" />
-            </label>
-          </div>
-         
-        </div>
 
+          <div className="personal-info__statuses-container">
+            <label htmlFor="soldie" className="personal-info__special-status">
+              Статус Військовий
+              <input
+                className="personal-info__input"
+                type="file"
+                id="soldier"
+                onChange={(e) => changeFile(e, "upload_military")}
+              />
+            </label>
+          </div>
+        </div>
 
         <div className="personal-info__buttons">
           <div className="personal-info__button-outside personal-info__chat">
-            <ButtonSmall text="Чат" icon={chat}/>
+            <ButtonSmall text="Чат" icon={chat} />
           </div>
-          
+
           <div className="personal-info__button-outside personal-info__my-idea">
-            <ButtonSmall text="Мої ідеї" fn={() => fc(true)} icon={lampIcon}/>
+            <ButtonSmall text="Мої ідеї" fn={() => fc(true)} icon={lampIcon} />
           </div>
           <div className="personal-info__button-outside personal-info__add-idea">
             {/* <Link to={'/create-idea'} > */}
-            <ButtonSmall text="Додати ідею" icon={plusIcon} href="/create-idea"/>
+            <ButtonSmall
+              text="Додати ідею"
+              icon={plusIcon}
+              href="/create-idea"
+            />
             {/* </Link> */}
-            
           </div>
         </div>
-      
-
-        
       </div>
     </div>
   );

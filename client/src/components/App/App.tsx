@@ -37,7 +37,7 @@ function App() {
     location.search === "?login" || location.search === "?singup";
   const { profileUser } = ServiceBanyak();
   const { getCookies } = workWithCookies();
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
 
   const dispatch = useAppDispatch();
