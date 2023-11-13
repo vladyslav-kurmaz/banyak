@@ -20,33 +20,102 @@ const ProfileStackInfo = ({
   userStack,
   fnState,
   disabled,
-  newUserProfile
+  newUserProfile,
 }: {
   stack: { id: string; name: string }[];
   userStack: TUserProfile;
-  fnState: React.Dispatch<React.SetStateAction<TprofileChange>>
-  disabled: boolean
-  newUserProfile: TprofileChange
+  fnState: React.Dispatch<React.SetStateAction<TprofileChange>>;
+  disabled: boolean;
+  newUserProfile: TprofileChange;
 }) => {
   const [speciality, setSpeciality] = useState(userStack?.speciality[0]);
   const [description, setDescription] = useState(userStack?.description);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   // const [portfolio, setPortfolio] = useState(userProfile?.portfolio);
   // const [stack, setStack] = useState(userProfile?.stack);
 
-  const {profileUser} = ServiceBanyak();
-  const {getCookies} = workWithCookies();
+  const { profileUser } = ServiceBanyak();
+  const { getCookies } = workWithCookies();
 
   const changeProfileData = () => {
-    const token = getCookies('sessiontokenid');
+    const token = getCookies("sessiontokenid");
 
-    if (typeof token === 'string') {
-      profileUser(token, "PUT", JSON.stringify(newUserProfile))
-       .then(() => dispatch(changreMainPreloader(false)))
+    if (typeof token === "string") {
+
+      
+
+      // profileUser(token, "PUT", JSON.stringify(newUserProfile)).then(() =>
+      //   dispatch(changreMainPreloader(false))
+      // );
+
+    // speciality: [],
+    // stack: [],
+    // avatar: null,
+    // description: "",
+    // is_talent: false,
+    // is_military: false,
+    // is_vpo: false,
+    // ideas: [],
+
+      const formData = new FormData;
+
+      // if (newUserProfile.speciality) {
+      //   formData.append('speciality', newUserProfile.speciality);
+      // }
+
+      // if (newUserProfile.speciality) {
+      //   formData.append('speciality', JSON.stringify(newUserProfile.speciality));
+      // }
+      
+      // if (newUserProfile.stack && newUserProfile.stack.length > 0) {
+      //   formData.append('stack', JSON.stringify(newUserProfile.stack));
+      // }
+      formData.append('description', newUserProfile.description);
+      
+      // formData.append('stack', newUserProfile.stack);
+
+      if (newUserProfile.avatar) {
+        formData.append('avatar', newUserProfile.avatar);
+      }
+
+      // if (newUserProfile.is_talent) {
+      //   formData.append('is_talent', JSON.stringify(newUserProfile.is_talent));
+      // }
+      // if (newUserProfile.is_military) {
+      //   formData.append('is_military', JSON.stringify(newUserProfile.is_military));
+      // }
+      // if (newUserProfile.is_vpo) {
+      //   formData.append('is_vpo', JSON.stringify(newUserProfile.is_vpo));
+      // }
+      // if (newUserProfile.ideas) {
+      //   formData.append('ideas', JSON.stringify(newUserProfile.ideas));
+      // }
+      
+      // const json = JSON.stringify(Object.fromEntries(formData.entries()));
+      // formData.forEach((value, key) => {
+      //   console.log(key, value);
+      // });
+      
+      // const formDataObject: Record<string, FormDataEntryValue> = {};
+      // formData.forEach((value, key) => {
+      //   formDataObject[key] = value;
+      // });
+
+// Конвертуйте об'єкт в JSON
+// const jsonData = JSON.stringify(formDataObject);
+      
+      
+
+      
+
+      profileUser(token, "PUT", formData)
+        .then(() =>
+          dispatch(changreMainPreloader(false))
+        );
     }
-    
+
     // newUserProfile
-  }
+  };
 
   const renderStack = () => {
     if (userStack !== null) {
@@ -75,8 +144,8 @@ const ProfileStackInfo = ({
               className="description about-me__description"
               value={description}
               onChange={(e) => {
-                setDescription(e.target.value)
-                fnState(state => ({...state, description: e.target.value}))
+                setDescription(e.target.value);
+                fnState((state) => ({ ...state, description: e.target.value }));
               }}
               placeholder="Напишіть декілька слів про себе та свій досвід"
             ></textarea>
@@ -101,7 +170,11 @@ const ProfileStackInfo = ({
               Мої технології:
             </h2>
             <div className="technologies__textfield">
-              <TagsField stackUser={userStack?.stack} changeStack={fnState} allStack={stack} />
+              <TagsField
+                stackUser={userStack?.stack}
+                changeStack={fnState}
+                allStack={stack}
+              />
             </div>
           </div>
         </>

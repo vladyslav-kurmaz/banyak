@@ -2,11 +2,12 @@
 import './Talant.scss';
 import plugIcon from '../../image/logo/small_logo.webp';
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
+import { Talent } from '../../types/types';
 
 // class знайденого елементу це found
 
 
-const Talant = () => {
+const Talant = ({dataUser}: {dataUser: Talent}) => {
 
   const data = ['Figma', 'A/B testing', 'Adobe Illustrator', 'Adobe Illustrator']
 
@@ -44,7 +45,8 @@ const Talant = () => {
 
       <div className="talant__container">
         <div className="talant__container-info">
-            <h2 className='talant__container-info-title'>UI/UX Designer</h2>
+            {/* <h2 className='talant__container-info-title'>UI/UX Designer</h2> */}
+            <h2 className='talant__container-info-title'>{`${dataUser.user.first_name} ${dataUser.user.last_name}`}</h2>
             <p className='talant__container-info-description'>Шукаю цікавий проект для підвищення навичків в командній роботі</p>
             <div className="talant__container-button">
               <ButtonSmall text='Портфоліо' style={{'padding-bottom': '2px', 'padding-top': '2px', 'font-size': '15px'}}/>

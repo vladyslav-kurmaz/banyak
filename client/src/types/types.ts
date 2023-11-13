@@ -18,10 +18,7 @@ export type TUserProfile = {
         id: string
       }[]
     ,
-    stack: {
-      name: string
-      id: string
-    }[],
+    stack: string[],
     description: string,
     is_talent: boolean,
     user: {
@@ -38,7 +35,7 @@ export type TUserProfile = {
 
 export type TprofileChange = {
   speciality: [],
-  stack: {name: string, id: string}[],
+  stack: string[],
   avatar?: File | null,
   description: string,
   is_talent: false,
@@ -46,6 +43,17 @@ export type TprofileChange = {
   is_vpo: false,
   ideas: [],
 }
+
+export type Talent = {
+  id: string;
+  user: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+};
+
 
 export type userInfo = {
   // userId: null | string,
