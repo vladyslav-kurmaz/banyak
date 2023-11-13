@@ -192,7 +192,9 @@ const ProfileStackInfo = ({
 
       {renderStack()}
 
+
       <ButtonSmall fn={changeProfileData} text="Зберегти" />
+
     </div>
   );
 };

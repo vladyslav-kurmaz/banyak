@@ -118,10 +118,13 @@ const ProfilePersonalInfo = ({
 
         <div className="personal-info__buttons">
           <div className="personal-info__button-outside personal-info__chat">
+
             <ButtonSmall text="Чат" icon={chat} />
+
           </div>
 
           <div className="personal-info__button-outside personal-info__my-idea">
+
             <ButtonSmall text="Мої ідеї" fn={() => fc(true)} icon={lampIcon} />
           </div>
           <div className="personal-info__button-outside personal-info__add-idea">
@@ -132,6 +135,7 @@ const ProfilePersonalInfo = ({
               href="/create-idea"
             />
             {/* </Link> */}
+
           </div>
         </div>
       </div>
