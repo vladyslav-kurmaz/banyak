@@ -177,17 +177,10 @@ const ServiceBanyak = () => {
   };
 
   const getTalents = async () => {
-    // const tokensesion = getCookies('sessiontokenid')
-    // const tokenid = getCookies('tokenid')
     
     try {
       const req = await request(`${_baseUlr}/api/v1/talents/talent/`, {});
-      // const newToken = await req.json()
       console.log('try');
-      
-      // setCookies('sessiontokenid', await newToken.access_token, 1)
-      
-      // dispatch(changreMainPreloader(false));
 
       if(!req.ok) {
         return Promise.reject(req);
@@ -195,17 +188,27 @@ const ServiceBanyak = () => {
 
       return Promise.resolve(req);
     } catch (e) {
-      // if (typeof e === 'object' && e !== null && 'status' in e) {
-      //   if (e.status === 403) {
-      //     dispatch(changeUserProfile(null));
-      //     deleteCookie('sessiontokenid');
-      //     deleteCookie('tokenid');
-      //   }
-      //   console.log(e.status);
-      //   dispatch(changreMainPreloader(false));
+    
       return Promise.reject(e);
       }
-      // console.error(e);
+    
+  };
+
+  const getIdeas = async () => {
+    
+    try {
+      const req = await request(`${_baseUlr}/api/v1/ideas/ideas/`, {});
+      console.log('try');
+
+      if(!req.ok) {
+        return Promise.reject(req);
+      }
+
+      return Promise.resolve(req);
+    } catch (e) {
+    
+      return Promise.reject(e);
+      }
     
   };
 
@@ -219,7 +222,8 @@ const ServiceBanyak = () => {
     profileUser,
     newAccess,
     workWithAllStack,
-    getTalents
+    getTalents,
+    getIdeas
   };
 };
 

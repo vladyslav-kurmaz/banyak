@@ -13,17 +13,28 @@ import Talant from "../../components/Talant/Talant";
 import "./IdeasAndTalent.scss";
 
 const IdeasAndTalent = ({ type }: { type: boolean }) => {
-  const [talents, setTalents] = useState();
+  const [talents, setTalents] = useState<Talent[]>([]);
+  const [ideas, setIdeas] = useState<Talent[]>([]);
 
-  const { getTalents } = ServiceBanyak();
+  const { getTalents, getIdeas } = ServiceBanyak();
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getTalents()
+    if (type) {
+      getIdeas()
+      .then((res) => res.json())
+      .then((res) => setIdeas(res))
+      .then(() => dispatch(changreMainPreloader(false)))
+      .catch(() => dispatch(changreMainPreloader(false)))
+    } else {
+      getTalents()
       .then((res) => res.json())
       .then((res) => setTalents(res))
       .then(() => dispatch(changreMainPreloader(false)))
-  }, []);
+      .catch(() => dispatch(changreMainPreloader(false)))
+    } 
+   
+  }, [type]);
 
   
   const renderItems = (type: boolean, data: Talent[]) => {
@@ -45,7 +56,7 @@ const IdeasAndTalent = ({ type }: { type: boolean }) => {
       {/* {type ? <Idea myIdea={false}/> : <Talant />}
       {type ? <Idea myIdea={false}/> : <Talant />} */}
 
-      {talents ? renderItems(type, talents) : null}
+      {talents ? renderItems(type, talents) : renderItems(type, ideas)}
 
       {type ? (
         <ButtonMoreLoading text={"ідей"} />

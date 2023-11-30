@@ -2,6 +2,7 @@
 import './Idea.scss';
 import plugIcon from '../../image/logo/small_logo.webp';
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall';
+import { Talent } from '../../types/types';
 
 // class знайденого елементу це found
 
