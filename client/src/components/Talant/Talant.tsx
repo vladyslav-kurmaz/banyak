@@ -12,8 +12,8 @@ const Talant = ({dataUser}: {dataUser: Talent}) => {
   const data = ['Figma', 'A/B testing', 'Adobe Illustrator', 'Adobe Illustrator']
 
   const renderSpecialty = (data: string[]) => {
+  
     
-
     return data.map((item, i) => {
       const itemLengh = item.length < 18 ? `+${item}`:`+${item}...`;
       if (i < 3) {

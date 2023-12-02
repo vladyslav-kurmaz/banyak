@@ -44,6 +44,15 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
 
+    if (typeof body === 'object') {
+      const d = body as FormData;
+      console.log(d.getAll('speciality')[0]);
+      console.log(typeof d.getAll('speciality')[0]);
+    }
+
+    
+    
+    
     try {
       const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
         method: method,

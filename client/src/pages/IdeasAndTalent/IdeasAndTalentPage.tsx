@@ -55,8 +55,8 @@ const IdeasAndTalent = ({ type }: { type: boolean }) => {
       {/* {renderItems(type)} */}
       {/* {type ? <Idea myIdea={false}/> : <Talant />}
       {type ? <Idea myIdea={false}/> : <Talant />} */}
-
-      {talents ? renderItems(type, talents) : renderItems(type, ideas)}
+{type ? <Idea myIdea={false}/> : <Talant dataUser={talents[0]} />}
+      {/* {talents ? renderItems(type, talents) : renderItems(type, ideas)} */}
 
       {type ? (
         <ButtonMoreLoading text={"ідей"} />

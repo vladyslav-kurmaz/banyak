@@ -26,17 +26,37 @@ const ProfilePage = ({
   const dispatch = useAppDispatch()
 
   const [newUserData, setNewUserData] = useState<TprofileChange>({
-    speciality: [],
-    stack: [],
-    avatar: null,
-    description: "",
-    is_talent: false,
-    is_military: false,
-    is_vpo: false,
-    ideas: [],
-  });
+      speciality: [{name: ''}],
+      stack: [],
+      avatar: null,
+      description: "",
+      is_talent: false,
+      // is_military: false,
+      // is_vpo: false,
+      // ideas: [],
+      portfolio:'',
+    }
+  );
 
-  // const [stack, setStack] = useState()
+  // console.log(newUserData);
+  
+  useEffect(() => {
+    if (userProfile) {
+      setNewUserData({
+        speciality: [userProfile?.speciality[0]],
+        stack: userProfile?.speciality,
+        avatar: userProfile?.avatar,
+        description: userProfile.description === null ? '' : userProfile.description,
+        is_talent: userProfile.is_talent,
+        // is_military: userProfile.is_military,
+        // is_vpo: userProfile.is_vpo,
+        // ideas: userProfile.ideas,
+        portfolio: userProfile.portfolio === null ? '' : userProfile.portfolio
+      } )
+    }    
+  }, [userProfile])
+
+  
 
   useEffect(() => {
     workWithAllStack("stack-list/", "GET")
@@ -57,7 +77,8 @@ const ProfilePage = ({
       <ProfilePersonalInfo changeData={setNewUserData} fc={fc} />
       {AllSteck !== null && userProfile !== null ? (
         <ProfileStackInfo
-          userStack={userProfile}
+          // userStack={userProfile}
+          userProfil={userProfile}
           disabled={disabled}
           fnState={setNewUserData}
           stack={AllSteck}

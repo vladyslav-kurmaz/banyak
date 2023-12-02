@@ -356,16 +356,9 @@
                 "description": "- GET: Retrieves a list of talents.\n- GET <id>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
                 "parameters": [
                     {
-                        "name": "limit",
+                        "name": "page_size",
                         "in": "query",
-                        "description": "Number of results to return per page.",
-                        "required": false,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "The initial index from which to return the results.",
+                        "description": "A page number within the paginated result set.",
                         "required": false,
                         "type": "integer"
                     }
@@ -440,16 +433,9 @@
                 "description": "List of invitations for owner",
                 "parameters": [
                     {
-                        "name": "limit",
+                        "name": "page_size",
                         "in": "query",
-                        "description": "Number of results to return per page.",
-                        "required": false,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "The initial index from which to return the results.",
+                        "description": "A page number within the paginated result set.",
                         "required": false,
                         "type": "integer"
                     }
@@ -499,16 +485,9 @@
                 "description": "List of invitations for talent",
                 "parameters": [
                     {
-                        "name": "limit",
+                        "name": "page_size",
                         "in": "query",
-                        "description": "Number of results to return per page.",
-                        "required": false,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "The initial index from which to return the results.",
+                        "description": "A page number within the paginated result set.",
                         "required": false,
                         "type": "integer"
                     }
@@ -739,9 +718,9 @@
                 }
             ]
         },
-        "/users/activate-email/{user_id}/{token}/": {
+        "/users/activate/{user_id}/{token}/": {
             "get": {
-                "operationId": "users_activate-email_read",
+                "operationId": "users_activate_read",
                 "description": "",
                 "parameters": [],
                 "responses": {
@@ -800,6 +779,22 @@
             },
             "parameters": []
         },
+        "/users/ip/": {
+            "get": {
+                "operationId": "users_ip_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
         "/users/linkedin-auth/": {
             "get": {
                 "operationId": "users_linkedin-auth_list",
@@ -818,35 +813,84 @@
         },
         "/users/login/": {
             "post": {
-                "operationId": "users_login_create",
-                "description": "\u041b\u043e\u0433\u0456\u043d",
+                "operationId": "Users post",
+                "description": "Register new user",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/AuthUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Login successful",
-                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
                             "type": "object",
                             "properties": {
-                                "token": {
+                                "email": {
+                                    "description": "User email",
+                                    "type": "email"
+                                },
+                                "password": {
+                                    "description": "User password",
+                                    "type": "string"
+                                },
+                                "first_name": {
+                                    "description": "User first name",
+                                    "type": "string"
+                                },
+                                "last_name": {
+                                    "description": "User last name",
                                     "type": "string"
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Invalid input data"
-                    },
-                    "404": {
-                        "description": "User not found"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "description": "User email",
+                                    "type": "email"
+                                },
+                                "password": {
+                                    "description": "User password",
+                                    "type": "string"
+                                },
+                                "first_name": {
+                                    "description": "User first name",
+                                    "type": "string"
+                                },
+                                "last_name": {
+                                    "description": "User last name",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
+        "/users/logout/": {
+            "delete": {
+                "operationId": "users_logout_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
                     }
                 },
                 "tags": [
@@ -857,12 +901,33 @@
         },
         "/users/new-access/": {
             "put": {
-                "operationId": "users_new-access_update",
-                "description": "",
-                "parameters": [],
+                "operationId": "Users put",
+                "description": "Update access token",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "refresh_token"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "refresh_token": {
+                                    "description": "Refresh token",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "Access token update"
+                    },
+                    "400": {
+                        "description": "Refresh token has expired"
                     }
                 },
                 "tags": [
@@ -902,24 +967,46 @@
         },
         "/users/register/": {
             "post": {
-                "operationId": "users_register_create",
-                "description": "\u0420\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u044f \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
+                "operationId": "Users post",
+                "description": "Register new user",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/UserRegister"
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "description": "User email",
+                                    "type": "email"
+                                },
+                                "password": {
+                                    "description": "User password",
+                                    "type": "string"
+                                },
+                                "first_name": {
+                                    "description": "User first name",
+                                    "type": "string"
+                                },
+                                "last_name": {
+                                    "description": "User last name",
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "User registered successfully"
+                        "description": "User register"
                     },
                     "400": {
-                        "description": "Invalid input data"
+                        "description": "Invalid data"
                     }
                 },
                 "tags": [
@@ -1050,14 +1137,144 @@
             },
             "parameters": []
         },
-        "/users/test/": {
+        "/users/specilaity-list/": {
             "get": {
-                "operationId": "users_test_list",
+                "operationId": "users_specilaity-list_list",
                 "description": "",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Speciality"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
+        "/users/stack-list/": {
+            "get": {
+                "operationId": "users_stack-list_list",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-nullable": true
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Stack"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        },
+        "/users/user-military-or-vpo/": {
+            "put": {
+                "operationId": "users_user-military-or-vpo_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserMilitaryOrVpoProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UserMilitaryOrVpoProfile"
+                        }
                     }
                 },
                 "tags": [
@@ -1068,38 +1285,12 @@
         },
         "/users/user-profile/": {
             "get": {
-                "operationId": "users_user-profile_list",
-                "description": "Get a list of published ideas",
+                "operationId": "Users get",
+                "description": "\u041f\u0440\u043e\u0444\u0456\u043b\u044c \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "Successful",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "user": {
-                                        "type": "object"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "speciality": {
-                                        "type": "object"
-                                    },
-                                    "stack": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Profile not found"
+                        "description": ""
                     }
                 },
                 "tags": [
@@ -1107,27 +1298,29 @@
                 ]
             },
             "post": {
-                "operationId": "users_user-profile_create",
-                "description": "\u041f\u0440\u043e\u0444\u0456\u043b\u044c \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
+                "operationId": "Users post",
+                "description": "Create user profile",
                 "parameters": [
                     {
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/UserProfile"
+                            "type": "object",
+                            "properties": {
+                                "user": {
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Profile update"
-                    },
-                    "404": {
-                        "description": "Profile not found"
+                        "description": "Profile created"
                     },
                     "400": {
-                        "description": "Error"
+                        "description": "Invalid data"
                     }
                 },
                 "tags": [
@@ -1135,12 +1328,74 @@
                 ]
             },
             "put": {
-                "operationId": "users_user-profile_update",
-                "description": "\u041f\u0440\u043e\u0444\u0456\u043b\u044c \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
-                "parameters": [],
+                "operationId": "Users put",
+                "description": "Update data profile",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "description": {
+                                    "description": "Profile description",
+                                    "type": "string"
+                                },
+                                "avatar": {
+                                    "description": "Profile avatar",
+                                    "type": "string"
+                                },
+                                "ideas": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "title": {
+                                                "description": "Idea title",
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "speciality": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "description": "Specialities names",
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "stack": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "description": "Stack",
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "is_talent": {
+                                    "description": "Profile is talent",
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "Profile updated"
+                    },
+                    "400": {
+                        "description": "Invalid user data"
                     }
                 },
                 "tags": [
@@ -1257,46 +1512,76 @@
                 },
                 "user": {
                     "$ref": "#/definitions/CustomUserTalent"
-                }
-            }
-        },
-        "AuthUser": {
-            "required": [
-                "email",
-                "password"
-            ],
-            "type": "object",
-            "properties": {
-                "email": {
-                    "title": "Email",
-                    "type": "string",
-                    "format": "email",
-                    "minLength": 1
                 },
-                "password": {
-                    "title": "Password",
+                "avatar": {
+                    "title": "Avatar",
                     "type": "string",
-                    "minLength": 2
-                }
-            }
-        },
-        "UserRegister": {
-            "required": [
-                "email",
-                "password"
-            ],
-            "type": "object",
-            "properties": {
-                "email": {
-                    "title": "Email",
-                    "type": "string",
-                    "format": "email",
-                    "minLength": 1
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
                 },
-                "password": {
-                    "title": "Password",
+                "upload_military": {
+                    "title": "Upload military",
                     "type": "string",
-                    "minLength": 8
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
+                "upload_vpo": {
+                    "title": "Upload vpo",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "x-nullable": true
+                },
+                "portfolio": {
+                    "title": "Portfolio",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 200,
+                    "x-nullable": true
+                },
+                "is_talent": {
+                    "title": "Is talent",
+                    "type": "boolean"
+                },
+                "is_military": {
+                    "title": "Is military",
+                    "type": "boolean"
+                },
+                "is_vpo": {
+                    "title": "Is vpo",
+                    "type": "boolean"
+                },
+                "ideas": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
+                },
+                "speciality": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "uniqueItems": true
+                },
+                "stack": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "uniqueItems": true
                 }
             }
         },
@@ -1358,12 +1643,6 @@
             ],
             "type": "object",
             "properties": {
-                "id": {
-                    "title": "Id",
-                    "type": "string",
-                    "format": "uuid",
-                    "readOnly": true
-                },
                 "name": {
                     "title": "Name",
                     "type": "string",
@@ -1374,8 +1653,7 @@
         },
         "SearchUsers": {
             "required": [
-                "stack",
-                "speciality"
+                "stack"
             ],
             "type": "object",
             "properties": {
@@ -1398,13 +1676,42 @@
                     "x-nullable": true,
                     "format": "uri"
                 },
+                "upload_military": {
+                    "title": "Upload military",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
+                "upload_vpo": {
+                    "title": "Upload vpo",
+                    "type": "string",
+                    "readOnly": true,
+                    "x-nullable": true,
+                    "format": "uri"
+                },
                 "description": {
                     "title": "Description",
                     "type": "string",
                     "x-nullable": true
                 },
+                "portfolio": {
+                    "title": "Portfolio",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 200,
+                    "x-nullable": true
+                },
                 "is_talent": {
                     "title": "Is talent",
+                    "type": "boolean"
+                },
+                "is_military": {
+                    "title": "Is military",
+                    "type": "boolean"
+                },
+                "is_vpo": {
+                    "title": "Is vpo",
                     "type": "boolean"
                 },
                 "user": {
@@ -1438,12 +1745,6 @@
             ],
             "type": "object",
             "properties": {
-                "id": {
-                    "title": "Id",
-                    "type": "string",
-                    "format": "uuid",
-                    "readOnly": true
-                },
                 "name": {
                     "title": "Name",
                     "type": "string",
@@ -1452,57 +1753,32 @@
                 }
             }
         },
-        "UserProfile": {
+        "UserMilitaryOrVpoProfile": {
+            "required": [
+                "token",
+                "user_id"
+            ],
             "type": "object",
             "properties": {
-                "id": {
-                    "title": "Id",
+                "token": {
+                    "title": "Token",
                     "type": "string",
-                    "format": "uuid",
-                    "readOnly": true
+                    "minLength": 1
                 },
-                "speciality": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Speciality"
-                    }
-                },
-                "stack": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Stack"
-                    }
-                },
-                "avatar": {
-                    "title": "Avatar",
+                "user_id": {
+                    "title": "User id",
                     "type": "string",
-                    "readOnly": true,
-                    "x-nullable": true,
-                    "format": "uri"
+                    "minLength": 1
                 },
-                "description": {
-                    "title": "Description",
-                    "type": "string",
-                    "x-nullable": true
+                "is_military": {
+                    "title": "Is military",
+                    "type": "boolean",
+                    "default": false
                 },
-                "is_talent": {
-                    "title": "Is talent",
-                    "type": "boolean"
-                },
-                "user": {
-                    "title": "User",
-                    "type": "string",
-                    "format": "uuid",
-                    "x-nullable": true
-                },
-                "ideas": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "format": "uuid",
-                        "x-nullable": true
-                    },
-                    "uniqueItems": true
+                "is_vpo": {
+                    "title": "Is vpo",
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },

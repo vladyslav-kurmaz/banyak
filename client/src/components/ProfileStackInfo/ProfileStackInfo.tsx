@@ -17,19 +17,19 @@ import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
 // export type TUserProfile = {
 const ProfileStackInfo = ({
   stack,
-  userStack,
+  userProfil,
   fnState,
   disabled,
   newUserProfile,
 }: {
   stack: { id: string; name: string }[];
-  userStack: TUserProfile;
+  userProfil: TUserProfile
   fnState: React.Dispatch<React.SetStateAction<TprofileChange>>;
   disabled: boolean;
   newUserProfile: TprofileChange;
 }) => {
-  const [speciality, setSpeciality] = useState(userStack?.speciality[0]);
-  const [description, setDescription] = useState(userStack?.description);
+  // const [speciality, setSpeciality] = useState(userStack?.speciality[0]);
+  // const [description, setDescription] = useState(userStack?.description);
   const dispatch = useAppDispatch();
   // const [portfolio, setPortfolio] = useState(userProfile?.portfolio);
   // const [stack, setStack] = useState(userProfile?.stack);
@@ -37,78 +37,76 @@ const ProfileStackInfo = ({
   const { profileUser } = ServiceBanyak();
   const { getCookies } = workWithCookies();
 
+  // console.log(userProfil);
+  console.log(userProfil);
+
   const changeProfileData = () => {
     const token = getCookies("sessiontokenid");
 
     if (typeof token === "string") {
 
-      
-
-      // profileUser(token, "PUT", JSON.stringify(newUserProfile)).then(() =>
-      //   dispatch(changreMainPreloader(false))
-      // );
-
-    // speciality: [],
-    // stack: [],
-    // avatar: null,
-    // description: "",
-    // is_talent: false,
-    // is_military: false,
-    // is_vpo: false,
-    // ideas: [],
 
       const formData = new FormData;
-
-      // if (newUserProfile.speciality) {
-      //   formData.append('speciality', newUserProfile.speciality);
-      // }
-
-      // if (newUserProfile.speciality) {
-      //   formData.append('speciality', JSON.stringify(newUserProfile.speciality));
-      // }
       
-      // if (newUserProfile.stack && newUserProfile.stack.length > 0) {
-      //   formData.append('stack', JSON.stringify(newUserProfile.stack));
-      // }
       formData.append('description', newUserProfile.description);
-      
-      // formData.append('stack', newUserProfile.stack);
+      formData.append('portfolio', newUserProfile.portfolio);
 
-      if (newUserProfile.avatar) {
+      if (newUserProfile.speciality) {
+        
+        formData.append('speciality', JSON.stringify(newUserProfile.speciality));
+      }
+      
+      if (newUserProfile.stack && newUserProfile.stack.length > 0) {
+        formData.append('stack', JSON.stringify(newUserProfile.stack));
+      }
+
+      if (typeof newUserProfile.avatar !== 'string' && newUserProfile.avatar) {
         formData.append('avatar', newUserProfile.avatar);
       }
 
-      // if (newUserProfile.is_talent) {
-      //   formData.append('is_talent', JSON.stringify(newUserProfile.is_talent));
+      if (newUserProfile.is_talent) {
+        formData.append('is_talent', JSON.stringify(newUserProfile.is_talent));
+      }
+
+      // if (newUserProfile.ideas) {        
+      //   formData.append('ideas', JSON.stringify(newUserProfile.ideas));
       // }
+
       // if (newUserProfile.is_military) {
       //   formData.append('is_military', JSON.stringify(newUserProfile.is_military));
       // }
       // if (newUserProfile.is_vpo) {
       //   formData.append('is_vpo', JSON.stringify(newUserProfile.is_vpo));
       // }
-      // if (newUserProfile.ideas) {
-      //   formData.append('ideas', JSON.stringify(newUserProfile.ideas));
-      // }
+
+      
+
+      
+
       
       // const json = JSON.stringify(Object.fromEntries(formData.entries()));
       // formData.forEach((value, key) => {
       //   console.log(key, value);
       // });
       
-      // const formDataObject: Record<string, FormDataEntryValue> = {};
-      // formData.forEach((value, key) => {
-      //   formDataObject[key] = value;
-      // });
-
-// Конвертуйте об'єкт в JSON
-// const jsonData = JSON.stringify(formDataObject);
+      console.log(newUserProfile);
       
-      
+      const formDataObject: Record<string, FormDataEntryValue> = {};
+      formData.forEach((value, key) => {
 
+        // console.log(typeof value);
+        
+        // console.log(key, value);
+        
+        formDataObject[key] = value;
+      });
+    
       
-
       profileUser(token, "PUT", formData)
+        .then((res) => {
+          console.log(res);
+          
+        })
         .then(() =>
           dispatch(changreMainPreloader(false))
         );
@@ -118,7 +116,7 @@ const ProfileStackInfo = ({
   };
 
   const renderStack = () => {
-    if (userStack !== null) {
+    if (userProfil !== null) {
       return (
         <>
           <div className="personal-stack__specialization specialization">
@@ -127,8 +125,8 @@ const ProfileStackInfo = ({
             </h2>
             <input
               type="text"
-              // value={speciality ? speciality : ''}
-              // onChange={(e) => setSpeciality(e.target.value)}
+              value={newUserProfile.speciality[0] ? newUserProfile?.speciality[0].name : ""}
+              onChange={(e) => fnState((state) => ({ ...state, speciality: [{name :e.target.value}] }))}
               placeholder="UI/UX Designer"
               className="specialization__input"
             />
@@ -142,9 +140,9 @@ const ProfileStackInfo = ({
               name="description"
               id=""
               className="description about-me__description"
-              value={description}
+              value={newUserProfile?.description}
               onChange={(e) => {
-                setDescription(e.target.value);
+                // setDescription(e.target.value);
                 fnState((state) => ({ ...state, description: e.target.value }));
               }}
               placeholder="Напишіть декілька слів про себе та свій досвід"
@@ -162,6 +160,11 @@ const ProfileStackInfo = ({
               className="portfolio__input"
               type="text"
               placeholder="https://your-portfolio-link"
+              value={newUserProfile?.portfolio ? newUserProfile?.portfolio : ''}
+              onChange={(e) => {
+                // setDescription(e.target.value);
+                fnState((state) => ({ ...state, portfolio: e.target.value }));
+              }}
             />
           </div>
 
@@ -171,7 +174,7 @@ const ProfileStackInfo = ({
             </h2>
             <div className="technologies__textfield">
               <TagsField
-                stackUser={userStack?.stack}
+                stackUser={userProfil?.stack}
                 changeStack={fnState}
                 allStack={stack}
               />

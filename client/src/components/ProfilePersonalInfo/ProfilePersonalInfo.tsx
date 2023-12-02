@@ -91,7 +91,7 @@ const ProfilePersonalInfo = ({
         {renderUserInfo()}
 
         <div className="personal-info__statuses">
-          <div className="personal-info__statuses-container">
+          {/* <div className="personal-info__statuses-container">
             <label htmlFor="vpo" className="personal-info__special-status">
               Статус ВПО
               <input
@@ -101,9 +101,9 @@ const ProfilePersonalInfo = ({
                 id="vpo"
               />
             </label>
-          </div>
+          </div> */}
 
-          <div className="personal-info__statuses-container">
+          {/* <div className="personal-info__statuses-container">
             <label htmlFor="soldie" className="personal-info__special-status">
               Статус Військовий
               <input
@@ -113,7 +113,7 @@ const ProfilePersonalInfo = ({
                 onChange={(e) => changeFile(e, "upload_military")}
               />
             </label>
-          </div>
+          </div> */}
         </div>
 
         <div className="personal-info__buttons">

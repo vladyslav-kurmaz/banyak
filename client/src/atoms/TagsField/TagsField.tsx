@@ -18,7 +18,7 @@ const TagsField = ({
   allStack,
   changeStack
 }: {
-  stackUser: string[];
+  stackUser: {name: string}[];
   allStack: { name: string; id: string }[];
   changeStack: React.Dispatch<React.SetStateAction<TprofileChange>>
 }) => {
@@ -27,6 +27,8 @@ const TagsField = ({
   
 
   const tagifyRef = useRef(null);
+
+  
 
   useEffect(() => {
     // Ініціалізація бібліотеки Tagify
@@ -58,10 +60,10 @@ const TagsField = ({
             }
           })          
 
-            changeStack(stack => ({
-              ...stack,
-              stack: [...stack.stack, searchId[0].id]
-            }))
+            // changeStack(stack => ({
+            //   ...stack,
+            //   stack: [...stack.stack, searchId[0].id]
+            // }))
           // }
           
           
@@ -114,11 +116,11 @@ const TagsField = ({
       let stack: string[] = []
       const test = allStack.filter((item, i) => {
    
-        stackUser.forEach(userStack => {
-          if (userStack === item.id) {
-            stack.push(item.name)
-          }
-        })
+        // stackUser.forEach(userStack => {
+        //   if (userStack === item.id) {
+        //     stack.push(item.name)
+        //   }
+        // })
 
         return stack;
       })

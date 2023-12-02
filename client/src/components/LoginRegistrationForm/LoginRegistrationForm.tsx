@@ -160,9 +160,11 @@ const LoginRegistrationForm = () => {
       setCookies("tokenid", await loginJson.refresh_token, 1);
       
       const createProfile = await profileUser(loginJson.access_token, "POST");
-
+      document.body.style.overflow = "";
       navigate("/chose-profile");
       dispatch(changreMainPreloader(false));
+
+      
 
       setName("");
       setSurName("");
@@ -174,7 +176,7 @@ const LoginRegistrationForm = () => {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         dispatch(changeErrorStatus(e.status))
       }
-
+      document.body.style.overflow = "";
       setName("");
       setSurName("");
       setEmail("");
@@ -200,7 +202,7 @@ const LoginRegistrationForm = () => {
       setCookies("tokenid", await loginJson.refresh_token, 1);
 
       const createProfile = await profileUser(loginJson.access_token, "GET");
-      
+      document.body.style.overflow = "";
       navigate("/");
       dispatch(changreMainPreloader(false));
 
@@ -208,6 +210,7 @@ const LoginRegistrationForm = () => {
       setPass("");
       
     } catch (e) {
+      document.body.style.overflow = "";
       dispatch(changreMainPreloader(false));
       if (typeof e === 'object' && e !== null && 'status' in e) {
         dispatch(changeErrorStatus(e.status))
