@@ -38,7 +38,7 @@ const ProfileStackInfo = ({
   const { getCookies } = workWithCookies();
 
   // console.log(userProfil);
-  console.log(userProfil);
+  // console.log(userProfil);
 
   const changeProfileData = () => {
     const token = getCookies("sessiontokenid");
@@ -52,6 +52,7 @@ const ProfileStackInfo = ({
       formData.append('portfolio', newUserProfile.portfolio);
 
       if (newUserProfile.speciality) {
+        console.log(newUserProfile);
         
         formData.append('speciality', JSON.stringify(newUserProfile.speciality));
       }
@@ -89,7 +90,7 @@ const ProfileStackInfo = ({
       //   console.log(key, value);
       // });
       
-      console.log(newUserProfile);
+      // console.log(newUserProfile);
       
       const formDataObject: Record<string, FormDataEntryValue> = {};
       formData.forEach((value, key) => {
@@ -101,6 +102,7 @@ const ProfileStackInfo = ({
         formDataObject[key] = value;
       });
     
+      console.log(formData.getAll('speciality'));
       
       profileUser(token, "PUT", formData)
         .then((res) => {
@@ -125,8 +127,8 @@ const ProfileStackInfo = ({
             </h2>
             <input
               type="text"
-              value={newUserProfile.speciality[0] ? newUserProfile?.speciality[0].name : ""}
-              onChange={(e) => fnState((state) => ({ ...state, speciality: [{name :e.target.value}] }))}
+              value={newUserProfile.speciality ? newUserProfile?.speciality.name : ""}
+              onChange={(e) => fnState((state) => ({ ...state, speciality: {name :e.target.value} }))}
               placeholder="UI/UX Designer"
               className="specialization__input"
             />

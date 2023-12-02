@@ -26,7 +26,7 @@ const ProfilePage = ({
   const dispatch = useAppDispatch()
 
   const [newUserData, setNewUserData] = useState<TprofileChange>({
-      speciality: [{name: ''}],
+      speciality: {name: ''},
       stack: [],
       avatar: null,
       description: "",
@@ -43,7 +43,7 @@ const ProfilePage = ({
   useEffect(() => {
     if (userProfile) {
       setNewUserData({
-        speciality: [userProfile?.speciality[0]],
+        speciality: userProfile?.speciality[0],
         stack: userProfile?.speciality,
         avatar: userProfile?.avatar,
         description: userProfile.description === null ? '' : userProfile.description,
