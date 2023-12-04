@@ -1,5 +1,10 @@
-import { useAppSelector } from "../../hooks/reduxToolkidHooks";
+import { useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
 import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
+import ServiceBanyak from "../../service/ServiceBanyak";
+import workWithCookies from "../../untils/workWithCookies";
+import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
+
 import logo from "../../image/logo/small_logo.webp";
 
 import "./ProfilePersonalInfo.scss";
@@ -12,6 +17,7 @@ import lampIcon from "../../image/icon/idea.svg";
 import plusIcon from "../../image/icon/PLUS.svg";
 import { Link } from "react-router-dom";
 
+
 const ProfilePersonalInfo = ({
   fc,
   changeData,
@@ -22,6 +28,11 @@ const ProfilePersonalInfo = ({
   // const [name, setName] = useState(true);
   // const [nameWrite, setNameWrite] = useState("Катерина Білокур");
 
+  const dispatch = useAppDispatch()
+  const {updatPhoto} = ServiceBanyak()
+  const [newAvatar, setNewAvatar] = useState<string | File>('');
+  const { getCookies } = workWithCookies();
+
   // const inputRef = useRef(null);
 
   const { userProfile } = useAppSelector((state) => state.userInfo);
@@ -31,18 +42,42 @@ const ProfilePersonalInfo = ({
     const target = e.target;
     if (target && target.files !== null) {
       const file = target.files[0];
-      changeData((state) => ({
-        ...state,
-        avatar: file,
-      }));
+      console.log(userProfile);
+      
+      setNewAvatar(file);
+      // changeData((state) => ({
+      //   ...state,
+      //   avatar: file,
+      // }));
     }
   };
+
+  const sendNewAvatar = () => {
+    const token = getCookies("sessiontokenid");
+    const formData = new FormData;
+
+    formData.append('avatar_profile', newAvatar);
+
+    if (typeof token === "string") {
+      updatPhoto(token, 'PUT', formData)
+      .then((res) => console.log(res))
+      .catch((e) => console.error(e))
+      .finally(() => {
+        setNewAvatar('')
+        dispatch(changreMainPreloader(false))
+      })
+
+    }
+
+    
+  }
+
 
   const renderUserInfo = () => {
     if (userProfile !== null) {
       const { user, avatar, is_military, is_vpo } = userProfile;
-      const militaty = is_military ? 'military' : '';
-      const vpo = is_vpo ? 'vpo' : '';
+      // const militaty = is_military ? 'military' : '';
+      // const vpo = is_vpo ? 'vpo' : '';
 
       const avatarOrPlug =
         avatar === null ? (
@@ -50,7 +85,7 @@ const ProfilePersonalInfo = ({
         ) : (
           <img
             src={`http://localhost:8000${avatar}`}
-            className={`personal-info__avatar ${militaty} ${vpo}`} 
+            className={`personal-info__avatar`} 
             alt="User avatar"
           />
         );
@@ -59,18 +94,29 @@ const ProfilePersonalInfo = ({
           {avatarOrPlug}
 
           <div className="personal-info__container">
-            <label
-              htmlFor="avatar-change"
-              className="personal-info__changed-avatar"
-            >
-              Замінити фото
-              <input
-                className="personal-info__input"
-                type="file"
-                id="avatar-change"
-                onChange={(e) => changeFile(e, "avatar")}
-              />
-            </label>
+            {
+              newAvatar === '' 
+              ?
+              <label
+                htmlFor="avatar-change"
+                className="personal-info__changed-avatar"
+              >
+                Замінити фото
+                <input
+                  className="personal-info__input"
+                  type="file"
+                  id="avatar-change"
+                  onChange={(e) => changeFile(e, "avatar")}
+                />
+              </label>
+              :
+              <div>
+                <h2>Ви бажаєте змінити фото</h2>
+                <ButtonSmall text="Так" fn={() => sendNewAvatar()}></ButtonSmall>
+                <ButtonSmall text="Ні" fn={() => setNewAvatar('')}></ButtonSmall>
+              </div>
+            }
+
             <span className="personal-info__name">
               {user.first_name} {user.last_name}
             </span>

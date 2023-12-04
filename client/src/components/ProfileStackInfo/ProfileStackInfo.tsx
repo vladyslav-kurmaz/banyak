@@ -28,6 +28,8 @@ const ProfileStackInfo = ({
   disabled: boolean;
   newUserProfile: TprofileChange;
 }) => {
+  console.log(newUserProfile);
+  
   // const [speciality, setSpeciality] = useState(userStack?.speciality[0]);
   // const [description, setDescription] = useState(userStack?.description);
   const dispatch = useAppDispatch();
@@ -48,26 +50,26 @@ const ProfileStackInfo = ({
 
       const formData = new FormData;
       
-      formData.append('description', newUserProfile.description);
-      formData.append('portfolio', newUserProfile.portfolio);
+      // formData.append('description', newUserProfile.description);
+      // formData.append('portfolio', newUserProfile.portfolio);
 
-      if (newUserProfile.speciality) {
-        console.log(newUserProfile);
+      // if (newUserProfile.speciality) {
+      //   console.log(newUserProfile);
         
-        formData.append('speciality', JSON.stringify(newUserProfile.speciality));
-      }
+      //   formData.append('speciality', newUserProfile.speciality);
+      // }
       
-      if (newUserProfile.stack && newUserProfile.stack.length > 0) {
-        formData.append('stack', JSON.stringify(newUserProfile.stack));
-      }
+      // if (newUserProfile.stack && newUserProfile.stack.length > 0) {
+      //   formData.append('stack', JSON.stringify(newUserProfile.stack));
+      // }
 
-      if (typeof newUserProfile.avatar !== 'string' && newUserProfile.avatar) {
-        formData.append('avatar', newUserProfile.avatar);
-      }
+      // if (typeof newUserProfile.avatar !== 'string' && newUserProfile.avatar) {
+      //   formData.append('avatar', newUserProfile.avatar);
+      // }
 
-      if (newUserProfile.is_talent) {
-        formData.append('is_talent', JSON.stringify(newUserProfile.is_talent));
-      }
+      // if (newUserProfile.is_talent) {
+      //   formData.append('is_talent', JSON.stringify(newUserProfile.is_talent));
+      // }
 
       // if (newUserProfile.ideas) {        
       //   formData.append('ideas', JSON.stringify(newUserProfile.ideas));
@@ -92,19 +94,19 @@ const ProfileStackInfo = ({
       
       // console.log(newUserProfile);
       
-      const formDataObject: Record<string, FormDataEntryValue> = {};
-      formData.forEach((value, key) => {
+      // const formDataObject: Record<string, FormDataEntryValue> = {};
+      // formData.forEach((value, key) => {
 
-        // console.log(typeof value);
+      //   // console.log(typeof value);
         
-        // console.log(key, value);
+      //   // console.log(key, value);
         
-        formDataObject[key] = value;
-      });
+      //   formDataObject[key] = value;
+      // });
     
-      console.log(formData.getAll('speciality'));
+      // console.log(formData.getAll('speciality'));
       
-      profileUser(token, "PUT", formData)
+      profileUser(token, "PUT", JSON.stringify(newUserProfile))
         .then((res) => {
           console.log(res);
           
@@ -127,8 +129,8 @@ const ProfileStackInfo = ({
             </h2>
             <input
               type="text"
-              value={newUserProfile.speciality ? newUserProfile?.speciality.name : ""}
-              onChange={(e) => fnState((state) => ({ ...state, speciality: {name :e.target.value} }))}
+              value={newUserProfile.speciality ? newUserProfile?.speciality[0].name : ""}
+              onChange={(e) => fnState((state) => ({ ...state, speciality: [{name: e.target.value}]}))}
               placeholder="UI/UX Designer"
               className="specialization__input"
             />

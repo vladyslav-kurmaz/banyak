@@ -25,10 +25,13 @@ const ProfilePage = ({
   const [disabled, setDisabled] = useState(false);
   const dispatch = useAppDispatch()
 
+  // console.log(userProfile);
+  
+
   const [newUserData, setNewUserData] = useState<TprofileChange>({
-      speciality: {name: ''},
+      speciality: [{name: ''}],
       stack: [],
-      avatar: null,
+      // avatar: null,
       description: "",
       is_talent: false,
       // is_military: false,
@@ -43,9 +46,9 @@ const ProfilePage = ({
   useEffect(() => {
     if (userProfile) {
       setNewUserData({
-        speciality: userProfile?.speciality[0],
-        stack: userProfile?.speciality,
-        avatar: userProfile?.avatar,
+        speciality: userProfile?.speciality && userProfile?.speciality.length === 0 ? [{name: ''}] : userProfile?.speciality,
+        stack: userProfile?.stack,
+        // avatar: userProfile?.avatar,
         description: userProfile.description === null ? '' : userProfile.description,
         is_talent: userProfile.is_talent,
         // is_military: userProfile.is_military,

@@ -43,9 +43,39 @@ const ServiceBanyak = () => {
     method: string,
     body?: BodyInit | null | undefined
   ) => {
+    
 
     try {
       const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
+        method: method,
+        headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
+        body: body,
+      });
+      const reqJson = await req.json()
+      dispatch(changeUserProfile(await reqJson))
+      return await reqJson;
+    } catch (e) {
+      if (typeof e === 'object' && e !== null && 'status' in e) {
+        console.log(e.status);
+        if (e.status === 403) {
+          newAccess()
+        }
+        dispatch(changreMainPreloader(false));
+      }
+      console.error(e);
+    }    
+  };
+
+
+  const updatPhoto = async (
+    token: string,
+    method: string,
+    body?: BodyInit | null | undefined
+  ) => {
+    
+
+    try {
+      const req = await request(`${_baseUlr}/api/v1/users/user-profile-avatar/`, {
         method: method,
         headers: {Authorization: `Bearer ${token}`},
         body: body,
@@ -65,6 +95,7 @@ const ServiceBanyak = () => {
     }    
   };
 
+
   const exitUser = async () => {
     const tokensesion = getCookies('sessiontokenid');
     const tokenid = getCookies('tokenid');
@@ -74,10 +105,7 @@ const ServiceBanyak = () => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${tokensesion}`, 'Content-Type': 'application/json'},
         body: JSON.stringify({refresh_token: tokenid}),
-      });
-      // console.log(req);
-      // console.log(await req.json());
-      
+      });    
       
 
       
@@ -223,7 +251,8 @@ const ServiceBanyak = () => {
     newAccess,
     workWithAllStack,
     getTalents,
-    getIdeas
+    getIdeas,
+    updatPhoto
   };
 };
 

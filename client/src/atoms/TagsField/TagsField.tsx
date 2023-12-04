@@ -112,24 +112,24 @@ const TagsField = ({
   const renderTags = () => {
     // console.log(stackUser);
     
-    if (stackUser.length > 0) {
-      let stack: string[] = []
-      const test = allStack.filter((item, i) => {
+    // if (stackUser.length > 0) {
+    //   let stack: string[] = []
+    //   const test = allStack.filter((item, i) => {
    
-        // stackUser.forEach(userStack => {
-        //   if (userStack === item.id) {
-        //     stack.push(item.name)
-        //   }
-        // })
+    //     // stackUser.forEach(userStack => {
+    //     //   if (userStack === item.id) {
+    //     //     stack.push(item.name)
+    //     //   }
+    //     // })
 
-        return stack;
-      })
+    //     return stack;
+    //   })
 
-      return stack;
+    //   return stack;
       
-    } else {
-      return []
-    }
+    // } else {
+    //   return []
+    // }
     
   }
 
@@ -140,7 +140,7 @@ const TagsField = ({
         className="tags-field__textarea"
         name=""
         id=""
-        value={renderTags()}
+        // value={renderTags()}
         onChange={() => {''}}
         ref={tagifyRef}
       ></textarea>

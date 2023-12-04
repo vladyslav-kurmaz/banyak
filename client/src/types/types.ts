@@ -30,9 +30,9 @@ export type TUserProfile = {
 }
 
 export type TprofileChange = {
-  speciality: {name: string},
+  speciality: {name: string}[],
   stack: {name: string}[],
-  avatar?: File | null | string,
+  // avatar?: File | null | string,
   description: string,
   is_talent: boolean,
   // is_military: boolean,
