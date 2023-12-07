@@ -1,8 +1,8 @@
-import { useState, CSSProperties, FormEvent, ChangeEventHandler } from "react";
+import { useState, CSSProperties, FormEvent, ChangeEventHandler } from 'react'
 
-import validationForm from "../../untils/validationForm";
+import validationForm from '../../utils/validationForm'
 
-import "./CustomInput.scss";
+import './CustomInput.scss'
 
 const CustomInput = ({
   value,
@@ -12,44 +12,43 @@ const CustomInput = ({
   name,
   type,
 }: {
-  value: string;
-  handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  id: string;
-  name: string;
-  type: string;
+  value: string
+  handler: (e: React.ChangeEvent<HTMLInputElement>) => void
+  label: string
+  id: string
+  name: string
+  type: string
 }) => {
-  const [inputFocus, setInputFocus] = useState(false);
-  const [message, setMessage] = useState(false);
-  const [stateType, setStateType] = useState(type);
-  const styleClass = value === "" ? "" : validationForm(value, name)?.class;
+  const [inputFocus, setInputFocus] = useState(false)
+  const [message, setMessage] = useState(false)
+  const [stateType, setStateType] = useState(type)
+  const styleClass = value === '' ? '' : validationForm(value, name)?.class
 
   const onFocus = (status: boolean) => {
-    setInputFocus(status);
-    status === false && value === "" && setMessage(false);
-  };
+    setInputFocus(status)
+    status === false && value === '' && setMessage(false)
+  }
 
   const labelStyle = (): CSSProperties => {
-
-    if (!inputFocus && value !== "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (inputFocus && value === "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (value !== "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (inputFocus && value !== "") {
-      return { top: "50%", transition: "all .2s" };
-    } else if (!inputFocus && value === "") {
-      return { top: "50%", transition: "all .2s" };
+    if (!inputFocus && value !== '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (inputFocus && value === '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (value !== '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (inputFocus && value !== '') {
+      return { top: '50%', transition: 'all .2s' }
+    } else if (!inputFocus && value === '') {
+      return { top: '50%', transition: 'all .2s' }
     } else {
-      return {};
+      return {}
     }
-  };
+  }
 
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    handler(e);
-    setMessage(true);
-  };
+    handler(e)
+    setMessage(true)
+  }
 
   const renderMessage = () => {
     return validationForm(value, name)?.errorStatus === false ? (
@@ -131,11 +130,11 @@ const CustomInput = ({
           {validationForm(value, name)?.message}
         </div>
       </div>
-    );
-  };
+    )
+  }
   const renderInput = (type: string) => {
     switch (type) {
-      case "text":
+      case 'text':
         return (
           <>
             <input
@@ -159,11 +158,11 @@ const CustomInput = ({
             </label>
 
             <div className="custom-input__message">
-              {value !== "" && message ? renderMessage() : null}
+              {value !== '' && message ? renderMessage() : null}
             </div>
           </>
-        );
-      case "password":
+        )
+      case 'password':
         return (
           <>
             <input
@@ -190,10 +189,10 @@ const CustomInput = ({
             <div
               className="custom-input__eye"
               onClick={() =>
-                setStateType(stateType === "password" ? "text" : "password")
+                setStateType(stateType === 'password' ? 'text' : 'password')
               }
             >
-              {stateType === "password" ? (
+              {stateType === 'password' ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="custom-input__eye-false"
@@ -254,14 +253,14 @@ const CustomInput = ({
             </div>
 
             <div className="custom-input__message">
-              {value !== "" && message ? renderMessage() : null}
+              {value !== '' && message ? renderMessage() : null}
             </div>
           </>
-        );
+        )
     }
-  };
+  }
 
-  return <div className="custom-input">{renderInput(type)}</div>;
-};
+  return <div className="custom-input">{renderInput(type)}</div>
+}
 
-export default CustomInput;
+export default CustomInput

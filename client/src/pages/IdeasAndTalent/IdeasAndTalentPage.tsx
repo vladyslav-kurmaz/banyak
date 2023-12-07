@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 
-import { Talent } from '../../types/types'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
-import Talant from '../../components/Talant/Talant'
+import Talent from '../../components/Talent/Talent'
+import { IdeaRespType, TalentRespType } from '../../types/types'
 
 import './IdeasAndTalent.scss'
 
+// ideaType -> change to isIdea
 const IdeasAndTalent = ({ ideaType }: { ideaType: boolean }) => {
-  const [talents, setTalents] = useState<Talent[]>([])
-  const [ideas, setIdeas] = useState<Talent[]>([])
+  const [talents, setTalents] = useState<TalentRespType[]>([])
+  const [ideas, setIdeas] = useState<IdeaRespType[]>([])
 
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
@@ -22,32 +23,32 @@ const IdeasAndTalent = ({ ideaType }: { ideaType: boolean }) => {
     if (ideaType) {
       getIdeas()
         .then((res) => res.json())
-        .then((res) => setIdeas(res))
+        // .then((ideasData) => ideasData.results) => uncomment after adding pagination
+        .then((ideasList) => setIdeas(ideasList))
         .then(() => dispatch(changreMainPreloader(false)))
         .catch(() => dispatch(changreMainPreloader(false)))
     } else {
       getTalents()
         .then((res) => res.json())
-        .then((res) => setTalents(res))
+        .then((talantsData) => talantsData.results)
+        .then((talentsList) => setTalents(talentsList))
         .then(() => dispatch(changreMainPreloader(false)))
         .catch(() => dispatch(changreMainPreloader(false)))
     }
   }, [ideaType])
 
   console.log('ideas', ideas)
-  const renderItems = (type: boolean, data: Talent[]) => {
-    return data.map((item) => {
-      return <>{type ? <Idea myIdea={false} /> : <Talant dataUser={item} />}</>
-    })
-  }
+  console.log('talents', talents)
 
   return (
     <div className="ideaAndTalent">
-      {/* {renderItems(type)} */}
-      {/* {type ? <Idea myIdea={false}/> : <Talant />}
-      {type ? <Idea myIdea={false}/> : <Talant />} */}
-      {ideaType ? <Idea myIdea={false} /> : <Talant dataUser={talents[0]} />}
-      {/* {talents ? renderItems(type, talents) : renderItems(type, ideas)} */}
+      {ideaType
+        ? ideas.map((ideaItem) => (
+            <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
+          ))
+        : talents.map((talentItem) => (
+            <Talent key={talentItem.id} talantInfo={talentItem} />
+          ))}
 
       {ideaType ? (
         <ButtonMoreLoading text={'ідей'} />

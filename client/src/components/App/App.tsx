@@ -16,7 +16,7 @@ import Preloader from '../Preloader/Preloader'
 import IdeasPopup from '../IdeasPopup/IdeasPopup'
 
 import ServiceBanyak from '../../service/ServiceBanyak'
-import workWithCookies from '../../untils/workWithCookies'
+import workWithCookies from '../../utils/workWithCookies'
 
 import './App.scss'
 import ProfilePage from '../../pages/ProfilePage/ProfilePage'

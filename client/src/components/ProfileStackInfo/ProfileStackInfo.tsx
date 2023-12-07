@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
 
-import ServiceBanyak from "../../service/ServiceBanyak";
-import workWithCookies from "../../untils/workWithCookies";
-import { TUserProfile, TprofileChange } from "../../types/types";
+import ServiceBanyak from '../../service/ServiceBanyak'
+import workWithCookies from '../../utils/workWithCookies'
+import { TUserProfile, TprofileChange } from '../../types/types'
 
-import TagsField from "../../atoms/TagsField/TagsField";
+import TagsField from '../../atoms/TagsField/TagsField'
 
-import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
-import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
+import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
+import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
 
-import "./ProfileStackInfo.scss";
-import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
+import './ProfileStackInfo.scss'
+import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
 
 // export type TUserProfile = {
 const ProfileStackInfo = ({
@@ -22,42 +22,39 @@ const ProfileStackInfo = ({
   disabled,
   newUserProfile,
 }: {
-  stack: { id: string; name: string }[];
-  userStack: TUserProfile;
-  fnState: React.Dispatch<React.SetStateAction<TprofileChange>>;
-  disabled: boolean;
-  newUserProfile: TprofileChange;
+  stack: { id: string; name: string }[]
+  userStack: TUserProfile
+  fnState: React.Dispatch<React.SetStateAction<TprofileChange>>
+  disabled: boolean
+  newUserProfile: TprofileChange
 }) => {
-  const [speciality, setSpeciality] = useState(userStack?.speciality[0]);
-  const [description, setDescription] = useState(userStack?.description);
-  const dispatch = useAppDispatch();
+  const [speciality, setSpeciality] = useState(userStack?.speciality[0])
+  const [description, setDescription] = useState(userStack?.description)
+  const dispatch = useAppDispatch()
   // const [portfolio, setPortfolio] = useState(userProfile?.portfolio);
   // const [stack, setStack] = useState(userProfile?.stack);
 
-  const { profileUser } = ServiceBanyak();
-  const { getCookies } = workWithCookies();
+  const { profileUser } = ServiceBanyak()
+  const { getCookies } = workWithCookies()
 
   const changeProfileData = () => {
-    const token = getCookies("sessiontokenid");
+    const token = getCookies('sessiontokenid')
 
-    if (typeof token === "string") {
-
-      
-
+    if (typeof token === 'string') {
       // profileUser(token, "PUT", JSON.stringify(newUserProfile)).then(() =>
       //   dispatch(changreMainPreloader(false))
       // );
 
-    // speciality: [],
-    // stack: [],
-    // avatar: null,
-    // description: "",
-    // is_talent: false,
-    // is_military: false,
-    // is_vpo: false,
-    // ideas: [],
+      // speciality: [],
+      // stack: [],
+      // avatar: null,
+      // description: "",
+      // is_talent: false,
+      // is_military: false,
+      // is_vpo: false,
+      // ideas: [],
 
-      const formData = new FormData;
+      const formData = new FormData()
 
       // if (newUserProfile.speciality) {
       //   formData.append('speciality', newUserProfile.speciality);
@@ -66,16 +63,16 @@ const ProfileStackInfo = ({
       // if (newUserProfile.speciality) {
       //   formData.append('speciality', JSON.stringify(newUserProfile.speciality));
       // }
-      
+
       // if (newUserProfile.stack && newUserProfile.stack.length > 0) {
       //   formData.append('stack', JSON.stringify(newUserProfile.stack));
       // }
-      formData.append('description', newUserProfile.description);
-      
+      formData.append('description', newUserProfile.description)
+
       // formData.append('stack', newUserProfile.stack);
 
       if (newUserProfile.avatar) {
-        formData.append('avatar', newUserProfile.avatar);
+        formData.append('avatar', newUserProfile.avatar)
       }
 
       // if (newUserProfile.is_talent) {
@@ -90,32 +87,27 @@ const ProfileStackInfo = ({
       // if (newUserProfile.ideas) {
       //   formData.append('ideas', JSON.stringify(newUserProfile.ideas));
       // }
-      
+
       // const json = JSON.stringify(Object.fromEntries(formData.entries()));
       // formData.forEach((value, key) => {
       //   console.log(key, value);
       // });
-      
+
       // const formDataObject: Record<string, FormDataEntryValue> = {};
       // formData.forEach((value, key) => {
       //   formDataObject[key] = value;
       // });
 
-// Конвертуйте об'єкт в JSON
-// const jsonData = JSON.stringify(formDataObject);
-      
-      
+      // Конвертуйте об'єкт в JSON
+      // const jsonData = JSON.stringify(formDataObject);
 
-      
-
-      profileUser(token, "PUT", formData)
-        .then(() =>
-          dispatch(changreMainPreloader(false))
-        );
+      profileUser(token, 'PUT', formData).then(() =>
+        dispatch(changreMainPreloader(false))
+      )
     }
 
     // newUserProfile
-  };
+  }
 
   const renderStack = () => {
     if (userStack !== null) {
@@ -144,8 +136,8 @@ const ProfileStackInfo = ({
               className="description about-me__description"
               value={description}
               onChange={(e) => {
-                setDescription(e.target.value);
-                fnState((state) => ({ ...state, description: e.target.value }));
+                setDescription(e.target.value)
+                fnState((state) => ({ ...state, description: e.target.value }))
               }}
               placeholder="Напишіть декілька слів про себе та свій досвід"
             ></textarea>
@@ -178,11 +170,11 @@ const ProfileStackInfo = ({
             </div>
           </div>
         </>
-      );
+      )
     } else {
-      return "";
+      return ''
     }
-  };
+  }
 
   return (
     <div className="personal-stack">
@@ -192,11 +184,9 @@ const ProfileStackInfo = ({
 
       {renderStack()}
 
-
       <ButtonSmall fn={changeProfileData} text="Зберегти" />
-
     </div>
-  );
-};
+  )
+}
 
-export default ProfileStackInfo;
+export default ProfileStackInfo
