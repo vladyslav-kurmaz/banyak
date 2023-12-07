@@ -25,8 +25,16 @@ export type TUserProfile = {
     is_military: boolean,
     is_vpo: boolean,
     ideas: string[],
-    avatar: string,
+    avatar: TUpdateAvatar,
     portfolio: string
+}
+
+export type TUpdateAvatar = {
+  avatar_profile: string,
+  created_at: string,
+  id: string,
+  updated_at: string,
+  user: string
 }
 
 export type TprofileChange = {
@@ -54,9 +62,12 @@ export type Talent = {
 
 export type userInfo = {
   // userId: null | string,
-  userProfile: null | TUserProfile,
-  typeUser: 'Я власник ідеї' | 'Я талант'
+  userProfile: null | TUserProfile;
+  typeUser: boolean;
+  allStack: TGetAllStack | []
 }
+
+export type TGetAllStack = [name: string]
 
 export type TValidatinForm = {
   errorStatus: boolean;

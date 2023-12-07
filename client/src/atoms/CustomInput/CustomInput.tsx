@@ -1,6 +1,6 @@
-import { useState, CSSProperties, FormEvent, ChangeEventHandler } from "react";
+import { useState, CSSProperties, ChangeEventHandler } from "react";
 
-import validationForm from "../../untils/validationForm";
+import validationForm from "../../utils/validationForm";
 
 import "./CustomInput.scss";
 
@@ -30,7 +30,6 @@ const CustomInput = ({
   };
 
   const labelStyle = (): CSSProperties => {
-
     if (!inputFocus && value !== "") {
       return { top: 0, transition: "all .2s" };
     } else if (inputFocus && value === "") {

@@ -4,14 +4,12 @@ import useHttp from "../hooks/httpHook";
 import { changeUserProfile } from "../store/userSlice";
 import { changreMainPreloader } from "../components/SettingMenu/StateElementSlice";
 
-import workWithCookies from "../untils/workWithCookies";
+import workWithCookies from "../utils/workWithCookies";
 
 const ServiceBanyak = () => {
   const dispatch = useAppDispatch();
   const { setCookies, getCookies, deleteCookie } = workWithCookies();
-  const {request} = useHttp();
-
-  
+  const { request } = useHttp();
 
   const _baseUlr = "http://localhost:8000";
   // const _baseUlr = 'https://banyak-api.onrender.com'
@@ -24,7 +22,6 @@ const ServiceBanyak = () => {
     });
 
     console.log(req);
-    
 
     return req;
   };
@@ -43,133 +40,112 @@ const ServiceBanyak = () => {
     method: string,
     body?: BodyInit | null | undefined
   ) => {
-    
-
     try {
       const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
         method: method,
-        headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: body,
       });
-      const reqJson = await req.json()
-      dispatch(changeUserProfile(await reqJson))
+      const reqJson = await req.json();
+
       return await reqJson;
     } catch (e) {
-      if (typeof e === 'object' && e !== null && 'status' in e) {
+      if (typeof e === "object" && e !== null && "status" in e) {
         console.log(e.status);
         if (e.status === 403) {
-          newAccess()
+          newAccess();
         }
         dispatch(changreMainPreloader(false));
       }
       console.error(e);
-    }    
+    }
   };
-
 
   const updatPhoto = async (
     token: string,
     method: string,
     body?: BodyInit | null | undefined
   ) => {
-    
-
     try {
-      const req = await request(`${_baseUlr}/api/v1/users/user-profile-avatar/`, {
-        method: method,
-        headers: {Authorization: `Bearer ${token}`},
-        body: body,
-      });
-      const reqJson = await req.json()
-      dispatch(changeUserProfile(await reqJson))
-      return await reqJson;
+      const req = await request(
+        `${_baseUlr}/api/v1/users/user-profile-avatar/`,
+        {
+          method: method,
+          headers: { Authorization: `Bearer ${token}` },
+          body: body,
+        }
+      );
+      // const reqJson = await req.json()
+      // dispatch(changeUserProfile(await reqJson))
+      return await req.json();
     } catch (e) {
-      if (typeof e === 'object' && e !== null && 'status' in e) {
+      if (typeof e === "object" && e !== null && "status" in e) {
         console.log(e.status);
         if (e.status === 403) {
-          newAccess()
+          newAccess();
         }
         dispatch(changreMainPreloader(false));
       }
       console.error(e);
-    }    
+    }
   };
 
-
   const exitUser = async () => {
-    const tokensesion = getCookies('sessiontokenid');
-    const tokenid = getCookies('tokenid');
-    
+    const tokensesion = getCookies("sessiontokenid");
+    const tokenid = getCookies("tokenid");
+
     try {
+      // eslint-disable-next-line
       const req = await request(`${_baseUlr}/api/v1/users/logout/`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${tokensesion}`, 'Content-Type': 'application/json'},
-        body: JSON.stringify({refresh_token: tokenid}),
-      });    
-      
+        headers: {
+          Authorization: `Bearer ${tokensesion}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh_token: tokenid }),
+      });
 
-      
       dispatch(changeUserProfile(null));
-      deleteCookie('sessiontokenid');
-      deleteCookie('tokenid');
+      deleteCookie("sessiontokenid");
+      deleteCookie("tokenid");
       // return req;
       dispatch(changreMainPreloader(false));
     } catch (e) {
-      if (typeof e === 'object' && e !== null && 'status' in e) {
+      if (typeof e === "object" && e !== null && "status" in e) {
         console.log(e.status);
         if (e.status === 403) {
-          newAccess()
+          newAccess();
         }
-        
       }
       console.error(e);
       dispatch(changreMainPreloader(false));
     }
   };
 
-
-  // const exitUser = (token: string, body?: BodyInit) => {
-  //   const token = getCookies('sessiontokenid')
-  //   const req = request(`${_baseUlr}/api/v1/users/logout/`, {
-  //     method: "DELETE",
-  //     headers: { authorization: `Token ${token}` },
-  //     body: ,
-  //   });
-
-  //   try {
-  //     dispatch(changeUserProfile(null));
-  //     deleteCookie('sessiontokenid');
-  //     deleteCookie('tokenid');
-  //     return req;
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
-  
-
   const newAccess = async () => {
-    const tokensesion = getCookies('sessiontokenid')
-    const tokenid = getCookies('tokenid')
-    
+    const tokenid = getCookies("tokenid");
+
     try {
       const req = await request(`${_baseUlr}/api/v1/users/new-access/`, {
         method: "PUT",
-        headers: {'Content-Type': 'application-json' },
-        body: JSON.stringify({refresh_token: tokenid}),
+        headers: { "Content-Type": "application-json" },
+        body: JSON.stringify({ refresh_token: tokenid }),
       });
-      const newToken = await req.json()
-      console.log('try');
-      
-      setCookies('sessiontokenid', await newToken.access_token, 1)
-      
+      const newToken = await req.json();
+      console.log("try");
+
+      setCookies("sessiontokenid", await newToken.access_token, 1);
+
       dispatch(changreMainPreloader(false));
     } catch (e) {
-      if (typeof e === 'object' && e !== null && 'status' in e) {
+      if (typeof e === "object" && e !== null && "status" in e) {
         if (e.status === 403) {
           dispatch(changeUserProfile(null));
-          deleteCookie('sessiontokenid');
-          deleteCookie('tokenid');
+          deleteCookie("sessiontokenid");
+          deleteCookie("tokenid");
         }
         console.log(e.status);
         dispatch(changreMainPreloader(false));
@@ -178,70 +154,65 @@ const ServiceBanyak = () => {
     }
   };
 
+  const getAllStack = async (
+    url: string,
+    method: string,
+    stack?: { id: string }
+  ) => {
 
-  const workWithAllStack  = async (url: string, method: string, stack?: {id: string}) => {
-    const tokensesion = getCookies('sessiontokenid')
-
-    const fetchSetting = stack ?
-      {
-        method: method,
-        headers: {'Content-Type': 'application-json' },
-        body: JSON.stringify({name: stack}),
-      }
-      :
-      {}
+    const fetchSetting = stack
+      ? {
+          method: method,
+          headers: { "Content-Type": "application-json" },
+          body: JSON.stringify({ name: stack }),
+        }
+      : {};
 
     try {
-      const req = await request(`${_baseUlr}/api/v1/users/${url}`, fetchSetting);
-      
+      const req = await request(
+        `${_baseUlr}/api/v1/users/${url}`,
+        fetchSetting
+      );
+
       if (!req.ok) {
-        return Promise.reject(req)
+        return Promise.reject(req);
       }
 
-      return req.json()
+      return req.json();
     } catch (e) {
       return Promise.reject(e);
     }
   };
 
   const getTalents = async () => {
-    
     try {
       const req = await request(`${_baseUlr}/api/v1/talents/talent/`, {});
-      console.log('try');
+      console.log("try");
 
-      if(!req.ok) {
+      if (!req.ok) {
         return Promise.reject(req);
       }
 
       return Promise.resolve(req);
     } catch (e) {
-    
       return Promise.reject(e);
-      }
-    
+    }
   };
 
   const getIdeas = async () => {
-    
     try {
       const req = await request(`${_baseUlr}/api/v1/ideas/ideas/`, {});
-      console.log('try');
+      console.log("try");
 
-      if(!req.ok) {
+      if (!req.ok) {
         return Promise.reject(req);
       }
 
       return Promise.resolve(req);
     } catch (e) {
-    
       return Promise.reject(e);
-      }
-    
+    }
   };
-
-
-
 
   return {
     singUpNewUser,
@@ -249,10 +220,10 @@ const ServiceBanyak = () => {
     exitUser,
     profileUser,
     newAccess,
-    workWithAllStack,
+    getAllStack,
     getTalents,
     getIdeas,
-    updatPhoto
+    updatPhoto,
   };
 };
 

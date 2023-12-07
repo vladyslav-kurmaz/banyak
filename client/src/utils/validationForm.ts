@@ -39,6 +39,7 @@ const validationForm = (value: string, name: string): TValidatinForm | null => {
         }
       }
     case 'email':
+      // eslint-disable-next-line
       const validValueEmail = value.match(/^[\w\.-]+@[\w\.-]+\.\w+$/);
       const onlyLatiOrNumnEmail = value.match(/^[a-zA-Z0-9@.\-_]+$/)
       

@@ -1,9 +1,6 @@
 import { FC, useCallback } from "react";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/reduxToolkidHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
@@ -14,7 +11,6 @@ import {
   changeOpenOrCloseLoginPopup,
 } from "./StateElementSlice";
 
-import workWithCookies from "../../untils/workWithCookies";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 
@@ -31,7 +27,6 @@ const SettingMeny: FC = () => {
   const { headerSetting } = useAppSelector((state) => state.stateElement);
   const { userProfile } = useAppSelector((state) => state.userInfo);
   const { exitUser } = ServiceBanyak();
-  const {getCookies} = workWithCookies()
   const shouldShowPopup =
     new URLSearchParams(window.location.search).get("login") === "true";
 
@@ -40,11 +35,9 @@ const SettingMeny: FC = () => {
   };
 
   const exitUserProfil = () => {
+    exitUser();
 
-      exitUser();
-      
-      navigate("/");
-
+    navigate("/");
   };
 
   const openCloseSettingMenu = useCallback(
