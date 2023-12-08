@@ -12,9 +12,9 @@ const TagsField = ({
   allStack,
   changeStack
 }: {
-  stackUser: {name: string}[];
-  allStack: string[];
-  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+  stackUser?: {name: string}[];
+  allStack?: string[];
+  changeStack?: React.Dispatch<React.SetStateAction<TprofileChange | null>>
 }) => {
 
   const tagifyRef = useRef(null);  
@@ -37,16 +37,19 @@ const TagsField = ({
   
         if (e.detail.data !== undefined ) {
   
-          const addedTags = e.detail.data.value;             
+          const addedTags = e.detail.data.value; 
+          if (changeStack) {
+            changeStack(state => state && state !== null ? 
+              ({
+                ...state,
+                stack: [...state.stack, {name: addedTags.toLocaleUpperCase()}]
+              })
+              :
+              null
+            )
+          }            
           
-          changeStack(state => state && state !== null ? 
-            ({
-              ...state,
-              stack: [...state.stack, {name: addedTags.toLocaleUpperCase()}]
-            })
-            :
-            null
-          )
+          
         }
       });
   
@@ -56,14 +59,16 @@ const TagsField = ({
           
           const deleteTags = e.detail.data.value           
           
-          changeStack(state => state && state !== null ? 
-            ({
-              ...state,
-              stack: state.stack.filter(item => item.name !== deleteTags)
-            })
-            :
-            null
-          )
+          if (changeStack) {
+            changeStack(state => state && state !== null ? 
+              ({
+                ...state,
+                stack: state.stack.filter(item => item.name !== deleteTags)
+              })
+              :
+              null
+            )
+          }
         }
       });  
     } 
@@ -71,7 +76,7 @@ const TagsField = ({
   }, []);
  
   const renderTags = () => {
-    if (stackUser.length > 0) {
+    if (stackUser && stackUser.length > 0) {
       return stackUser.map((item) => item.name)
     } else {
       return []

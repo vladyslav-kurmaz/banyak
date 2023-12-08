@@ -1,13 +1,26 @@
-import ButtonBack from '../../atoms/ButtonBack/ButtonBack';
-import logo from '../../image/logo/small_logo.webp';
+import { useState } from 'react';
+import { useAppSelector } from '../../hooks/reduxToolkidHooks'; 
 
+import ButtonBack from '../../atoms/ButtonBack/ButtonBack';
 import TagsField from "../../atoms/TagsField/TagsField";
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
-import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
+
+import logo from '../../image/logo/small_logo.webp';
 
 import './CreateIdea.scss';
 
 const CreateIdea = () => {
+  type TCreateNewIdea = {
+    name: string;
+    description: string;
+    experts: {name: string}[];
+    stack: {name: string}[];
+  }
+
+  const {allStack} = useAppSelector(state => state.userInfo);
+
+  const [newIdeaData, setNewIdeaData] = useState<TCreateNewIdea>()
+
   return (
     <div className="create-idea  create-idea__outside">
 
@@ -19,7 +32,6 @@ const CreateIdea = () => {
 
         <div className="personal-info__main-info">
           <img src={logo} className="personal-info__avatar" alt="User avatar" />
-
 
           <div className="personal-info__container">
             <label
@@ -33,8 +45,6 @@ const CreateIdea = () => {
 
         </div>
 
-        {/*  */}
-
         <div className="personal-stack">
 
           <div className="personal-stack__specialization specialization">
@@ -47,6 +57,7 @@ const CreateIdea = () => {
             <textarea
               name="description"
               id=""
+              value={newIdeaData?.description}
               className="description about-me__description"
               placeholder="Шукаю бажаючих долучитись до розробки ідеї арт-сайту.">
 
@@ -83,7 +94,9 @@ const CreateIdea = () => {
         </textarea> */}
 
             <div className="technologies__textfield">
-              {/* <TagsField /> */}
+              <TagsField 
+                allStack={allStack}
+              />
             </div>
 
           </div>
