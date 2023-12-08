@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
+
 
 import TagsField from "../../atoms/TagsField/TagsField";
 import ServiceBanyak from "../../service/ServiceBanyak";
@@ -21,6 +22,7 @@ const ProfileStackInfo = ({
   disabled,
   newUserProfile,
 }: {
+
   userProfil: TUserProfile;
   fnState: React.Dispatch<React.SetStateAction<TprofileChange | null>>;
   disabled: boolean;
@@ -163,11 +165,11 @@ const ProfileStackInfo = ({
             ) : null}
           </div>
         </>
-      );
+      )
     } else {
-      return "";
+      return ''
     }
-  };
+  }
 
   return (
     <div className="personal-stack">
@@ -185,7 +187,7 @@ const ProfileStackInfo = ({
         Зберегти
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ProfileStackInfo;
+export default ProfileStackInfo

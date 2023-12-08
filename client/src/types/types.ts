@@ -1,14 +1,14 @@
 export type stateElement = {
-  headerSetting: boolean,
-  mainLanguage: 'УКР' | 'ENG',
-  mainTheam: boolean,
+  headerSetting: boolean
+  mainLanguage: 'УКР' | 'ENG'
+  mainTheam: boolean
   mainPageSlider: 0 | 1
-  statusInstr: 'Власник ідеї' | 'Талант',
-  loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ',
-  loginRegistrationForm: boolean,
-  counterLink: number,
-  mainPreloader: boolean,
-  errorStatus: null | number,
+  statusInstr: 'Власник ідеї' | 'Талант'
+  loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ'
+  loginRegistrationForm: boolean
+  counterLink: number
+  mainPreloader: boolean
+  errorStatus: null | number
 }
 
 export type TUserProfile = {
@@ -50,15 +50,14 @@ export type TprofileChange = {
 }
 
 export type Talent = {
-  id: string;
+  id: string
   user: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-  };
-};
-
+    id: string
+    first_name: string
+    last_name: string
+    email: string
+  }
+}
 
 export type userInfo = {
   // userId: null | string,
@@ -70,7 +69,46 @@ export type userInfo = {
 export type TGetAllStack = [name: string]
 
 export type TValidatinForm = {
-  errorStatus: boolean;
-  message: string;
-  class: string;
+  errorStatus: boolean
+  message: string
+  class: string
+}
+
+// Tania's types
+export type IdeaRespType = {
+  avatar: string
+  created_at: string
+  description: string
+  id: string
+  idea_views: number
+  is_published: boolean
+  slug: string
+  specialization: { name: string }[]
+  title: string
+  updated_at: string
+  user: { email: string; first_name: string; id: string; last_name: string }
+}
+
+export type TalentRespType = {
+  avatar: string
+  created_at: string
+  description: string
+  id: string
+  is_military: boolean
+  is_talent: boolean
+  is_vpo: boolean
+  portfolio: string
+  speciality: string[]
+  stack: string[]
+  // speciality: { name: string }[]
+  // stack: { name: string }[]
+  updated_at: string
+  upload_military: null
+  upload_vpo: null
+  user: {
+    id: string
+    first_name: string
+    last_name: string
+    email: string
+  }
 }

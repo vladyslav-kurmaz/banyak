@@ -1,21 +1,22 @@
-import { MouseEvent } from "react";
-import { useAppDispatch } from "../../hooks/reduxToolkidHooks";
-import { useNavigate } from "react-router-dom";
+import { MouseEvent } from 'react'
+import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useNavigate } from 'react-router-dom'
 
 import { changreMainPreloader } from "../../components/SettingMenu/StateElementSlice";
 
 import ServiceBanyak from "../../service/ServiceBanyak";
 import workWithCookies from "../../utils/workWithCookies";
 
-import "./ButtonChooseProfile.scss";
+import './ButtonChooseProfile.scss'
 
 const ButtonChooseProfile = ({
   text,
   type,
 }: {
-  text: string;
-  type: boolean;
+  text: string
+  type: boolean
 }) => {
+
   const { profileUser } = ServiceBanyak();
   const { getCookies } = workWithCookies();
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ const ButtonChooseProfile = ({
         console.error(e);
       }
     }
-  };
+  }
 
   return (
     <button
@@ -52,7 +53,7 @@ const ButtonChooseProfile = ({
     >
       {text}
     </button>
-  );
-};
+  )
+}
 
-export default ButtonChooseProfile;
+export default ButtonChooseProfile

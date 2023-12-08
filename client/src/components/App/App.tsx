@@ -4,40 +4,44 @@ import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
 import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
 import { changeUserProfile } from "../../store/userSlice";
 
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import MainPage from "../../pages/MainPage/MainPage";
-import AboutUs from "../../pages/AboutUs/AboutUs";
-import SingUpPage from "../../pages/SingUpPage/SingUpPage";
-import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
-import IdeasAndTalent from "../../pages/IdeasAndTalent/IdeasAndTalentPage";
-import CreateIdea from "../../pages/CreateIdea/CreateIdea";
-import Preloader from "../Preloader/Preloader";
-import IdeasPopup from "../IdeasPopup/IdeasPopup";
+import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
+import MainPage from '../../pages/MainPage/MainPage'
+import AboutUs from '../../pages/AboutUs/AboutUs'
+import SingUpPage from '../../pages/SingUpPage/SingUpPage'
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage'
+import IdeasAndTalent from '../../pages/IdeasAndTalent/IdeasAndTalentPage'
+import CreateIdea from '../../pages/CreateIdea/CreateIdea'
+import Preloader from '../Preloader/Preloader'
+import IdeasPopup from '../IdeasPopup/IdeasPopup'
 
-import ServiceBanyak from "../../service/ServiceBanyak";
-import workWithCookies from "../../utils/workWithCookies";
+import ServiceBanyak from '../../service/ServiceBanyak'
+import workWithCookies from '../../utils/workWithCookies'
 
-import "./App.scss";
-import ProfilePage from "../../pages/ProfilePage/ProfilePage";
-import ChooseProfilePage from "../../pages/ChooseProfilePage/ChooseProfilePage";
-import ButtonChooseProfile from "../../atoms/ButtonChooseProfile/ButtonChooseProfile";
+import './App.scss'
+import ProfilePage from '../../pages/ProfilePage/ProfilePage'
+import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
+import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
+import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 
 function App() {
+
   const { mainPreloader } = useAppSelector((state) => state.stateElement);
 
-  const location = useLocation();
+  const location = useLocation()
   // const popupLocation = location.search === '?login' || location.search === '?singup'
   const popupLocation =
-    location.search === "?login" || location.search === "?singup";
-  const { profileUser } = ServiceBanyak();
-  const { getCookies } = workWithCookies();
-  const [showPopup, setShowPopup] = useState(false);
+    location.search === '?login' || location.search === '?singup'
+  const { profileUser } = ServiceBanyak()
+  const { getCookies } = workWithCookies()
+  const [showPopup, setShowPopup] = useState(false)
+
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = getCookies("sessiontokenid");
+
     if (token !== null) {
       dispatch(changreMainPreloader(true));
       try {
@@ -49,13 +53,10 @@ function App() {
         dispatch(changreMainPreloader(false));
         console.error(e);
       }
-      // profileUser(token, "GET")
-      //   .then((res) => )
-      //   // .then(() => dispatch(changreMainPreloader(false)))
-      //   .catch((e) => console.error(e))
     }
     // eslint-disable-next-line
   }, []);
+
 
   return (
     <>
@@ -69,8 +70,12 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="aboutus" element={<AboutUs />} />
-            <Route path="ideas" element={<IdeasAndTalent type={true} />} />
-            <Route path="talents" element={<IdeasAndTalent type={false} />} />
+            <Route path="ideas" element={<IdeasAndTalent ideaType={true} />} />
+            <Route path="ideas/:slug" element={<IdeaDescriptionPage />} />
+            <Route
+              path="talents"
+              element={<IdeasAndTalent ideaType={false} />}
+            />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />
             <Route path="create-idea" element={<CreateIdea />} />
             <Route
@@ -92,6 +97,7 @@ function App() {
                 />
               }
             />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
@@ -99,7 +105,7 @@ function App() {
         <Footer />
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

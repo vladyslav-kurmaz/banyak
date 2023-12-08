@@ -1,8 +1,10 @@
+
 import { useState, useEffect, FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // work with redux
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+
 import {
   changeCounterLink,
   changeLoginOrSingUp,
@@ -16,14 +18,14 @@ import ServiceBanyak from "../../service/ServiceBanyak";
 import workWithCookies from "../../utils/workWithCookies";
 
 // Components
-import CustomInput from "../../atoms/CustomInput/CustomInput";
-import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
-import CrossCustom from "../../atoms/CrossCustom/CrossCustom";
+import CustomInput from '../../atoms/CustomInput/CustomInput'
+import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
+import CrossCustom from '../../atoms/CrossCustom/CrossCustom'
 
 // photo
-import logo from "../../image/logo/LOGO_Banyak.webp";
+import logo from '../../image/logo/LOGO_Banyak.webp'
 
-import "./LoginRegistrationForm.scss";
+import './LoginRegistrationForm.scss'
 
 // utils
 import validationForm from "../../utils/validationForm";
@@ -41,9 +43,9 @@ const LoginRegistrationForm = () => {
 
   const [modalLocation, setModalLocation] = useState<string[]>([]);
 
-  const { setCookies } = workWithCookies();
+  const { setCookies, deleteCookie } = workWithCookies()
 
-  const { singUpNewUser, loginUser, profileUser } = ServiceBanyak();
+  const { singUpNewUser, loginUser, profileUser } = ServiceBanyak()
 
   const { loginOrSingUp, errorStatus } = useAppSelector(
     (state) => state.stateElement
@@ -73,14 +75,15 @@ const LoginRegistrationForm = () => {
   }, [loginOrSingUp]);
 
   useEffect(() => {
-    if (location.search === "?login") {
-      dispatch(changeLoginOrSingUp("ВХІД"));
-      setDisabled(true);
-    } else if (location.search === "?singup") {
-      dispatch(changeLoginOrSingUp("РЕЄСТРАЦІЯ"));
-      setDisabled(true);
+    if (location.search === '?login') {
+      dispatch(changeLoginOrSingUp('ВХІД'))
+      setDisabled(true)
+    } else if (location.search === '?singup') {
+      dispatch(changeLoginOrSingUp('РЕЄСТРАЦІЯ'))
+      setDisabled(true)
     }
     // eslint-disable-next-line
+
   }, [location.search]);
 
   const changeValue = (
@@ -94,22 +97,22 @@ const LoginRegistrationForm = () => {
   };
 
   useEffect(() => {
-    const nameValid = validationForm(name, "name")?.errorStatus;
-    const surNameValid = validationForm(surName, "surname")?.errorStatus;
-    const emailValid = validationForm(email, "email")?.errorStatus;
-    const passValid = validationForm(pass, "pass")?.errorStatus;
+    const nameValid = validationForm(name, 'name')?.errorStatus
+    const surNameValid = validationForm(surName, 'surname')?.errorStatus
+    const emailValid = validationForm(email, 'email')?.errorStatus
+    const passValid = validationForm(pass, 'pass')?.errorStatus
 
-    if (location.search === "?login") {
+    if (location.search === '?login') {
       if (!emailValid && !passValid) {
-        setDisabled(false);
+        setDisabled(false)
       } else {
-        setDisabled(true);
+        setDisabled(true)
       }
     } else {
       if (!nameValid && !surNameValid && !emailValid && !passValid) {
-        setDisabled(false);
+        setDisabled(false)
       } else {
-        setDisabled(true);
+        setDisabled(true)
       }
     }
     // eslint-disable-next-line
@@ -181,7 +184,7 @@ const LoginRegistrationForm = () => {
     const data = {
       email: email,
       password: pass,
-    };
+    }
 
     try {
       const login = await loginUser(JSON.stringify(data));
@@ -212,7 +215,7 @@ const LoginRegistrationForm = () => {
   };
 
   const renderForm = () => {
-    if (loginOrSingUp === "РЕЄСТРАЦІЯ") {
+    if (loginOrSingUp === 'РЕЄСТРАЦІЯ') {
       return (
         <form
           className="registration__popup-form sing-up"
@@ -223,14 +226,14 @@ const LoginRegistrationForm = () => {
             name="name"
             handler={(e) => changeValue(e, setName)}
             type="text"
-            label={"Ім’я"}
+            label={'Ім’я'}
             id="form__name"
           />
           <CustomInput
             value={surName}
             handler={(e) => changeValue(e, setSurName)}
             type="text"
-            label={"Прізвище"}
+            label={'Прізвище'}
             id="form__surname"
             name="surname"
           />
@@ -238,7 +241,7 @@ const LoginRegistrationForm = () => {
             value={email}
             handler={(e) => changeValue(e, setEmail)}
             type="text"
-            label={"Електронна пошта"}
+            label={'Електронна пошта'}
             id="form__email"
             name="email"
           />
@@ -246,7 +249,7 @@ const LoginRegistrationForm = () => {
             value={pass}
             handler={(e) => changeValue(e, setPass)}
             type="password"
-            label={"Пароль"}
+            label={'Пароль'}
             id="form__pass"
             name="pass"
           />
@@ -259,7 +262,7 @@ const LoginRegistrationForm = () => {
             Зареєструватись
           </button>
         </form>
-      );
+      )
     } else {
       return (
         <form
@@ -270,7 +273,7 @@ const LoginRegistrationForm = () => {
             value={email}
             handler={(e) => changeValue(e, setEmail)}
             type="text"
-            label={"Електронна пошта"}
+            label={'Електронна пошта'}
             id="form__email-login"
             name="email"
           />
@@ -278,7 +281,7 @@ const LoginRegistrationForm = () => {
             value={pass}
             handler={(e) => changeValue(e, setPass)}
             type="password"
-            label={"Пароль"}
+            label={'Пароль'}
             id="form__pass-login"
             name="pass"
           />
@@ -296,16 +299,11 @@ const LoginRegistrationForm = () => {
             </a>
           </div>
         </form>
-      );
+      )
     }
-  };
+  }
 
   // eslint-disable-next-line
-  // {
-  //   loginOrSingUp === "ВХІД" || loginOrSingUp === "РЕЄСТРАЦІЯ"
-  //     ? (document.body.style.overflow = "hidden")
-  //     : (document.body.style.overflow = "");
-  // }
 
   return (
     <div
@@ -320,12 +318,12 @@ const LoginRegistrationForm = () => {
             className="registration__popup-logo-picture"
           />
           <CrossCustom
-            style={{ top: "4px", right: "-84px" }}
+            style={{ top: '4px', right: '-84px' }}
             close={closeLoginForm}
           />
         </div>
         <div className="registration__popup-toggle">
-          <SwitchToogle prop1={"РЕЄСТРАЦІЯ"} prop2={"ВХІД"} />
+          <SwitchToogle prop1={'РЕЄСТРАЦІЯ'} prop2={'ВХІД'} />
         </div>
         {renderForm()}
         <div className="registration__popup-another">
@@ -344,7 +342,7 @@ const LoginRegistrationForm = () => {
                 <g clipPath="url(#clip0_172_9490)">
                   <mask
                     id="mask0_172_9490"
-                    style={{ maskType: "luminance" }}
+                    style={{ maskType: 'luminance' }}
                     maskUnits="userSpaceOnUse"
                     x="0"
                     y="0"
@@ -433,8 +431,8 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          {loginOrSingUp === "ВХІД" ? "Ще намає акаунта?" : "Вже є аккаунт?"}
-          {loginOrSingUp === "ВХІД" ? (
+          {loginOrSingUp === 'ВХІД' ? 'Ще намає акаунта?' : 'Вже є аккаунт?'}
+          {loginOrSingUp === 'ВХІД' ? (
             <a href="?singup">Зареєструйтесь</a>
           ) : (
             <a href="?login">Увійдіть</a>
@@ -442,7 +440,7 @@ const LoginRegistrationForm = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginRegistrationForm;
+export default LoginRegistrationForm

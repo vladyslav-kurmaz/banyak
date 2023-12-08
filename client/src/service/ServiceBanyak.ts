@@ -1,39 +1,38 @@
-import { useAppDispatch } from "../hooks/reduxToolkidHooks";
-import useHttp from "../hooks/httpHook";
+import { useAppDispatch } from '../hooks/reduxToolkidHooks'
+import useHttp from '../hooks/httpHook'
 
-import { changeUserProfile } from "../store/userSlice";
-import { changreMainPreloader } from "../components/SettingMenu/StateElementSlice";
+import { changeUserProfile } from '../store/userSlice'
+import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
 
-import workWithCookies from "../utils/workWithCookies";
+import workWithCookies from '../utils/workWithCookies'
 
 const ServiceBanyak = () => {
-  const dispatch = useAppDispatch();
-  const { setCookies, getCookies, deleteCookie } = workWithCookies();
-  const { request } = useHttp();
+  const dispatch = useAppDispatch()
+  const { setCookies, getCookies, deleteCookie } = workWithCookies()
+  const { request } = useHttp()
 
-  const _baseUlr = "http://localhost:8000";
+  const _baseUlr = 'http://localhost:8000'
+
   // const _baseUlr = 'https://banyak-api.onrender.com'
 
   const singUpNewUser = (body: BodyInit | null | undefined) => {
     const req = request(`${_baseUlr}/api/v1/users/register/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: body,
-    });
-
-    console.log(req);
-
-    return req;
-  };
+    })
+    console.log(req)
+    return req
+  }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
     const req = await request(`${_baseUlr}/api/v1/users/login/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: body,
-    });
-    return req;
-  };
+    })
+    return req
+  }
 
   const profileUser = async (
     token: string,
@@ -43,24 +42,22 @@ const ServiceBanyak = () => {
     try {
       const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
         method: method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: body,
-      });
-      const reqJson = await req.json();
-
-      return await reqJson;
+      })
+      const reqJson = await req.json()
+      dispatch(changeUserProfile(await reqJson))
+      return await reqJson
     } catch (e) {
-      if (typeof e === "object" && e !== null && "status" in e) {
-        console.log(e.status);
+      if (typeof e === 'object' && e !== null && 'status' in e) {
+        console.log(e.status)
+
         if (e.status === 403) {
           newAccess();
         }
-        dispatch(changreMainPreloader(false));
+        dispatch(changreMainPreloader(false))
       }
-      console.error(e);
+      console.error(e)
     }
   };
 
@@ -100,6 +97,7 @@ const ServiceBanyak = () => {
     try {
       // eslint-disable-next-line
       const req = await request(`${_baseUlr}/api/v1/users/logout/`, {
+
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${tokensesion}`,
@@ -112,16 +110,18 @@ const ServiceBanyak = () => {
       deleteCookie("sessiontokenid");
       deleteCookie("tokenid");
       // return req;
-      dispatch(changreMainPreloader(false));
+      dispatch(changreMainPreloader(false))
     } catch (e) {
+
       if (typeof e === "object" && e !== null && "status" in e) {
         console.log(e.status);
+
         if (e.status === 403) {
           newAccess();
         }
       }
-      console.error(e);
-      dispatch(changreMainPreloader(false));
+      console.error(e)
+      dispatch(changreMainPreloader(false))
     }
   };
 
@@ -143,26 +143,27 @@ const ServiceBanyak = () => {
     } catch (e) {
       if (typeof e === "object" && e !== null && "status" in e) {
         if (e.status === 403) {
-          dispatch(changeUserProfile(null));
-          deleteCookie("sessiontokenid");
-          deleteCookie("tokenid");
+          dispatch(changeUserProfile(null))
+          deleteCookie('sessiontokenid')
+          deleteCookie('tokenid')
         }
-        console.log(e.status);
-        dispatch(changreMainPreloader(false));
+        console.log(e.status)
+        dispatch(changreMainPreloader(false))
       }
-      console.error(e);
+      console.error(e)
     }
-  };
+  }
+
 
   const getAllStack = async (
     url: string,
     method: string,
     stack?: { id: string }
   ) => {
-
     const fetchSetting = stack
       ? {
           method: method,
+
           headers: { "Content-Type": "application-json" },
           body: JSON.stringify({ name: stack }),
         }
@@ -180,12 +181,13 @@ const ServiceBanyak = () => {
 
       return req.json();
     } catch (e) {
-      return Promise.reject(e);
+      return Promise.reject(e)
     }
-  };
+  }
 
   const getTalents = async () => {
     try {
+
       const req = await request(`${_baseUlr}/api/v1/talents/talent/`, {});
       console.log("try");
 
@@ -193,7 +195,7 @@ const ServiceBanyak = () => {
         return Promise.reject(req);
       }
 
-      return Promise.resolve(req);
+      return Promise.resolve(req)
     } catch (e) {
       return Promise.reject(e);
     }
@@ -208,7 +210,7 @@ const ServiceBanyak = () => {
         return Promise.reject(req);
       }
 
-      return Promise.resolve(req);
+      return Promise.resolve(req)
     } catch (e) {
       return Promise.reject(e);
     }
@@ -227,4 +229,5 @@ const ServiceBanyak = () => {
   };
 };
 
-export default ServiceBanyak;
+
+export default ServiceBanyak
