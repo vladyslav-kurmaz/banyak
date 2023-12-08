@@ -4,7 +4,8 @@ import { userInfo } from "../types/types";
 const initialState: userInfo = {
   // userId: null,
   userProfile: null,
-  typeUser: 'Я талант'
+  typeUser: true,
+  allStack: []
 }
 
 const userInform = createSlice({
@@ -19,7 +20,11 @@ const userInform = createSlice({
     },
     changeUserProfile: (state, action) => {
       state.userProfile = action.payload
+    },
+    changeAllStack: (state, action) => {
+      state.allStack = action.payload
     }
+
   }
 })
 
@@ -29,5 +34,6 @@ export default reducer;
 export const {
   // changeActiveId,
   changeTypeUser,
-  changeUserProfile
+  changeUserProfile,
+  changeAllStack
 } = actions;

@@ -4,7 +4,7 @@ const translateErrorStatus = (error: number) => {
 
   switch(error) {
     case 500:
-      return 'Акаунт з цим емейлом вже зареєстровано';
+      return 'Щось пішло не так, спробуйте пізніше';
     case 409:
       return 'Акаунт з цим емейлом вже зареєстровано';
     case 400:

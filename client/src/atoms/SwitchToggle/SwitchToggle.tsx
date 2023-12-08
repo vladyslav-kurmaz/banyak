@@ -23,13 +23,14 @@ const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
     (state) => state.stateElement
   );
   const { typeUser } = useAppSelector((state) => state.userInfo);
+  const translateTypeUser = typeUser ? 'Я талант' : 'Я власник ідеї'
 
   const changeActiveLanguage = (status: string) => {
     if (
       status === mainLanguage ||
       status === statusInstr ||
       status === loginOrSingUp ||
-      status === typeUser
+      status === translateTypeUser
     ) {
       return {
         backgroundColor: "#1C145E",
@@ -55,7 +56,8 @@ const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
         dispatch(changeLoginOrSingUp(target.getAttribute("data-prop")));
         break;
       case "Я власник ідеї" || "Я талант":
-        dispatch(changeTypeUser(target.getAttribute("data-prop")));
+        target.getAttribute("data-prop") === "Я власник ідеї" ? dispatch(changeTypeUser(false)) : dispatch(changeTypeUser(true));
+        
         break;
     }
   };

@@ -12,34 +12,41 @@ export type stateElement = {
 }
 
 export type TUserProfile = {
-  speciality: {
-    name: string
-    id: string
-  }[]
-  stack: string[]
-  description: string
-  is_talent: boolean
-  user: {
-    email: string
-    first_name: string
-    last_name: string
-  }
-  is_military: boolean
-  is_vpo: boolean
-  ideas: string[]
-  avatar: string
-  portfolio: string
+    speciality: {name: string}[]
+    ,
+    stack: {name: string}[],
+    description: string,
+    is_talent: boolean,
+    user: {
+      email: string,
+      first_name: string,
+      last_name: string
+    },
+    is_military: boolean,
+    is_vpo: boolean,
+    ideas: string[],
+    avatar: TUpdateAvatar,
+    portfolio: string
+}
+
+export type TUpdateAvatar = {
+  avatar_profile: string,
+  created_at: string,
+  id: string,
+  updated_at: string,
+  user: string
 }
 
 export type TprofileChange = {
-  speciality: []
-  stack: string[]
-  avatar?: File | null
-  description: string
-  is_talent: false
-  is_military: false
-  is_vpo: false
-  ideas: []
+  speciality: {name: string}[],
+  stack: {name: string}[],
+  // avatar?: File | null | string,
+  description: string,
+  is_talent: boolean,
+  // is_military: boolean,
+  // is_vpo: boolean,
+  // ideas: string[],
+  portfolio: string;
 }
 
 export type Talent = {
@@ -54,9 +61,12 @@ export type Talent = {
 
 export type userInfo = {
   // userId: null | string,
-  userProfile: null | TUserProfile
-  typeUser: 'Я власник ідеї' | 'Я талант'
+  userProfile: null | TUserProfile;
+  typeUser: boolean;
+  allStack: TGetAllStack | []
 }
+
+export type TGetAllStack = [name: string]
 
 export type TValidatinForm = {
   errorStatus: boolean

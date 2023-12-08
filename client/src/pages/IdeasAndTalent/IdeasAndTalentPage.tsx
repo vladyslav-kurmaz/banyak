@@ -52,6 +52,7 @@ const IdeasAndTalent = ({ ideaType }: { ideaType: boolean }) => {
 
       {ideaType ? (
         <ButtonMoreLoading text={'ідей'} />
+
       ) : (
         <ButtonMoreLoading text={'талантів'} />
       )}

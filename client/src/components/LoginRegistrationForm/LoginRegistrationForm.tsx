@@ -1,19 +1,21 @@
-import { useState, useEffect, FormEvent } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+
+import { useState, useEffect, FormEvent } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // work with redux
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+
 import {
   changeCounterLink,
   changeLoginOrSingUp,
   changreMainPreloader,
   changeErrorStatus,
-} from '../SettingMenu/StateElementSlice'
-import { changeUserProfile } from '../../store/userSlice'
+} from "../SettingMenu/StateElementSlice";
+import { changeUserProfile } from "../../store/userSlice";
 
 // Services
-import ServiceBanyak from '../../service/ServiceBanyak'
-import workWithCookies from '../../utils/workWithCookies'
+import ServiceBanyak from "../../service/ServiceBanyak";
+import workWithCookies from "../../utils/workWithCookies";
 
 // Components
 import CustomInput from '../../atoms/CustomInput/CustomInput'
@@ -26,20 +28,20 @@ import logo from '../../image/logo/LOGO_Banyak.webp'
 import './LoginRegistrationForm.scss'
 
 // utils
-import validationForm from '../../utils/validationForm'
-import translateErrorStatus from '../../utils/translateErroStatus'
+import validationForm from "../../utils/validationForm";
+import translateErrorStatus from "../../utils/translateErroStatus";
 
 const LoginRegistrationForm = () => {
-  const [name, setName] = useState('')
-  const [surName, setSurName] = useState('')
-  const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
-  const [disabled, setDisabled] = useState(true)
-  const location = useLocation()
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const [name, setName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const location = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const [modalLocation, setModalLocation] = useState<string[]>([])
+  const [modalLocation, setModalLocation] = useState<string[]>([]);
 
   const { setCookies, deleteCookie } = workWithCookies()
 
@@ -47,30 +49,30 @@ const LoginRegistrationForm = () => {
 
   const { loginOrSingUp, errorStatus } = useAppSelector(
     (state) => state.stateElement
-  )
+  );
 
   useEffect(() => {
-    if (loginOrSingUp === 'ВХІД') {
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
-      dispatch(changeCounterLink())
-      navigate('?login')
+    if (loginOrSingUp === "ВХІД") {
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
+      dispatch(changeCounterLink());
+      navigate("?login");
 
-      setModalLocation((state) => [...state, '?login'])
+      setModalLocation((state) => [...state, "?login"]);
     } else {
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
-      dispatch(changeCounterLink())
-      navigate('?singup')
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
+      dispatch(changeCounterLink());
+      navigate("?singup");
 
-      setModalLocation((state) => [...state, '?singup'])
+      setModalLocation((state) => [...state, "?singup"]);
     }
     // eslint-disable-next-line
-  }, [loginOrSingUp])
+  }, [loginOrSingUp]);
 
   useEffect(() => {
     if (location.search === '?login') {
@@ -81,17 +83,18 @@ const LoginRegistrationForm = () => {
       setDisabled(true)
     }
     // eslint-disable-next-line
-  }, [location.search])
+
+  }, [location.search]);
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: (value: React.SetStateAction<string>) => void
   ) => {
-    const value = e.target.value.trim()
-    setState(value)
-    dispatch(changeErrorStatus(null))
+    const value = e.target.value.trim();
+    setState(value);
+    dispatch(changeErrorStatus(null));
     // eslint-disable-next-line
-  }
+  };
 
   useEffect(() => {
     const nameValid = validationForm(name, 'name')?.errorStatus
@@ -113,67 +116,70 @@ const LoginRegistrationForm = () => {
       }
     }
     // eslint-disable-next-line
-  }, [name, surName, email, pass])
+  }, [name, surName, email, pass]);
 
   const closeLoginForm = () => {
-    document.body.style.overflow = ''
+    document.body.style.overflow = "";
 
     modalLocation.forEach((loc) => {
-      navigate(location.pathname, { replace: true })
-    })
+      navigate(location.pathname, { replace: true });
+    });
 
-    navigate(location.pathname)
-    setModalLocation([])
-  }
+    navigate(location.pathname);
+    setModalLocation([]);
+  };
 
   const submitSingUpForm = async (e: FormEvent) => {
-    e.preventDefault()
-    dispatch(changeErrorStatus(null))
+    e.preventDefault();
+    dispatch(changeErrorStatus(null));
 
     const data = {
       first_name: name,
       last_name: surName,
       email: email,
       password: pass,
-    }
+    };
+    document.body.style.overflow = "";
 
     try {
-      const registration = await singUpNewUser(JSON.stringify(data))
-      console.log(await registration.json())
+      const registration = await singUpNewUser(JSON.stringify(data));
+      console.log(await registration.json());
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
-      )
-      const loginJson = await login.json()
-      setCookies('sessiontokenid', await loginJson.access_token, 1)
-      setCookies('tokenid', await loginJson.refresh_token, 1)
+      );
+      const loginJson = await login.json();
+      setCookies("sessiontokenid", await loginJson.access_token, 1);
+      setCookies("tokenid", await loginJson.refresh_token, 1);
 
-      const createProfile = await profileUser(loginJson.access_token, 'POST')
+      const createProfile = await profileUser(loginJson.access_token, "POST");
+      dispatch(changeUserProfile(await createProfile));
 
-      navigate('/chose-profile')
-      dispatch(changreMainPreloader(false))
+      navigate("/chose-profile");
+      dispatch(changreMainPreloader(false));
+      document.body.style.overflow = "";
 
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
     } catch (e) {
-      dispatch(changreMainPreloader(false))
-      if (typeof e === 'object' && e !== null && 'status' in e) {
-        dispatch(changeErrorStatus(e.status))
+      dispatch(changreMainPreloader(false));
+      if (typeof e === "object" && e !== null && "status" in e) {
+        dispatch(changeErrorStatus(e.status));
       }
-
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
-      console.error(e)
+      document.body.style.overflow = "";
+      setName("");
+      setSurName("");
+      setEmail("");
+      setPass("");
+      console.error(e);
     }
-  }
+  };
 
   const submitLoginUser = async (e: FormEvent) => {
-    e.preventDefault()
-    dispatch(changeErrorStatus(null))
+    e.preventDefault();
+    dispatch(changeErrorStatus(null));
 
     const data = {
       email: email,
@@ -181,41 +187,32 @@ const LoginRegistrationForm = () => {
     }
 
     try {
-      const login = await loginUser(JSON.stringify(data))
-      const loginJson = await login.json()
-      setCookies('sessiontokenid', await loginJson.access_token, 1)
-      setCookies('tokenid', await loginJson.refresh_token, 1)
+      const login = await loginUser(JSON.stringify(data));
+      const loginJson = await login.json();
+      setCookies("sessiontokenid", await loginJson.access_token, 1);
+      setCookies("tokenid", await loginJson.refresh_token, 1);
 
-      const createProfile = await profileUser(loginJson.access_token, 'GET')
+      const createProfile = await profileUser(loginJson.access_token, "GET");
+      console.log(createProfile);
 
-      navigate('/')
-      dispatch(changreMainPreloader(false))
+      dispatch(changeUserProfile(await createProfile));
+      document.body.style.overflow = "";
+      navigate("/");
+      dispatch(changreMainPreloader(false));
 
-      setEmail('')
-      setPass('')
+      setEmail("");
+      setPass("");
     } catch (e) {
-      dispatch(changreMainPreloader(false))
-      if (typeof e === 'object' && e !== null && 'status' in e) {
-        dispatch(changeErrorStatus(e.status))
+      document.body.style.overflow = "";
+      dispatch(changreMainPreloader(false));
+      if (typeof e === "object" && e !== null && "status" in e) {
+        dispatch(changeErrorStatus(e.status));
       }
-      setEmail('')
-      setPass('')
-      console.error(e)
+      setEmail("");
+      setPass("");
+      console.error(e);
     }
-
-    // loginUser(JSON.stringify(data))
-    //   // .then((res: { access_token: string, refresh_token: string }) => profileUser(res.access_token, 'GET'))
-    //   .then((res) => {
-    //     dispatch(changeUserProfile(res))
-
-    //   })
-    //   .then(() => navigate(location.pathname))
-    //   .then(() => dispatch(changreMainPreloader(false)))
-    //   .finally(() => {
-    //     setEmail("");
-    //     setPass("");
-    //   });
-  }
+  };
 
   const renderForm = () => {
     if (loginOrSingUp === 'РЕЄСТРАЦІЯ') {
@@ -307,11 +304,6 @@ const LoginRegistrationForm = () => {
   }
 
   // eslint-disable-next-line
-  {
-    loginOrSingUp === 'ВХІД' || loginOrSingUp === 'РЕЄСТРАЦІЯ'
-      ? (document.body.style.overflow = 'hidden')
-      : (document.body.style.overflow = '')
-  }
 
   return (
     <div
