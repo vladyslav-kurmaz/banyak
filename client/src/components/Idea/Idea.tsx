@@ -4,6 +4,7 @@ import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { IdeaRespType } from '../../types/types'
 import formateDateToDisplay from '../../utils/formateDateToDisplay'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
+import { Link } from 'react-router-dom'
 import './Idea.scss'
 
 const IDEA_TITLE_LENGTH = 24
@@ -67,7 +68,11 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
 
         <div className="idea__metric">
           <div className="idea__metric-button">
-            {myIdea ? null : <ButtonSmall text="Долучитись" />}
+            {myIdea ? null : (
+              <Link to={`${idea.slug}`} className="buttonSmall">
+                Долучитись
+              </Link>
+            )}
           </div>
 
           <div className="idea__metric-metrics">

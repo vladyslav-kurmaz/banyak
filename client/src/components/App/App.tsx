@@ -22,6 +22,7 @@ import './App.scss'
 import ProfilePage from '../../pages/ProfilePage/ProfilePage'
 import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
 import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
+import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 
 function App() {
   const { mainPreloader } = useAppSelector((state) => state.stateElement)
@@ -68,6 +69,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="aboutus" element={<AboutUs />} />
             <Route path="ideas" element={<IdeasAndTalent ideaType={true} />} />
+            <Route path="ideas/:slug" element={<IdeaDescriptionPage />} />
             <Route
               path="talents"
               element={<IdeasAndTalent ideaType={false} />}
@@ -93,6 +95,7 @@ function App() {
                 />
               }
             />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
