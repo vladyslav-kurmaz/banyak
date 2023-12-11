@@ -92,15 +92,25 @@ ASGI_APPLICATION = 'banyak.asgi.application'
 
 load_dotenv()
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'banyak_data',
+        'USER': 'banyak_data_user',
+        'PASSWORD': 'OKo54XJ460ARmpOgh2hCRjD84HRXm7ST',
+        'HOST': 'dpg-clrg2l0gqk6s7396pe3g-a.ohio-postgres.render.com',
+        'PORT': 5432
     }
 }
 
 db_url = os.getenv('DB_URL')
-DATABASES['default'] = dj_database_url.parse('postgres://banyak_data_user:OKo54XJ460ARmpOgh2hCRjD84HRXm7ST@dpg-clrg2l0gqk6s7396pe3g-a/banyak_data')
 
 # DATABASES = {
 #     'default': {
