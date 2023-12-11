@@ -1,22 +1,24 @@
-import { useAppDispatch } from '../hooks/reduxToolkidHooks'
-import useHttp from '../hooks/httpHook'
+import { useAppDispatch } from '../hooks/reduxToolkidHooks';
+import useHttp from '../hooks/httpHook';
 
-import { changeUserProfile } from '../store/userSlice'
-import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
+import { changeUserProfile } from '../store/userSlice';
+import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice';
 
-import workWithCookies from '../utils/workWithCookies'
+import workWithCookies from '../utils/workWithCookies';
 
 const ServiceBanyak = () => {
-  const dispatch = useAppDispatch()
-  const { setCookies, getCookies, deleteCookie } = workWithCookies()
-  const { request } = useHttp()
+  const dispatch = useAppDispatch();
+  const { setCookies, getCookies, deleteCookie } = workWithCookies();
+  const { request } = useHttp();
+  
+  const _baseUlr = 'http://localhost:8000';
 
-  const _baseUlr = 'http://localhost:8000'
+  const _baseUlrApi = 'https://banyak-api.onrender.com';
 
-  // const _baseUlr = 'https://banyak-api.onrender.com'
+  const hostname = window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi;
 
   const singUpNewUser = (body: BodyInit | null | undefined) => {
-    const req = request(`${_baseUlr}/api/v1/users/register/`, {
+    const req = request(`${hostname}/api/v1/users/register/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -26,7 +28,7 @@ const ServiceBanyak = () => {
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
-    const req = await request(`${_baseUlr}/api/v1/users/login/`, {
+    const req = await request(`${hostname}/api/v1/users/login/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -40,7 +42,7 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
     try {
-      const req = await request(`${_baseUlr}/api/v1/users/user-profile/`, {
+      const req = await request(`${hostname}/api/v1/users/user-profile/`, {
         method: method,
         headers: { Authorization: `Bearer ${token}` },
         body: body,
@@ -68,7 +70,7 @@ const ServiceBanyak = () => {
   ) => {
     try {
       const req = await request(
-        `${_baseUlr}/api/v1/users/user-profile-avatar/`,
+        `${hostname}/api/v1/users/user-profile-avatar/`,
         {
           method: method,
           headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +98,7 @@ const ServiceBanyak = () => {
 
     try {
       // eslint-disable-next-line
-      const req = await request(`${_baseUlr}/api/v1/users/logout/`, {
+      const req = await request(`${hostname}/api/v1/users/logout/`, {
 
         method: "DELETE",
         headers: {
@@ -129,7 +131,7 @@ const ServiceBanyak = () => {
     const tokenid = getCookies("tokenid");
 
     try {
-      const req = await request(`${_baseUlr}/api/v1/users/new-access/`, {
+      const req = await request(`${hostname}/api/v1/users/new-access/`, {
         method: "PUT",
         headers: { "Content-Type": "application-json" },
         body: JSON.stringify({ refresh_token: tokenid }),
@@ -171,7 +173,7 @@ const ServiceBanyak = () => {
 
     try {
       const req = await request(
-        `${_baseUlr}/api/v1/users/${url}`,
+        `${hostname}/api/v1/users/${url}`,
         fetchSetting
       );
 
@@ -188,7 +190,7 @@ const ServiceBanyak = () => {
   const getTalents = async () => {
     try {
 
-      const req = await request(`${_baseUlr}/api/v1/talents/talent/`, {});
+      const req = await request(`${hostname}/api/v1/talents/talent/`, {});
       console.log("try");
 
       if (!req.ok) {
@@ -203,7 +205,7 @@ const ServiceBanyak = () => {
 
   const getIdeas = async () => {
     try {
-      const req = await request(`${_baseUlr}/api/v1/ideas/ideas/`, {});
+      const req = await request(`${hostname}/api/v1/ideas/ideas/`, {});
       console.log("try");
 
       if (!req.ok) {
