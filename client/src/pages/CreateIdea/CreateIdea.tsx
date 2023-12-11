@@ -1,25 +1,32 @@
-import { useState } from 'react';
-import { useAppSelector } from '../../hooks/reduxToolkidHooks'; 
+
+import {useState} from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
 
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack';
+import logo from '../../image/logo/small_logo.webp';
+
+
 import TagsField from "../../atoms/TagsField/TagsField";
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 
-import logo from '../../image/logo/small_logo.webp';
+
+import { TIdeasChange, TprofileChange } from '../../types/types';
 
 import './CreateIdea.scss';
 
-const CreateIdea = () => {
-  type TCreateNewIdea = {
-    name: string;
-    description: string;
-    experts: {name: string}[];
-    stack: {name: string}[];
-  }
 
+const CreateIdea = () => {
+
+  const dispatch = useAppDispatch();
   const {allStack} = useAppSelector(state => state.userInfo);
 
-  const [newIdeaData, setNewIdeaData] = useState<TCreateNewIdea>()
+  const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
+    speciality: [],
+    stack: [],
+    description: '',
+
+    portfolio: '',
+})
 
   return (
     <div className="create-idea  create-idea__outside">
@@ -94,9 +101,18 @@ const CreateIdea = () => {
         </textarea> */}
 
             <div className="technologies__textfield">
-              <TagsField 
-                allStack={allStack}
-              />
+
+              {
+                newIdeaData !== null ?
+                <TagsField 
+                  allStack={allStack}
+                  stackUser={newIdeaData.stack}
+                  changeStack={setNewIdeaData}
+                />
+                :
+                null
+              }
+              
             </div>
 
           </div>

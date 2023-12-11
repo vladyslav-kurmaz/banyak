@@ -42,10 +42,17 @@ export type TprofileChange = {
   stack: {name: string}[],
   // avatar?: File | null | string,
   description: string,
-  is_talent: boolean,
+  is_talent?: boolean,
   // is_military: boolean,
   // is_vpo: boolean,
   // ideas: string[],
+  portfolio: string;
+}
+
+export type TIdeasChange = {
+  speciality: {name: string}[],
+  stack: {name: string}[],
+  description: string,
   portfolio: string;
 }
 
