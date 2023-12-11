@@ -44,7 +44,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
             'user_email': user.email,
             'user_first_name': user.first_name,
             'user_last_name': user.last_name,
-            'exp': datetime.utcnow() + timedelta(minutes=2),
+            'exp': datetime.utcnow() + timedelta(days=1),
             'type': 'access'
         }
         access_token = jwt.encode(payload, settings.SECRET_JWT_KEY, algorithm=settings.ALGORITHM)
@@ -54,7 +54,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def create_refresh(cls, user):
         payload = {
             'user_id': str(user.id),
-            'exp': datetime.utcnow() + timedelta(minutes=5),
+            'exp': datetime.utcnow() + timedelta(days=2),
             'type': 'refresh'
         }
         refresh_token = jwt.encode(payload, settings.SECRET_JWT_KEY, algorithm=settings.ALGORITHM)

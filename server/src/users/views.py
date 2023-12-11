@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.urls import reverse
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView
 from rest_framework import status, permissions, generics, views
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -10,6 +11,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.conf import settings
 from rest_framework import filters
+from uuid import UUID
+from io import BytesIO
 from .serializers import *
 from .services.google_auth import check_google_auth
 from .authentication import JWTAuthentication
@@ -20,6 +23,8 @@ from .documentation.users_schema_setting import users_doc
 from .documentation.profile_schema_setting import profile_doc
 from ..decorators.decorators import swagger_decorator
 from .services.verify_military_vpo import verify
+import requests
+import json
 
 
 @swagger_decorator(['post'], 'Users', users_doc)
@@ -110,20 +115,11 @@ class UpdateAccessToken(views.APIView):
         return Response({'access_token': new_access_token}, status=status.HTTP_200_OK)
 
 
-@swagger_decorator(['get', 'post', 'put'], 'Users', profile_doc)
-class Profile(APIView):
-    """Профіль користувача"""
-    serializer_class = UserProfileSerializer
+class UserAvatar(APIView):
+    """Створення оновлення аватарки користувача"""
+    serializer_class = AvatarSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        current_user = request.user
-        try:
-            user_profile = UserProfile.objects.get(user=current_user)
-            serializer = self.serializer_class(user_profile, many=False)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except UserProfile.DoesNotExist:
-            return Response({'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
         current_user = request.user
@@ -137,42 +133,91 @@ class Profile(APIView):
 
     def put(self, request):
         current_user = request.user
-        user_profile = UserProfile.objects.get(user=current_user)
-        serializer = self.serializer_class(user_profile, data=request.data)
-        context = {}
-        path = None
+        avatar = Avatar.objects.get(user=current_user)
+        serializer = self.serializer_class(avatar, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_decorator(['get', 'post', 'put'], 'Users', profile_doc)
+class Profile(APIView):
+    """Профіль користувача"""
+    serializer_class = UserProfileCreateUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        current_user = request.user
+        try:
+            user_profile = UserProfile.objects.get(user=current_user)
+            serializer = UserProfileSerializer(user_profile, many=False)
+            print(request.data)
+            print('data', serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserProfile.DoesNotExist:
+            return Response({'message': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request):
+        current_user = request.user
+        print('request data', request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            upd_profile = serializer.save()
-            if upd_profile.upload_military:
-                path = upd_profile.upload_military.path
-                context.update({
-                    'upload': upd_profile.upload_military,
-                    'url': verify(user=current_user, request=request)
-                })
-            elif upd_profile.upload_vpo:
-                path = upd_profile.upload_vpo.path
-                context.update({
-                    'upload': upd_profile.upload_vpo,
-                    'url': verify(user=current_user, request=request)
-                })
-
-            email = current_user.email
-            template_letter = render_to_string('email.html', context)
-            data_message = strip_tags(template_letter)
-            subject = 'Verify Banyak'
-            message = EmailMultiAlternatives(
-                subject=subject,
-                body=data_message,
-                from_email=email,
-                to=[settings.EMAIL_HOST_USER]
-            )
-            message.attach_file(path, 'image/jpg')
-            message.attach_alternative(template_letter, 'text/html')
-            message.send()
+            avatar = Avatar.objects.create(user=current_user)
+            new_profile = serializer.save(user=current_user)
+            new_profile.avatar = avatar
+            new_profile.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        current_user = request.user
+        user_profile = UserProfile.objects.get(user=current_user)
+        serializer = self.serializer_class(user_profile, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        # context = {}
+        # path = None
+        #
+        # if serializer.is_valid():
+        #     upd_profile = serializer.save()
+        #     if not (upd_profile.is_military or upd_profile.is_vpo):
+        #         # чи є користувач військовим або впо
+        #         if upd_profile.upload_military:
+        #             # чи є користувач військовим
+        #             path = upd_profile.upload_military.path
+        #             context.update({
+        #                 'upload': upd_profile.upload_military,
+        #                 'url': verify(user=current_user, request=request)
+        #             })
+        #         elif upd_profile.upload_vpo:
+        #             # чи є користувач впо
+        #             path = upd_profile.upload_vpo.path
+        #             context.update({
+        #                 'upload': upd_profile.upload_vpo,
+        #                 'url': verify(user=current_user, request=request)
+        #             })
+        #
+        #         email = current_user.email
+        #         template_letter = render_to_string('email.html', context)
+        #         data_message = strip_tags(template_letter)
+        #         subject = 'Verify Banyak'
+        #         message = EmailMultiAlternatives(
+        #             subject=subject,
+        #             body=data_message,
+        #             from_email=email,
+        #             to=[settings.EMAIL_HOST_USER]
+        #         )
+        #         message.attach_file(path, 'image/jpg')
+        #         message.attach_alternative(template_letter, 'text/html')
+        #         message.send()
+        #     user_profile.save()
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         current_user = request.user
@@ -220,6 +265,8 @@ class ResetPasswordRequestEmail(generics.GenericAPIView):
 
 class PasswordTokenCheck(generics.GenericAPIView):
     """Перевірка токена"""
+    serializer_class = ResetPasswordRequestEmailSerializer
+
     def get(self, request, user_id, token):
         try:
             id = smart_str(urlsafe_base64_decode(user_id))
@@ -245,6 +292,7 @@ class NewPassword(generics.GenericAPIView):
 
 
 class VerifyEmail(generics.GenericAPIView):
+    serializer_class = ResetPasswordRequestEmailSerializer
 
     def get(self, request, user_id, token):
         try:
@@ -268,7 +316,6 @@ class VerifyUserEmail(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user_id = serializer.validated_data['user_id']
-        token = serializer.validated_data['token']
         id = force_str(urlsafe_base64_decode(user_id))
         user = CustomUser.objects.get(id=id)
 
@@ -277,14 +324,17 @@ class VerifyUserEmail(generics.GenericAPIView):
             user.save()
             return Response({'message': 'Account has been verified'}, status=status.HTTP_200_OK)
 
-        # verify_token = CustomUserVerify.objects.create(token=token)
-
         return Response({'message': 'Invalid'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VerifyUser(generics.GenericAPIView):
-    def get(self, request, user_id, token):
-        pass
+class UserMilitaryOrVpoProfile(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = UserMilitaryOrVpoProfileSerializer
+
+    def put(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class StackList(generics.ListAPIView):
@@ -340,6 +390,18 @@ def github_page(request):
 
 def linkedin_page(request):
     return render(request, 'linkedin.html')
+
+
+@api_view(['GET'])
+def get_ip(request):
+    pass
+    # address = '22.24.124.253'
+    # db_path = os.path.join(settings.BASE_DIR, 'users/db/GeoLite2-Country.mmdb')
+    # # print(db)
+    # db = database.Reader(db_path)
+    # res = db.country(ip_address=address)
+    # print(res)
+    # return Response({'message': True})
 
 
 # @api_view(['POST'])

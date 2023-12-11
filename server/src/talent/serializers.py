@@ -7,11 +7,11 @@ from .models import InviteTalentIdea
 
 
 class ListTalentSerializer(serializers.ModelSerializer):
-    user = CustomUserTalentSerializer()
+    user = CustomUserTalentSerializer(many=False)
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'user')
+        fields = '__all__'
 
 
 class TalentDetailField(serializers.RelatedField):

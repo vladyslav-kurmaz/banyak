@@ -19,6 +19,7 @@ const ServiceBanyak = () => {
 
   const singUpNewUser = (body: BodyInit | null | undefined) => {
     const req = request(`${hostname}/api/v1/users/register/`, {
+
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -29,6 +30,7 @@ const ServiceBanyak = () => {
 
   const loginUser = async (body: BodyInit | null | undefined) => {
     const req = await request(`${hostname}/api/v1/users/login/`, {
+
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -43,6 +45,7 @@ const ServiceBanyak = () => {
   ) => {
     try {
       const req = await request(`${hostname}/api/v1/users/user-profile/`, {
+
         method: method,
         headers: { Authorization: `Bearer ${token}` },
         body: body,
@@ -189,7 +192,6 @@ const ServiceBanyak = () => {
 
   const getTalents = async () => {
     try {
-
       const req = await request(`${hostname}/api/v1/talents/talent/`, {});
       console.log("try");
 

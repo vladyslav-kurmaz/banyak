@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -142,6 +142,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -238,3 +241,7 @@ ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 48
 
 SECRET_JWT_KEY = os.getenv('SECRET_JWT_KEY')
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+
+IP_LOCATION_URL = os.getenv('IP_LOCATION_URL')
