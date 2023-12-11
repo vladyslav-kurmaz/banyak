@@ -3,6 +3,7 @@ daphne==4.0.0
 dj_config_url==0.1.1
 Django==4.2.3
 django_filter==23.2
+django-cors-headers==4.2.0
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.2.2
 drf_yasg==1.21.7
