@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
-# from .asgi import application
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -98,6 +98,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+db_url = os.getenv('DB_URL')
+DATABASES['default'] = dj_database_url.parse(db_url)
 
 # DATABASES = {
 #     'default': {
