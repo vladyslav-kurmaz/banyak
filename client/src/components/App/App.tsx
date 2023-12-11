@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxToolkidHooks";
-import { changreMainPreloader } from "../SettingMenu/StateElementSlice";
-import { changeUserProfile } from "../../store/userSlice";
+import React, { useState, useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeUserProfile } from '../../store/userSlice'
 
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
@@ -25,8 +25,7 @@ import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChoosePro
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 
 function App() {
-
-  const { mainPreloader } = useAppSelector((state) => state.stateElement);
+  const { mainPreloader } = useAppSelector((state) => state.stateElement)
 
   const location = useLocation()
   // const popupLocation = location.search === '?login' || location.search === '?singup'
@@ -36,27 +35,25 @@ function App() {
   const { getCookies } = workWithCookies()
   const [showPopup, setShowPopup] = useState(false)
 
-
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const token = getCookies("sessiontokenid");
+    const token = getCookies('sessiontokenid')
 
     if (token !== null) {
-      dispatch(changreMainPreloader(true));
+      dispatch(changreMainPreloader(true))
       try {
-        profileUser(token, "GET").then((res) =>
+        profileUser(token, 'GET').then((res) =>
           dispatch(changeUserProfile(res))
-        );
-        dispatch(changreMainPreloader(false));
+        )
+        dispatch(changreMainPreloader(false))
       } catch (e) {
-        dispatch(changreMainPreloader(false));
-        console.error(e);
+        dispatch(changreMainPreloader(false))
+        console.error(e)
       }
     }
     // eslint-disable-next-line
-  }, []);
-
+  }, [])
 
   return (
     <>
@@ -70,12 +67,9 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="aboutus" element={<AboutUs />} />
-            <Route path="ideas" element={<IdeasAndTalent ideaType={true} />} />
+            <Route path="ideas" element={<IdeasAndTalent isIdea={true} />} />
             <Route path="ideas/:slug" element={<IdeaDescriptionPage />} />
-            <Route
-              path="talents"
-              element={<IdeasAndTalent ideaType={false} />}
-            />
+            <Route path="talents" element={<IdeasAndTalent isIdea={false} />} />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />
             <Route path="create-idea" element={<CreateIdea />} />
             <Route
