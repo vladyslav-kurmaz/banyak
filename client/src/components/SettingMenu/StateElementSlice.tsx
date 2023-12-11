@@ -9,6 +9,9 @@ const initialState: stateElement = {
   statusInstr: 'Власник ідеї',
   loginRegistrationForm: false,
   loginOrSingUp: 'ВХІД',
+  counterLink: 0,
+  mainPreloader: false,
+  errorStatus: null,
 };
 
 const stateElementSlice = createSlice({
@@ -35,6 +38,15 @@ const stateElementSlice = createSlice({
     },
     changeLoginOrSingUp: (state, action) => {
       state.loginOrSingUp = action.payload;
+    },
+    changeCounterLink: (state) => {
+      state.counterLink = state.counterLink + 1;
+    },
+    changreMainPreloader: (state, action) => {
+      state.mainPreloader = action.payload;
+    },
+    changeErrorStatus: (state, action) => {
+      state.errorStatus = action.payload
     }
   },
 });
@@ -48,6 +60,9 @@ export const {
   changeMainPageSlider,
   changeStatusInstr,
   changeOpenOrCloseLoginPopup,
-  changeLoginOrSingUp
+  changeLoginOrSingUp,
+  changeCounterLink,
+  changreMainPreloader,
+  changeErrorStatus
 } = actions;
 export default reducer;

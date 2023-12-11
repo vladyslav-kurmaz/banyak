@@ -2,12 +2,12 @@ from rest_framework.views import status
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import F, Case, When, Value
-from django.db.models import IntegerField
+from django.db.models import Value, IntegerField, Case, When
 from src.users.models import UserProfile
 from src.user_idea.models import Idea
 from .serializers import ListTalentSerializer, InviteTalentIdeaSerializer, AcceptInviteTalentIdeaSerializer
 from .models import InviteTalentIdea
+from .paginate import CustomPaginate
 
 
 class TalentsViews(viewsets.ModelViewSet):
@@ -30,10 +30,19 @@ class TalentsViews(viewsets.ModelViewSet):
     """
     permission_classes = [permissions.AllowAny]
     serializer_class = ListTalentSerializer
+    pagination_class = CustomPaginate
 
     def get_queryset(self):
-        talent = UserProfile.objects.filter(is_talent=True)
-        return talent
+        talents = UserProfile.objects.filter(is_talent=True)
+        return talents
+
+    def get_talents_military(self):
+        talents = UserProfile.objects.filter(is_talent=True, is_military=True)
+        return talents
+
+    def get_talents_vpo(self):
+        talents = UserProfile.objects.filter(is_talent=True, is_vpo=True)
+        return talents
 
     def get_owner_profile(self):
         owner = UserProfile.objects.all()
@@ -45,14 +54,11 @@ class TalentsViews(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         talents = self.get_queryset()
-        # talents = self.get_queryset().annotate(priority=Case(
-        #     When(is_military=True, then=Value(1)),
-        #     When(is_vpo=True, then=Value(1)),
-        #     When(is_military=False, then=Value(2)),
-        #     When(is_vpo=False, then=Value(2)),
-        #     default=Value(2),
-        #     output_field=IntegerField()
-        # )).order_by('priority')
+
+        page = self.paginate_queryset(talents)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = self.serializer_class(talents, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

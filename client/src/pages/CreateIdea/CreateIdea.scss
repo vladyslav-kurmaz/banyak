@@ -1,0 +1,329 @@
+.create-idea {
+  max-width: 1200px;
+  width: 100%;
+  
+  &__inside {
+    padding: 40px;
+    box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  &__outside {
+    margin-bottom: 40px;
+  }
+
+  &__button-back {
+    margin: 20px 0;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .create-idea {
+    flex-direction: column;
+    align-items: center;
+
+    
+    &__inside {
+      padding: 40px;
+      box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+      display: block;
+      justify-content: flex-start;
+    }
+  
+    // &__outside {
+    //   margin-bottom: 40px;
+    // }
+  }
+}
+
+
+// 
+// 
+
+.personal-stack {
+  max-width: 590px;
+  width: 100%;
+  margin-left: 65px;
+
+  &__user-profile {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  &__specialization {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  &__about-me {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  &__portfolio {
+    margin-bottom: 40px;
+  }
+
+  &__technologies {
+    margin-bottom: 40px;
+  }
+}
+
+.specialization {
+  &__input {
+    display: inline-block;
+    width: 100%;
+    height: 83px;
+    border-radius: 8px;
+    border: 2px solid #061730;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #061730;
+      
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    outline: none;
+
+    &::placeholder {
+      color: #061730;
+      
+      font-family: Montserrat;
+      font-size: 24px;
+      font-weight: 600;
+      opacity: .7;
+    }
+  }
+}
+
+.about-me {
+  &__description {
+    margin-bottom: 16px;
+    
+  }
+
+  &__instruction {
+    color: #000;
+
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+}
+
+.description {
+  border-radius: 8px;
+  border: 2px solid #061730;
+  box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+  width: 100%;
+  height: 220px;
+  resize: none;
+  padding: 20px;
+
+  overflow: hidden;
+  color: #061730;
+
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.portfolio {
+  width: 100%;
+  
+  &__input {
+    width: 100%;
+    height: 36px;
+    display: inline-block;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 2px solid #061730;
+    color: #000;
+
+    outline: none;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration-line: underline;
+
+    &::placeholder {
+      color: #000;
+
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 400;
+      text-decoration-line: underline;
+      opacity: .7;
+    }
+  }
+  
+}
+
+.technologies {
+  max-width: 590px;
+  width: 100%;
+  // height: 220px;
+
+  &__textfield {
+    max-width: 590px;
+    width: 100%;
+    height: 220px;
+  }
+}
+
+.title-mb-20 {
+  margin-bottom: 20px;
+}
+
+.title-h2-l {
+  color: #061730;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+
+@media screen and (max-width: 820px) {
+  .personal-stack {
+    max-width: 590px;
+    width: 100%;
+    margin-left: 0px;
+  
+    &__user-profile {
+      // width: 100%;
+      // margin-bottom: 40px;
+      display: none;
+    }
+  
+    &__specialization {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+  
+    &__about-me {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+  
+    &__portfolio {
+      margin-bottom: 40px;
+    }
+  
+    &__technologies {
+      margin-bottom: 40px;
+    }
+  }
+  
+  .specialization {
+    &__input {
+      display: inline-block;
+      width: 100%;
+      height: 83px;
+      border-radius: 8px;
+      border: 2px solid #061730;
+      padding: 20px;
+      box-sizing: border-box;
+      color: #061730;
+        
+      font-family: Montserrat;
+      font-size: 24px;
+      font-weight: 600;
+      outline: none;
+  
+      &::placeholder {
+        color: #061730;
+        
+        font-family: Montserrat;
+        font-size: 24px;
+        font-weight: 600;
+        opacity: .7;
+      }
+    }
+  }
+  
+  .about-me {
+    &__description {
+      margin-bottom: 16px;
+      
+    }
+  
+  }
+  
+  .description {
+    border-radius: 8px;
+    border: 2px solid #061730;
+    box-shadow: 0px 8px 20px 0px rgba(174, 181, 190, 0.20);
+    width: 100%;
+    height: 220px;
+    resize: none;
+    padding: 20px;
+  
+    overflow: hidden;
+    color: #061730;
+  
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 500;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .portfolio {
+    width: 100%;
+    
+    &__input {
+      width: 100%;
+      height: 36px;
+      display: inline-block;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      border: 2px solid #061730;
+      color: #000;
+  
+      outline: none;
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 400;
+      text-decoration-line: underline;
+  
+      &::placeholder {
+        color: #000;
+  
+        font-family: Montserrat;
+        font-size: 15px;
+        font-weight: 400;
+        text-decoration-line: underline;
+        opacity: .7;
+      }
+    }
+    
+  }
+
+}
+
+@media screen and (max-width: 580px) {
+  .title-h2-l {
+    text-align: center;
+    width: 100%;
+  }
+}

@@ -8,15 +8,14 @@
 
 .switch-toggle {
   box-sizing: border-box;
-  
-  max-width: 400px;
+
   width: 100%;
 
   display: flex;
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
-
+  
   &__button {
     text-align: center;
     width: 50%;
@@ -25,7 +24,7 @@
     border-radius: 32px 0px 0px 32px;
     font-size: 16px;
     font-weight: 800;
-
+    white-space: nowrap;
 
     &:hover {
       background-color: $buttonHoverBGWhite;
@@ -41,9 +40,14 @@
     &.active{
       @extend %switchToggleActive
     }
-      
-
-    
   }
-  
+}
+
+
+@media screen and (max-width: 350px) {
+  .switch-toggle {
+    &__button {
+      padding: 10px 10px;
+    }
+  }
 }

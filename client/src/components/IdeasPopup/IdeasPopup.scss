@@ -1,0 +1,66 @@
+.parrentPopup {
+    padding: 24px;
+    background-color: #061730;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.windowPopup {
+    position: relative;
+    max-width: 1200px;
+    height: 617px;
+    background-color: #FCFCFC;
+    
+}
+
+.myIdeasHead {
+    margin: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.iconLabel {
+    color: #1C145E;
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    width: fit-content;
+}
+
+.lampIcon {
+    background-color: #1C145E;
+    border-radius: 50%;
+    width: 64px;
+    margin-right: 15px;
+}
+
+.myIdeasContainer{
+    margin: 5%;
+    overflow-y: scroll;
+    height: 70%;
+    scrollbar-color: #061730 #FCFCFC;
+    scrollbar-width: auto;
+}
+
+@media screen and (max-width: 810px) {
+    .myIdeasHead {
+        margin: 5% 5% 60px 5%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .parrentPopup .buttonSmall{
+        width: 166px;
+        position: absolute;
+        top: 20%;
+        justify-content: center;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

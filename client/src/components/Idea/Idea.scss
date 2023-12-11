@@ -30,6 +30,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      margin-left: 15px;
   
       &-title {
         font-family: Montserrat;
@@ -62,7 +63,7 @@
         &-status {
           margin-right: 8px;
           display: block;
-          width: 19px;
+          min-width: 19px;
           height: 19px;
           border: 2px solid $buttonBGWhite;
           border-radius: 50%;

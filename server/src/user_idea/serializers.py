@@ -1,14 +1,13 @@
 from rest_framework import serializers
-from ..users.models import CustomUser
-from ..users.models import UserProfile, CustomUser
+from ..users.models import UserProfile, CustomUser, Speciality
 from .models import *
-from ..users.serializers import SpecialitySerializer, CustomUserSerializer, UserProfileSerializer
+from ..users.serializers import SpecialitySerializer, CustomUserSerializer
 
 
-class SpecializationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Specialization
-        fields = '__all__'
+# class SpecializationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Specialization
+#         fields = '__all__'
 
 
 # class SpecializationField(serializers.RelatedField):
@@ -20,13 +19,16 @@ class SpecializationSerializer(serializers.ModelSerializer):
 
 
 class IdeasListSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer(many=False)
+    specialization = SpecialitySerializer(many=True)
+
     class Meta:
         model = Idea
-        fields = ('id', 'title')
+        fields = '__all__'
 
 
 class DetailIdeaSerializer(serializers.ModelSerializer):
-    specialization = SpecializationSerializer(many=True)
+    specialization = SpecialitySerializer(many=True)
     user = CustomUserSerializer(many=False)
 
     class Meta:

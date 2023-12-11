@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import FileExtensionValidator
 from django.utils.text import slugify
+from .validators import validate_file_size
 import uuid
 
 
@@ -20,7 +22,8 @@ class Chat(models.Model):
     )   # отримувач
     messages = models.ManyToManyField('Message', related_name='message')
     slug = models.SlugField(db_index=True, unique=True, blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.users
@@ -43,9 +46,15 @@ class Message(models.Model):
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL)
     chat = models.ForeignKey(Chat, blank=True, null=True, on_delete=models.CASCADE)
     body = models.TextField()
-    attachment = models.FileField(blank=True, null=True, upload_to='attachment/')
+    attachment = models.FileField(
+        blank=True,
+        null=True,
+        upload_to='attachment/',
+        validators=[validate_file_size]
+    )
     seen = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.body
