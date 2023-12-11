@@ -1,13 +1,33 @@
+
+import {useState} from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks';
+
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack';
 import logo from '../../image/logo/small_logo.webp';
 
+
 import TagsField from "../../atoms/TagsField/TagsField";
 import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
-import SwitchToogle from "../../atoms/SwitchToggle/SwitchToggle";
+
+
+import { TIdeasChange, TprofileChange } from '../../types/types';
 
 import './CreateIdea.scss';
 
+
 const CreateIdea = () => {
+
+  const dispatch = useAppDispatch();
+  const {allStack} = useAppSelector(state => state.userInfo);
+
+  const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
+    speciality: [],
+    stack: [],
+    description: '',
+
+    portfolio: '',
+})
+
   return (
     <div className="create-idea  create-idea__outside">
 
@@ -19,7 +39,6 @@ const CreateIdea = () => {
 
         <div className="personal-info__main-info">
           <img src={logo} className="personal-info__avatar" alt="User avatar" />
-
 
           <div className="personal-info__container">
             <label
@@ -33,8 +52,6 @@ const CreateIdea = () => {
 
         </div>
 
-        {/*  */}
-
         <div className="personal-stack">
 
           <div className="personal-stack__specialization specialization">
@@ -47,6 +64,7 @@ const CreateIdea = () => {
             <textarea
               name="description"
               id=""
+              value={newIdeaData?.description}
               className="description about-me__description"
               placeholder="Шукаю бажаючих долучитись до розробки ідеї арт-сайту.">
 
@@ -83,7 +101,18 @@ const CreateIdea = () => {
         </textarea> */}
 
             <div className="technologies__textfield">
-              {/* <TagsField /> */}
+
+              {
+                newIdeaData !== null ?
+                <TagsField 
+                  allStack={allStack}
+                  stackUser={newIdeaData.stack}
+                  changeStack={setNewIdeaData}
+                />
+                :
+                null
+              }
+              
             </div>
 
           </div>
