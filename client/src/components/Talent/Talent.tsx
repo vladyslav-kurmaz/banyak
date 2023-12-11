@@ -51,7 +51,8 @@ const Talent = ({ talantInfo }: { talantInfo: TalentRespType }) => {
       <div className="talant__container">
         <div className="talant__container-info">
           <h2 className="talant__container-info-title">
-            {talantInfo.speciality[0].slice(0, 10)}
+            {/* {talantInfo.speciality[0].slice(0, 10)} */}
+            {talantInfo.speciality[0]}
           </h2>
           <p className="talant__container-info-description">
             {makesTextShorterAddsDots(talantInfo.description, 60)}

@@ -19,12 +19,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/ideas',
-        element: <IdeasAndTalent ideaType={true} />,
+        element: <IdeasAndTalent isIdea={true} />,
         children: [],
       },
       {
         path: '/talents',
-        element: <IdeasAndTalent ideaType={false} />,
+        element: <IdeasAndTalent isIdea={false} />,
         children: [],
       },
       {
