@@ -100,7 +100,7 @@ DATABASES = {
 }
 
 db_url = os.getenv('DB_URL')
-DATABASES['default'] = dj_database_url.parse(db_url)
+DATABASES['default'] = dj_database_url.parse('postgres://banyak_data_user:OKo54XJ460ARmpOgh2hCRjD84HRXm7ST@dpg-clrg2l0gqk6s7396pe3g-a/banyak_data')
 
 # DATABASES = {
 #     'default': {
