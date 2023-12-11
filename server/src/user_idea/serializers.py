@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ..users.models import UserProfile, CustomUser, Speciality
 from .models import *
-from ..users.serializers import SpecialitySerializer, CustomUserSerializer
+from ..users.serializers import SpecialitySerializer, CustomUserSerializer, StackSerializer
 
 
 # class SpecializationSerializer(serializers.ModelSerializer):
@@ -37,6 +37,9 @@ class DetailIdeaSerializer(serializers.ModelSerializer):
 
 
 class UpdateCreateIdeaSerializer(serializers.ModelSerializer):
+    specialization = SpecialitySerializer(many=True, required=False)
+    specialization = StackSerializer(many=True, required=False)
+
     class Meta:
         model = Idea
         fields = '__all__'
@@ -50,6 +53,33 @@ class UpdateCreateIdeaSerializer(serializers.ModelSerializer):
         validated_data['user'] = user
         idea = Idea.objects.create(**validated_data)
         return idea
+
+    def update(self, instance, validated_data):
+        specializations = validated_data.get('specialization', [])
+        stack_list = validated_data.get('stack', [])
+        specialization_ids = []
+        stack_ids = []
+
+        for specialization in specializations:
+            specialization_name = specialization.get('name')
+            if specialization_name:
+                specialization_instance, _ = Speciality.objects.get_or_create(name=specialization_name)
+                specialization_ids.append(specialization_instance.id)
+
+        for stack in stack_list:
+            stack_name = stack.get('name')
+            if stack_name:
+                stack_instance, _ = SpecialitySerializer.get_or_create(name=stack_name)
+                stack_ids.append(stack_instance.id)
+
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.is_published = validated_data.get('is_published', instance.is_published)
+        instance.specialization.set(specialization_ids)
+        instance.stack.set(stack_ids)
+        instance.save()
+        return instance
 
 
 class JoinUserIdeaSerializer(serializers.ModelSerializer):
