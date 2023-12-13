@@ -4,23 +4,10 @@ from .models import *
 from ..users.serializers import SpecialitySerializer, CustomUserSerializer, StackSerializer
 
 
-# class SpecializationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Specialization
-#         fields = '__all__'
-
-
-# class SpecializationField(serializers.RelatedField):
-#     def to_representation(self, value):
-#         return value
-#
-#     def to_internal_value(self, data):
-#         return SpecializationSerializer(data)
-
-
 class IdeasListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer(many=False)
     specialization = SpecialitySerializer(many=True)
+    stack = StackSerializer(many=True)
 
     class Meta:
         model = Idea
@@ -30,6 +17,7 @@ class IdeasListSerializer(serializers.ModelSerializer):
 class DetailIdeaSerializer(serializers.ModelSerializer):
     specialization = SpecialitySerializer(many=True)
     user = CustomUserSerializer(many=False)
+    stack = StackSerializer(many=True)
 
     class Meta:
         model = Idea
@@ -38,20 +26,31 @@ class DetailIdeaSerializer(serializers.ModelSerializer):
 
 class UpdateCreateIdeaSerializer(serializers.ModelSerializer):
     specialization = SpecialitySerializer(many=True, required=False)
-    specialization = StackSerializer(many=True, required=False)
+    stack = StackSerializer(many=True, required=False)
 
     class Meta:
         model = Idea
         fields = '__all__'
-        extra_kwargs = {
-            'title': {'required': False},
-            'specialization': {'required': False}
-        }
 
     def create(self, validated_data):
+        specialization_list = validated_data.pop('specialization', [])
+        stack_list = validated_data.pop('stack', [])
         user = self.context['request'].user
         validated_data['user'] = user
         idea = Idea.objects.create(**validated_data)
+
+        for specialization in specialization_list:
+            specialization_name = specialization.get('name')
+            if specialization_name:
+                specialization_instance, _ = Speciality.objects.get_or_create(name=specialization_name)
+                idea.specialization.add(specialization_instance)
+
+        for stack in stack_list:
+            stack_name = stack.get('name')
+            if stack_name:
+                stack_instance, _ = Stack.objects.get_or_create(name=stack_name)
+                idea.stack.add(stack_instance)
+        idea.save()
         return idea
 
     def update(self, instance, validated_data):
@@ -69,7 +68,7 @@ class UpdateCreateIdeaSerializer(serializers.ModelSerializer):
         for stack in stack_list:
             stack_name = stack.get('name')
             if stack_name:
-                stack_instance, _ = SpecialitySerializer.get_or_create(name=stack_name)
+                stack_instance, _ = Speciality.objects.get_or_create(name=stack_name)
                 stack_ids.append(stack_instance.id)
 
         instance.title = validated_data.get('title', instance.title)

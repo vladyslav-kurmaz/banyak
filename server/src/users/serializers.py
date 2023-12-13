@@ -174,30 +174,16 @@ class EmailUserVerifySerializer(serializers.ModelSerializer):
 
 
 class SpecialitySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+
     class Meta:
         model = Speciality
         fields = ('name',)
 
-    # def to_internal_value(self, data):
-    #     if isinstance(data, str):
-    #         try:
-    #             data = json.loads(data)
-    #         except json.JSONDecodeError:
-    #             pass
-    #
-    #     if isinstance(data, list):
-    #         speciality_list = []
-    #         for speciality_item in data:
-    #             speciality_dict = {
-    #                 'name': speciality_item.get('name'),
-    #             }
-    #             speciality_list.append(speciality_dict)
-    #         data = speciality_list
-    #
-    #     return super().to_internal_value(data)
-
 
 class StackSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+
     class Meta:
         model = Stack
         fields = ('name', )

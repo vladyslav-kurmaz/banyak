@@ -9,11 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-import dj_database_url
+# import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,9 +25,9 @@ SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -92,25 +91,12 @@ ASGI_APPLICATION = 'banyak.asgi.application'
 
 load_dotenv()
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'banyak_data',
-        'USER': 'banyak_data_user',
-        'PASSWORD': 'OKo54XJ460ARmpOgh2hCRjD84HRXm7ST',
-        'HOST': 'dpg-clrg2l0gqk6s7396pe3g-a.ohio-postgres.render.com',
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-db_url = os.getenv('DB_URL')
 
 # DATABASES = {
 #     'default': {
