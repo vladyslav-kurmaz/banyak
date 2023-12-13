@@ -24,7 +24,7 @@ class Idea(models.Model):
     avatar = models.OneToOneField(AvatarIdea, blank=True, null=True, on_delete=models.CASCADE)
     specialization = models.ManyToManyField(Speciality)
     stack = models.ManyToManyField(Stack, blank=True, null=True)
-    slug = models.SlugField(db_index=True, max_length=78, blank=True, null=True)    # додати більше унікалтності для слагу
+    slug = models.SlugField(unique=True, db_index=True, max_length=78, blank=True, null=True)    # додати більше унікалтності для слагу
     idea_views = models.IntegerField(default=0)
     is_published = models.BooleanField(default=False)   # додати дату створеня та дату редагування для всіх таблиць
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,8 +35,9 @@ class Idea(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
-
+            user_id = str(self.user.id)
+            full_slug = f'{self.title} {user_id[0:7]}'
+            self.slug = slugify(full_slug)
         return super().save(*args, **kwargs)
 
 

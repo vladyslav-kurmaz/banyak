@@ -13,7 +13,7 @@ from .paginate import CustomPaginate
 class TalentsViews(viewsets.ModelViewSet):
     """
     - GET: Retrieves a list of talents.
-    - GET <id>: Retrieves detailed information about a talent using their ID.
+    - GET <slug>: Retrieves detailed information about a talent using their ID.
     - POST: Allows an author of an idea to send a request to a talent for participation in a project.
     - GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.
     - PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.
@@ -36,14 +36,6 @@ class TalentsViews(viewsets.ModelViewSet):
         talents = UserProfile.objects.filter(is_talent=True)
         return talents
 
-    def get_talents_military(self):
-        talents = UserProfile.objects.filter(is_talent=True, is_military=True)
-        return talents
-
-    def get_talents_vpo(self):
-        talents = UserProfile.objects.filter(is_talent=True, is_vpo=True)
-        return talents
-
     def get_owner_profile(self):
         owner = UserProfile.objects.all()
         return owner
@@ -63,19 +55,20 @@ class TalentsViews(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
-        talent_id = kwargs.get('pk')
+        print(kwargs)
+        talent_slug = kwargs.get('pk')
         try:
-            talent = self.get_queryset().get(id=talent_id)
+            talent = self.get_queryset().get(slug=talent_slug)
             serializer = self.serializer_class(talent, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
-            return Response({'message': 'Talent not found'})
+            return Response({'message': 'Talent not found'}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request, *args, **kwargs):
-        talent_id = kwargs.get('talent_id')
+        talent_slug = kwargs.get('pk')
         owner = request.user
         try:
-            talent = self.get_queryset().get(id=talent_id)
+            talent = self.get_queryset().get(slug=talent_slug)
             serializer = InviteTalentIdeaSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             invite_talent = serializer.save()

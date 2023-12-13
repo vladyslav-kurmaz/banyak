@@ -3,11 +3,14 @@ from src.users.models import UserProfile
 from src.users.serializers import CustomUserTalentSerializer
 from src.user_idea.models import Idea
 from src.user_idea.serializers import DetailIdeaSerializer
+from src.users.serializers import SpecialitySerializer, StackSerializer
 from .models import InviteTalentIdea
 
 
 class ListTalentSerializer(serializers.ModelSerializer):
     user = CustomUserTalentSerializer(many=False)
+    speciality = SpecialitySerializer(many=True)
+    stack = StackSerializer(many=True)
 
     class Meta:
         model = UserProfile
