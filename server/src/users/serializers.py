@@ -261,8 +261,6 @@ class UserProfileCreateUpdateSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.portfolio = validated_data.get('portfolio', instance.portfolio)
         instance.is_talent = validated_data.get('is_talent', instance.is_talent)
-        instance.is_military = validated_data.get('is_military', instance.is_military)
-        instance.is_vpo = validated_data.get('is_vpo', instance.is_vpo)
         instance.stack.set(stack_ids)
         instance.speciality.set(speciality_ids)
         instance.save()
