@@ -18,17 +18,18 @@ import IdeasPopup from '../IdeasPopup/IdeasPopup'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 
-import './App.scss'
 import ProfilePage from '../../pages/ProfilePage/ProfilePage'
 import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
 import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 
+import './App.scss';
+import { TUserProfile } from '../../types/types'
+
 function App() {
   const { mainPreloader } = useAppSelector((state) => state.stateElement)
 
-  const location = useLocation()
-  // const popupLocation = location.search === '?login' || location.search === '?singup'
+  const location = useLocation();
   const popupLocation =
     location.search === '?login' || location.search === '?singup'
   const { profileUser } = ServiceBanyak()
@@ -44,7 +45,7 @@ function App() {
       dispatch(changreMainPreloader(true))
       try {
         profileUser(token, 'GET').then((res) =>
-          dispatch(changeUserProfile(res))
+          dispatch(changeUserProfile(res as TUserProfile))
         )
         dispatch(changreMainPreloader(false))
       } catch (e) {
@@ -91,7 +92,6 @@ function App() {
                 />
               }
             />
-
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

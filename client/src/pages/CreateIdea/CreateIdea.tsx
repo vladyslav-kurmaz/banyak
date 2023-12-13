@@ -12,7 +12,7 @@ import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
 
 import { TIdeasChange, TprofileChange } from '../../types/types';
 
-import './CreateIdea.scss';
+import './CreateIdea.scss'; 
 
 
 const CreateIdea = () => {
