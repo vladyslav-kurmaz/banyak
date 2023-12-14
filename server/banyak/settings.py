@@ -217,7 +217,7 @@ SWAGGER_SETTINGS = {
 # CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'https://banyak-eta.vercel.app/'
+    'https://banyak-eta.vercel.app'
 ]
 
 CORS_ALLOW_METHODS = (
