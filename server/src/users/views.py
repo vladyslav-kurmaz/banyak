@@ -42,28 +42,27 @@ class UserRegister(generics.GenericAPIView):
         if user:
             return Response({'message': 'Such a user exists'}, status=status.HTTP_409_CONFLICT)
 
-        serializer.save()
-        # user = serializer.save()
+        user = serializer.save()
 
         #  Activate email
 
-        # token = token_generator.make_token(user)
-        # user_id = urlsafe_base64_encode(force_bytes(user.pk))
-        #
-        # current_site = get_current_site(request=request).domain
-        # relative_link = reverse('email-verify', kwargs={'token': token, 'user_id': user_id})
-        # absolute_url = 'http://' + current_site + relative_link
-        #
-        # email_body = f'Activation email {absolute_url}'
-        #
-        # data = {
-        #     'email_subject': 'Verify',
-        #     'current_site': current_site,
-        #     'email_body': email_body,
-        #     'to_email': user.email,
-        #     'absolute_url': absolute_url
-        # }
-        # Utils.send_mail(data)
+        token = token_generator.make_token(user)
+        user_id = urlsafe_base64_encode(force_bytes(user.pk))
+
+        current_site = get_current_site(request=request).domain
+        relative_link = reverse('email-verify', kwargs={'token': token, 'user_id': user_id})
+        absolute_url = 'http://' + current_site + relative_link
+
+        email_body = f'Activation email {absolute_url}'
+
+        data = {
+            'email_subject': 'Verify',
+            'current_site': current_site,
+            'email_body': email_body,
+            'to_email': user.email,
+            'absolute_url': absolute_url
+        }
+        Utils.send_mail(data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
