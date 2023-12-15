@@ -22,6 +22,7 @@ import ProfilePage from '../../pages/ProfilePage/ProfilePage'
 import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
 import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
+import TalentDescriptionPage from '../../pages/TalentDescriptionPage/TalentDescriptionPage'
 
 import './App.scss';
 import { TUserProfile } from '../../types/types'
@@ -71,6 +72,7 @@ function App() {
             <Route path="ideas" element={<IdeasAndTalent isIdea={true} />} />
             <Route path="ideas/:slug" element={<IdeaDescriptionPage />} />
             <Route path="talents" element={<IdeasAndTalent isIdea={false} />} />
+            <Route path="talents/:slug" element={<TalentDescriptionPage />} />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />
             <Route path="create-idea" element={<CreateIdea />} />
             <Route

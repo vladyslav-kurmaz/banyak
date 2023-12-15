@@ -11,6 +11,7 @@ import {
   IdeaRespType,
   TalentRespType,
   ServerResForTalents,
+  ServerResForIdeas,
 } from '../../types/types'
 
 import './IdeasAndTalent.scss'
@@ -25,18 +26,24 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   useEffect(() => {
     if (isIdea) {
       getIdeas()
-        .then((res) => res.json() as Promise<IdeaRespType[]>)
-        // .then((ideasData) => ideasData.results) //=> uncomment after adding pagination
+        .then((res) => res.json() as Promise<ServerResForIdeas>)
+        .then((ideasData) => ideasData.results)
         .then((ideasList) => setIdeas(ideasList))
         .then(() => dispatch(changreMainPreloader(false)))
-        .catch(() => dispatch(changreMainPreloader(false)))
+        .catch((e) => {
+          console.error(e.message)
+          dispatch(changreMainPreloader(false))
+        })
     } else {
       getTalents()
         .then((res) => res.json() as Promise<ServerResForTalents>)
         .then((talantsData) => talantsData.results)
         .then((talentsList) => setTalents(talentsList))
         .then(() => dispatch(changreMainPreloader(false)))
-        .catch(() => dispatch(changreMainPreloader(false)))
+        .catch((e) => {
+          console.error(e.message)
+          dispatch(changreMainPreloader(false))
+        })
     }
     // eslint-disable-next-line
   }, [isIdea])
