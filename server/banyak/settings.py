@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://banyak-api.onrender.com']
 
 # Application definition
 
