@@ -96,7 +96,7 @@ const ProfileStackInfo = ({
               onChange={(e) => {
                 fnState((state) =>
                   state && state !== null
-                    ? { ...state, speciality: [{ name: e.target.value }] }
+                    ? { ...state, speciality: [{ name: e.target.value.toLocaleUpperCase() }] }
                     : null
                 );
               }}

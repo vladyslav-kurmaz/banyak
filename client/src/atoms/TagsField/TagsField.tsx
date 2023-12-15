@@ -28,7 +28,7 @@ const TagsField = ({
         enforceWhitelist: false,
         whitelist: allStack,
   
-        placeholder: "Введіть технології",
+        placeholder: "Введіть потрібних фахівців",
         dropdown: {
           maxItems: 20, 
         },
@@ -43,7 +43,7 @@ const TagsField = ({
           changeStack(state => state && state !== null ? 
             ({
               ...state,
-              stack: [...state.stack, {name: addedTags.toLocaleUpperCase()}]
+              stack: [...state.stack, {name: addedTags.toUpperCase()}]
             })
             :
             null
