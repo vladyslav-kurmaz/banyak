@@ -40,11 +40,19 @@ export type TprofileChange = {
   speciality: { name: string }[]
   stack: { name: string }[]
   // avatar?: File | null | string,
+
   description: string
-  is_talent: boolean
+  is_talent?: boolean
   // is_military: boolean,
   // is_vpo: boolean,
   // ideas: string[],
+  portfolio: string
+}
+
+export type TIdeasChange = {
+  speciality: { name: string }[]
+  stack: { name: string }[]
+  description: string
   portfolio: string
 }
 
@@ -75,7 +83,7 @@ export type TValidatinForm = {
 
 // Tania's types
 export type IdeaRespType = {
-  avatar: string
+  avatar: string | null
   created_at: string
   description: string
   id: string
@@ -83,24 +91,25 @@ export type IdeaRespType = {
   is_published: boolean
   slug: string
   specialization: { name: string }[]
+  stack: { name: string }[]
   title: string
   updated_at: string
   user: { email: string; first_name: string; id: string; last_name: string }
 }
 
 export type TalentRespType = {
-  avatar: string
+  avatar: string | null
   created_at: string
   description: string
   id: string
   is_military: boolean
-  is_talent: boolean
   is_vpo: boolean
+  is_talent: boolean
   portfolio: string
-  speciality: string[]
-  stack: string[]
-  // speciality: { name: string }[]
-  // stack: { name: string }[]
+  profile_view: number
+  slug: string
+  speciality: { name: string }[]
+  stack: { name: string }[]
   updated_at: string
   upload_military: null
   upload_vpo: null
@@ -117,4 +126,11 @@ export type ServerResForTalents = {
   next: string | number
   previous: string | number
   results: TalentRespType[]
+}
+
+export type ServerResForIdeas = {
+  count: number
+  next: string | number
+  previous: string | number
+  results: IdeaRespType[]
 }
