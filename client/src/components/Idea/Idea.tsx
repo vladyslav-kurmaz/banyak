@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid'
 import plugIcon from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { IdeaRespType } from '../../types/types'
-import formateDateToDisplay from '../../utils/formateDateToDisplay'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
 import { Link } from 'react-router-dom'
 
@@ -12,6 +11,7 @@ import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 
 const IDEA_TITLE_LENGTH = 24
 const IDEA_DESCRIPTION_LENGTH = 90
+const SPECIALITY_NAME_LENGTH = 12
 
 const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
   const data = ['Frontend developer', 'Backend developer', 'Backend developer']
@@ -23,7 +23,10 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
           <li key={uuidv4()} className="idea__container-specialty-item">
             <span className="idea__container-specialty-item-status "></span>
             <span className="idea__container-specialty-item-text">
-              {speciality.name}
+              {makesTextShorterAddsDots(
+                speciality.name,
+                SPECIALITY_NAME_LENGTH
+              )}
             </span>
           </li>
         )
@@ -36,11 +39,21 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
   const renderStack = (stack: { name: string }[]) => {
     if (stack.length > 4) {
       return stack.map((technology, i) =>
-        i < 4 ? <span key={uuidv4()}>{`+${technology.name}`}</span> : ''
+        i < 4 ? (
+          <span
+            className="idea__container-info-stack-item"
+            key={uuidv4()}
+          >{`+${technology.name}`}</span>
+        ) : (
+          ''
+        )
       )
     } else if (stack.length < 4 && stack.length > 0) {
       return stack.map((technology) => (
-        <span key={uuidv4()}>{`+${technology.name}`}</span>
+        <span
+          className="idea__container-info-stack-item"
+          key={uuidv4()}
+        >{`+${technology.name}`}</span>
       ))
     } else {
       return ''
@@ -59,34 +72,41 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
 
   return (
     <div className="idea">
-      <div className="idea__img">
-        <img src={plugIcon} alt="logo for idea" className="idea__img-picture" />
-      </div>
-
       <div className="idea__container">
-        <div className="idea__container-info">
-          <h2 className="idea__container-info-title">
-            {makesTextShorterAddsDots(idea.title, IDEA_TITLE_LENGTH)}
-          </h2>
-          <p className="idea__container-info-description">
-            {makesTextShorterAddsDots(
-              idea.description,
-              IDEA_DESCRIPTION_LENGTH
-            )}
-          </p>
-          <div className="test">{renderStack(idea.stack)}</div>
+        <div className="idea__img">
+          <img
+            src={plugIcon}
+            alt="logo for idea"
+            className="idea__img-picture"
+          />
         </div>
+        <div className="idea__info-and-speciality-wraper ">
+          <div className="idea__container-info">
+            <h2 className="idea__container-info-title">
+              {makesTextShorterAddsDots(idea.title, IDEA_TITLE_LENGTH)}
+            </h2>
+            <p className="idea__container-info-description">
+              {makesTextShorterAddsDots(
+                idea.description,
+                IDEA_DESCRIPTION_LENGTH
+              )}
+            </p>
+            <div className="idea__container-info-stack">
+              {renderStack(idea.stack)}
+            </div>
+          </div>
 
-        <ul className="idea__container-specialty">
-          {renderSpeciality(idea.specialization)}
-          {allSpeciality}
-        </ul>
+          <ul className="idea__container-specialty">
+            {renderSpeciality(idea.specialization)}
+            {allSpeciality}
+          </ul>
+        </div>
       </div>
 
       <div className="idea__metric">
-        <div className="idea__metric-button">
+        <div>
           {myIdea ? null : (
-            <Link to={`${idea.slug}`} className="buttonSmall">
+            <Link to={`${idea.slug}`} className="idea__metric-button">
               Детальніше
             </Link>
           )}
