@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
 import plugIcon from '../../image/logo/small_logo.webp'
-import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { IdeaRespType } from '../../types/types'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
 import { Link } from 'react-router-dom'
@@ -12,10 +11,9 @@ import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 const IDEA_TITLE_LENGTH = 24
 const IDEA_DESCRIPTION_LENGTH = 90
 const SPECIALITY_NAME_LENGTH = 12
+const STACK_ITEMS_QUANTITY = 4
 
 const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
-  const data = ['Frontend developer', 'Backend developer', 'Backend developer']
-
   const renderSpeciality = (specialitys: { name: string }[]) => {
     return specialitys.map((speciality, i) => {
       if (i < 2) {
@@ -36,19 +34,27 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
     })
   }
 
-  const renderStack = (stack: { name: string }[]) => {
-    if (stack.length > 4) {
-      return stack.map((technology, i) =>
-        i < 4 ? (
-          <span
-            className="idea__container-info-stack-item"
-            key={uuidv4()}
-          >{`+${technology.name}`}</span>
-        ) : (
-          ''
-        )
+  const renderStack = (
+    stack: { name: string }[],
+    STACK_ITEMS_QUANTITY: number = 5
+  ) => {
+    if (stack.length > STACK_ITEMS_QUANTITY) {
+      return (
+        <>
+          {stack.map((technology, i) =>
+            i < STACK_ITEMS_QUANTITY ? (
+              <span
+                className="idea__container-info-stack-item"
+                key={uuidv4()}
+              >{`+${technology.name}`}</span>
+            ) : (
+              ''
+            )
+          )}
+          <span className="idea__container-info-stack-item-dots">...</span>
+        </>
       )
-    } else if (stack.length < 4 && stack.length > 0) {
+    } else if (stack.length < STACK_ITEMS_QUANTITY && stack.length > 0) {
       return stack.map((technology) => (
         <span
           className="idea__container-info-stack-item"
@@ -71,56 +77,102 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
     ) : null
 
   return (
-    <div className="idea">
-      <div className="idea__container">
-        <div className="idea__img">
+    <>
+      <div className="idea">
+        <div className="idea__container">
+          <div className="idea__img">
+            <img
+              src={plugIcon}
+              alt="logo for idea"
+              className="idea__img-picture"
+            />
+          </div>
+          <div className="idea__info-and-speciality-wraper ">
+            <div className="idea__container-info">
+              <h2 className="idea__container-info-title">
+                {makesTextShorterAddsDots(idea.title, IDEA_TITLE_LENGTH)}
+              </h2>
+              <p className="idea__container-info-description">
+                {makesTextShorterAddsDots(
+                  idea.description,
+                  IDEA_DESCRIPTION_LENGTH
+                )}
+              </p>
+              <div className="idea__container-info-stack">
+                {renderStack(idea.stack, STACK_ITEMS_QUANTITY)}
+              </div>
+            </div>
+
+            <ul className="idea__container-specialty">
+              {renderSpeciality(idea.specialization)}
+              {allSpeciality}
+            </ul>
+          </div>
+        </div>
+
+        <div className="idea__metric">
+          <div>
+            {myIdea ? null : (
+              <Link to={`${idea.slug}`} className="idea__metric-button">
+                Детальніше
+              </Link>
+            )}
+          </div>
+          <div className="idea__metric-metrics">
+            <ViewsIconAndQuantity viewsQuantity={10} />
+            <DisplayDateFromDB date={idea.updated_at} />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile version */}
+      <div className="idea-mobile">
+        <div className="idea-mobile__img">
           <img
             src={plugIcon}
-            alt="logo for idea"
-            className="idea__img-picture"
+            alt="logo for idea-mobile"
+            className="idea-mobile__img-picture"
           />
+          <DisplayDateFromDB date={idea.updated_at} />
+
+          <ViewsIconAndQuantity viewsQuantity={10} />
         </div>
-        <div className="idea__info-and-speciality-wraper ">
-          <div className="idea__container-info">
-            <h2 className="idea__container-info-title">
+        <div className="idea-mobile__container">
+          <div className="idea-mobile__container-info">
+            <h2 className="idea-mobile__container-info-title">
               {makesTextShorterAddsDots(idea.title, IDEA_TITLE_LENGTH)}
             </h2>
-            <p className="idea__container-info-description">
+            <p className="idea-mobile__container-info-description">
               {makesTextShorterAddsDots(
                 idea.description,
                 IDEA_DESCRIPTION_LENGTH
               )}
             </p>
-            <div className="idea__container-info-stack">
+            <div className="idea-mobile__container-info-stack">
               {renderStack(idea.stack)}
             </div>
           </div>
 
-          <ul className="idea__container-specialty">
+          <ul className="idea-mobile__container-specialty">
             {renderSpeciality(idea.specialization)}
             {allSpeciality}
           </ul>
         </div>
-      </div>
 
-      <div className="idea__metric">
-        <div>
-          {myIdea ? null : (
-            <Link to={`${idea.slug}`} className="idea__metric-button">
-              Детальніше
-            </Link>
-          )}
-        </div>
-
-        <div className="idea__metric-metrics">
-          <ViewsIconAndQuantity viewsQuantity={10} />
-          <DisplayDateFromDB date={idea.updated_at} />
+        <div className="idea-mobile__metric">
+          <div>
+            {myIdea ? null : (
+              <Link to={`${idea.slug}`} className="idea-mobile__metric-button">
+                Детальніше
+              </Link>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
-/* *******Tmplate for Idea component*******
+/* *******Tmplate for Idea component without mobile version*******
 <>
 <div className="idea">
   <div className="idea__img">

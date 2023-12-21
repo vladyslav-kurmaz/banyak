@@ -2,20 +2,23 @@
 $textColorWhite: #fcfcfc;
 $buttonBGWhite: #1c145e;
 $buttonHoverBGWhite: #5b23a9;
-
 $borderWhiteTheme: #1c145e;
 
 :root {
   // color
   --base-bg-white: #fcfcfc;
   --secondary-bg-darck-blue: #1c145e;
+  --bg-color-blue: #061730;
   --light-blue: #5d7497;
   --base-font-color-blue: #061730;
   --secondary-font-color-white: #fcfcfc;
+  --base-hover-color-purple: #5b23a9;
   // spacing
 
   // borders
   --base-border-radius: 8px;
   // box-shadow
   --base-box-shadow: 0px 8px 20px 0px rgba(6, 23, 48, 0.2);
+  // fonts
+  --base-font: 'Montserrat', sans-serif;
 }

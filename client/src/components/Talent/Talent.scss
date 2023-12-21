@@ -1,9 +1,10 @@
-@import '../../scss//variables';
+@import '../../scss/variables';
+@import '../../scss/mixins';
 
 .talant {
   padding: 25px 20px;
-  box-shadow: 0px 8px 20px 0px rgba(29, 60, 108, 0.2);
-  border-radius: 8px;
+  box-shadow: var(--base-box-shadow);
+  border-radius: var(--base-border-radius);
   max-width: 1200px;
   height: 147px;
   width: 100%;
@@ -16,10 +17,7 @@
 
   &__img {
     &-picture {
-      max-width: 96px;
-      max-height: 96px;
-      width: 100%;
-      height: 100%;
+      @include logo-96;
     }
   }
 
@@ -27,17 +25,15 @@
     display: flex;
 
     &-info {
-      max-width: 454px;
-  
+      min-width: 290px;
+
       &-title {
-        font-family: Montserrat;
         font-size: 24px;
         font-weight: 600;
         margin-bottom: 10px;
       }
-  
+
       &-description {
-        font-family: Montserrat;
         font-size: 15px;
         font-weight: 400;
         margin-bottom: 10px;
@@ -47,31 +43,29 @@
         width: 90%;
       }
     }
-  
+
     &-technologies {
       margin-left: 15px;
-  
+
       &-item {
         margin-bottom: 10px;
 
         &-teh {
           padding: 2px 8px 2px 6px;
-          color: #FCFCFC;
-          font-family: Montserrat;
+          color: var(--secondary-font-color-white);
           font-size: 15px;
           font-weight: 600;
           border-radius: 8px;
-          background: #5D7497;
+          background: var(--light-blue);
         }
-  
+
         &.all-technologies {
           display: flex;
           align-items: flex-end;
-  
-  
+
           height: 10px;
           background: none;
-          color: #888FC9;
+          color: #888fc9;
           font-size: 35px;
           padding: 0;
           margin-bottom: 0;
@@ -88,8 +82,6 @@
     height: 100%;
 
     &-view {
-      
-
       display: flex;
       align-items: center;
 
@@ -97,16 +89,13 @@
         margin-left: 10px;
       }
     }
-
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1050px) {
   .talant {
     max-height: 181px;
     height: 100%;
-
-
 
     &__container {
       flex-direction: column;
@@ -119,7 +108,7 @@
         width: 100%;
         bottom: 20px;
       }
-    
+
       &-technologies {
         display: flex;
         align-items: center;
@@ -132,9 +121,8 @@
   }
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 870px) {
   .talant {
-
     &__button {
       position: absolute;
       bottom: 20px;
@@ -145,28 +133,16 @@
       max-width: 420px;
     }
 
-
-  
     &__metrics {
       align-self: flex-start;
       max-height: 52px;
-  
     }
   }
 }
 
-// @media screen and (max-width: 800px) {
-//   .talant {
-
-//     &__container-button {
-//       max-width: 400px;
-//     }
-//   }
-// }
-
 @media screen and (max-width: 810px) {
   .talant {
-    max-width: 342px;
+    min-width: 300px;
     min-height: 480px;
     width: 100%;
     height: 100%;
@@ -174,38 +150,34 @@
 
     &__container-button {
       padding: 10px 15px;
-      background-color: $buttonBGWhite;
+      background-color: var(--secondary-bg-darck-blue);
       border-radius: 8px;
 
       &:hover {
-        background-color: $buttonHoverBGWhite;
+        background-color: var(--base-hover-color-purple);
       }
     }
 
-    // flex-direction: column;
-  
     &__img {
       order: 1;
       width: 40%;
 
       &-picture {
-      width: 60px;
-      height: 60px;
+        @include logo-60;
       }
     }
-  
+
     &__container {
       margin-top: 20px;
       order: 3;
       width: 100%;
 
       &-info {
-    
         &-title {
           text-align: center;
           margin-bottom: 40px;
         }
-    
+
         &-description {
           margin-bottom: 40px;
         }
@@ -217,7 +189,7 @@
         left: 50%;
         transform: translateX(-50%);
       }
-    
+
       &-technologies {
         flex-wrap: wrap;
       }
@@ -229,12 +201,12 @@
       transform: translateX(-50%);
       width: 90%;
     }
-  
+
     &__metrics {
       order: 2;
       width: 60%;
       flex-direction: row-reverse;
-      align-items: center;  
+      align-items: center;
     }
   }
 }
