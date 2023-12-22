@@ -3,7 +3,7 @@ from rest_framework import permissions, status, viewsets
 from django.http import HttpResponse
 from ..decorators.decorators import swagger_decorator
 from .documentation.schema_setting import ideas_doc
-from .paginate_class import CustomPaginate
+from .paginate import CustomPaginate
 from .serializers import *
 import requests
 import json
@@ -31,8 +31,12 @@ class IdeaViewSet(viewsets.ModelViewSet):
         return ideas
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
+        ideas = self.get_queryset()
+        page = self.paginate_queryset(ideas)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(ideas, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
@@ -46,11 +50,13 @@ class IdeaViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request, *args, **kwargs):
-        specialization = request.data.pop('specialization', [])
+        current_user = request.user
         serializer = UpdateCreateIdeaSerializer(data=request.data, context={'request': request})
+        avatar_idea = AvatarIdea.objects.create(user=current_user)
         serializer.is_valid(raise_exception=True)
         idea = serializer.save()
-        idea.specialization.set(specialization)
+        idea.avatar = avatar_idea
+        idea.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def partial_update(self, request, *args, **kwargs):

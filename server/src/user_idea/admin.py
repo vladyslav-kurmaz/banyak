@@ -8,7 +8,10 @@ class IdeaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
-admin.site.register(Specialization)
+@admin.register(AvatarIdea)
+class AvatarIdeaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user')
+
 
 admin.site.register(JoinIdea)
 

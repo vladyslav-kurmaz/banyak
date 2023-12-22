@@ -1,85 +1,88 @@
 export type stateElement = {
-  headerSetting: boolean
-  mainLanguage: 'УКР' | 'ENG'
-  mainTheam: boolean
-  mainPageSlider: 0 | 1
-  statusInstr: 'Власник ідеї' | 'Талант'
-  loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ'
-  loginRegistrationForm: boolean
-  counterLink: number
-  mainPreloader: boolean
-  errorStatus: null | number
-}
+  headerSetting: boolean;
+  mainLanguage: "УКР" | "ENG";
+  mainTheam: boolean;
+  mainPageSlider: 0 | 1;
+  statusInstr: "Власник ідеї" | "Талант";
+  loginOrSingUp: "ВХІД" | "РЕЄСТРАЦІЯ";
+  loginRegistrationForm: boolean;
+  counterLink: number;
+  mainPreloader: boolean;
+  errorStatus: null | number;
+};
 
 export type TUserProfile = {
-  speciality: { name: string }[]
-  stack: { name: string }[]
-  description: string
-  is_talent: boolean
+
+  speciality: { name: string }[];
+  stack: { name: string }[];
+  description: string;
+  is_talent: boolean;
   user: {
-    email: string
-    first_name: string
-    last_name: string
-  }
-  is_military: boolean
-  is_vpo: boolean
-  ideas: string[]
-  avatar: TUpdateAvatar
-  portfolio: string
-}
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
+  is_military: boolean;
+  is_vpo: boolean;
+  ideas: string[];
+  avatar: TUpdateAvatar;
+  portfolio: string;
+};
 
 export type TUpdateAvatar = {
-  avatar_profile: string
-  created_at: string
-  id: string
-  updated_at: string
-  user: string
-}
+  avatar_profile: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  user: string;
+};
 
 export type TprofileChange = {
-  speciality: { name: string }[]
-  stack: { name: string }[]
+  speciality: { name: string }[];
+  stack: { name: string }[];
   // avatar?: File | null | string,
-
-  description: string
-  is_talent?: boolean
+  description: string;
+  is_talent?: boolean;
   // is_military: boolean,
   // is_vpo: boolean,
   // ideas: string[],
-  portfolio: string
-}
+  portfolio: string;
+  name?: string;
+};
+
 
 export type TIdeasChange = {
-  speciality: { name: string }[]
-  stack: { name: string }[]
-  description: string
-  portfolio: string
-}
+  speciality: { name: string }[];
+  stack: { name: string }[];
+  description: string;
+  portfolio: string;
+};
 
 export type Talent = {
-  id: string
+  id: string;
   user: {
-    id: string
-    first_name: string
-    last_name: string
-    email: string
-  }
-}
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+};
 
 export type userInfo = {
   // userId: null | string,
-  userProfile: null | TUserProfile
-  typeUser: boolean
-  allStack: TGetAllStack | []
-}
 
-export type TGetAllStack = [name: string]
+  userProfile: null | TUserProfile;
+  typeUser: boolean;
+  allStack: TGetAllStack | [];
+};
+
+export type TGetAllStack = [name: string];
 
 export type TValidatinForm = {
-  errorStatus: boolean
-  message: string
-  class: string
-}
+  errorStatus: boolean;
+  message: string;
+  class: string;
+};
 
 // Tania's types
 export type IdeaRespType = {

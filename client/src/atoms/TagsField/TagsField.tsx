@@ -1,7 +1,7 @@
 import { useEffect, useRef, memo } from "react";
 
 import Tagify from "@yaireo/tagify";
-import { TGetAllStack, TprofileChange } from "../../types/types";
+import { TGetAllStack, TIdeasChange, TprofileChange } from "../../types/types";
 
 import "@yaireo/tagify/src/tagify.scss";
 import "./TagsField.scss";
@@ -12,9 +12,10 @@ const TagsField = ({
   allStack,
   changeStack
 }: {
+
   stackUser: {name: string}[];
   allStack: string[];
-  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>> 
 }) => {
 
   const tagifyRef = useRef(null);  
@@ -27,7 +28,7 @@ const TagsField = ({
         enforceWhitelist: false,
         whitelist: allStack,
   
-        placeholder: "Введіть технології",
+        placeholder: "Введіть потрібних фахівців",
         dropdown: {
           maxItems: 20, 
         },
@@ -37,12 +38,12 @@ const TagsField = ({
   
         if (e.detail.data !== undefined ) {
   
-          const addedTags = e.detail.data.value;             
-          
+          const addedTags = e.detail.data.value; 
+ 
           changeStack(state => state && state !== null ? 
             ({
               ...state,
-              stack: [...state.stack, {name: addedTags.toLocaleUpperCase()}]
+              stack: [...state.stack, {name: addedTags.toUpperCase()}]
             })
             :
             null
@@ -56,14 +57,16 @@ const TagsField = ({
           
           const deleteTags = e.detail.data.value           
           
-          changeStack(state => state && state !== null ? 
-            ({
-              ...state,
-              stack: state.stack.filter(item => item.name !== deleteTags)
-            })
-            :
-            null
-          )
+          if (changeStack) {
+            changeStack(state => state && state !== null ? 
+              ({
+                ...state,
+                stack: state.stack.filter(item => item.name !== deleteTags)
+              })
+              :
+              null
+            )
+          }
         }
       });  
     } 
@@ -71,7 +74,7 @@ const TagsField = ({
   }, []);
  
   const renderTags = () => {
-    if (stackUser.length > 0) {
+    if (stackUser && stackUser.length > 0) {
       return stackUser.map((item) => item.name)
     } else {
       return []

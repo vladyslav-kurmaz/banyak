@@ -5,8 +5,9 @@ from django.utils.encoding import force_str, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
-# from src.user_idea.serializers import IdeasListSerializer
+from src.user_idea.models import Idea
 from .models import *
+import json
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -86,6 +87,38 @@ class ResetPasswordRequestEmailSerializer(serializers.ModelSerializer):
         fields = ('email', 'password')
 
 
+class UserMilitaryOrVpoProfileSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(min_length=1, write_only=True)
+    user_id = serializers.CharField(min_length=1, write_only=True)
+    is_military = serializers.BooleanField(default=False)
+    is_vpo = serializers.BooleanField(default=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ('token', 'user_id', 'is_military', 'is_vpo')
+
+    def validate(self, attrs):
+        try:
+            token = attrs.get('token')
+            user_id = attrs.get('user_id')
+            is_military = attrs.get('is_military')
+            is_vpo = attrs.get('is_vpo')
+
+            id = force_str(urlsafe_base64_decode(user_id))
+            user = CustomUser.objects.get(id=id)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise AuthenticationFailed('Invalid token')
+
+            profile = UserProfile.objects.get(user=user)
+            profile.is_military = is_military
+            profile.is_vpo = is_vpo
+            profile.save()
+            return profile
+        except DjangoUnicodeDecodeError:
+            raise AuthenticationFailed('Invalid data')
+
+
 class NewPasswordSerializer(serializers.ModelSerializer):
     token = serializers.CharField(min_length=1, write_only=True)
     uid = serializers.CharField(min_length=1, write_only=True)
@@ -141,25 +174,97 @@ class EmailUserVerifySerializer(serializers.ModelSerializer):
 
 
 class SpecialitySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+
     class Meta:
         model = Speciality
-        fields = '__all__'
+        fields = ('name',)
 
 
 class StackSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+
     class Meta:
         model = Stack
+        fields = ('name', )
+
+
+class IdeaProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Idea
         fields = '__all__'
 
 
+class AvatarSerializer(serializers.ModelSerializer):
+    avatar_profile = serializers.ImageField(required=False)
+
+    class Meta:
+        model = Avatar
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.avatar_profile = validated_data.get('avatar_profile', instance.avatar_profile)
+        instance.save()
+        return instance
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
+    """Отримання профіля"""
     user = CustomUserSerializer(many=False, required=False)
-    speciality = SpecialitySerializer(many=True, required=False)
+    ideas = serializers.SerializerMethodField()
     stack = StackSerializer(many=True, required=False)
+    speciality = SpecialitySerializer(many=True, required=False)
+    avatar = AvatarSerializer(many=False)
 
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+    def get_ideas(self, obj):
+        # отримуємо ідеї які створив користувач і виводимо їх в профіль
+        ideas = Idea.objects.filter(user=obj.user)
+        serializer = IdeaProfileSerializer(ideas, many=True)
+        return serializer.data
+
+
+class UserProfileCreateUpdateSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer(many=False, required=False)
+    stack = StackSerializer(many=True, required=False)
+    speciality = SpecialitySerializer(many=True, required=False)
+    avatar = AvatarSerializer(many=False, required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        specialities = validated_data.get('speciality', [])
+        stack = validated_data.get('stack', [])
+        stack_ids = []
+        speciality_ids = []
+
+        for stack_item in stack:
+            stack_name = stack_item.get('name')
+            if stack_name:
+                stack_instance, _ = Stack.objects.get_or_create(name=stack_name)
+                stack_ids.append(stack_instance.id)
+
+        for speciality_item in specialities:
+            speciality_name = speciality_item.get('name')
+            if speciality_name:
+                speciality_instance, _ = Speciality.objects.get_or_create(name=speciality_name)
+                speciality_ids.append(speciality_instance.id)
+                print(speciality_ids)
+
+        instance.upload_military = validated_data.get('upload_military', instance.upload_military)
+        instance.upload_vpo = validated_data.get('upload_vpo', instance.upload_vpo)
+        instance.description = validated_data.get('description', instance.description)
+        instance.portfolio = validated_data.get('portfolio', instance.portfolio)
+        instance.is_talent = validated_data.get('is_talent', instance.is_talent)
+        instance.stack.set(stack_ids)
+        instance.speciality.set(speciality_ids)
+        instance.save()
+        return instance
 
 
 class SearchUsersSerializer(serializers.ModelSerializer):

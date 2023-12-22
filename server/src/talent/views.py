@@ -2,18 +2,18 @@ from rest_framework.views import status
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import F, Case, When, Value
-from django.db.models import IntegerField
+from django.db.models import Value, IntegerField, Case, When
 from src.users.models import UserProfile
 from src.user_idea.models import Idea
 from .serializers import ListTalentSerializer, InviteTalentIdeaSerializer, AcceptInviteTalentIdeaSerializer
 from .models import InviteTalentIdea
+from .paginate import CustomPaginate
 
 
 class TalentsViews(viewsets.ModelViewSet):
     """
     - GET: Retrieves a list of talents.
-    - GET <id>: Retrieves detailed information about a talent using their ID.
+    - GET <slug>: Retrieves detailed information about a talent using their ID.
     - POST: Allows an author of an idea to send a request to a talent for participation in a project.
     - GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.
     - PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.
@@ -30,10 +30,11 @@ class TalentsViews(viewsets.ModelViewSet):
     """
     permission_classes = [permissions.AllowAny]
     serializer_class = ListTalentSerializer
+    pagination_class = CustomPaginate
 
     def get_queryset(self):
-        talent = UserProfile.objects.filter(is_talent=True)
-        return talent
+        talents = UserProfile.objects.filter(is_talent=True)
+        return talents
 
     def get_owner_profile(self):
         owner = UserProfile.objects.all()
@@ -45,31 +46,29 @@ class TalentsViews(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         talents = self.get_queryset()
-        # talents = self.get_queryset().annotate(priority=Case(
-        #     When(is_military=True, then=Value(1)),
-        #     When(is_vpo=True, then=Value(1)),
-        #     When(is_military=False, then=Value(2)),
-        #     When(is_vpo=False, then=Value(2)),
-        #     default=Value(2),
-        #     output_field=IntegerField()
-        # )).order_by('priority')
+
+        page = self.paginate_queryset(talents)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = self.serializer_class(talents, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
-        talent_id = kwargs.get('pk')
+        print(kwargs)
+        talent_slug = kwargs.get('pk')
         try:
-            talent = self.get_queryset().get(id=talent_id)
+            talent = self.get_queryset().get(slug=talent_slug)
             serializer = self.serializer_class(talent, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
-            return Response({'message': 'Talent not found'})
+            return Response({'message': 'Talent not found'}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request, *args, **kwargs):
-        talent_id = kwargs.get('talent_id')
+        talent_slug = kwargs.get('pk')
         owner = request.user
         try:
-            talent = self.get_queryset().get(id=talent_id)
+            talent = self.get_queryset().get(slug=talent_slug)
             serializer = InviteTalentIdeaSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             invite_talent = serializer.save()

@@ -1,28 +1,27 @@
 @import './reset.scss';
-@import './scss/variables'; 
+@import './scss/variables';
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--base-font);
+  color: var(--base-font-color-blue);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #061730;
   height: 100%;
-
 }
 
 body::-webkit-scrollbar {
-  width: 8px;               /* ширина всей полосы прокрутки */
+  width: 8px; /* ширина всей полосы прокрутки */
 }
 
 body::-webkit-scrollbar-track {
-  background: $buttonBGWhite;        /* цвет зоны отслеживания */
+  background: var(--secondary-bg-darck-blue); /* цвет зоны отслеживания */
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: $buttonHoverBGWhite;    /* цвет бегунка */
-  border-radius: 20px;       /* округлось бегунка */
-  border: 1px solid $buttonBGWhite;  /* отступ вокруг бегунка */
+  background-color: var(--base-hover-color-purple); /* цвет бегунка */
+  border-radius: 20px; /* округлось бегунка */
+  border: 1px solid var(--secondary-bg-darck-blue); /* отступ вокруг бегунка */
 }
 
 code {
