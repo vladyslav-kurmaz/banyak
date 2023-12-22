@@ -14,8 +14,8 @@ const SPECIALITY_NAME_LENGTH = 12
 const STACK_ITEMS_QUANTITY = 4
 
 const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
-  const renderSpeciality = (specialitys: { name: string }[]) => {
-    return specialitys.map((speciality, i) => {
+  const renderSpeciality = (specialities: { name: string }[]) => {
+    return specialities.map((speciality, i) => {
       if (i < 2) {
         return (
           <li key={uuidv4()} className="idea__container-specialty-item">

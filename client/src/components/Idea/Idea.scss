@@ -154,24 +154,7 @@
     gap: 42px;
 
     &-button {
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 10px 20px;
-      color: var(--secondary-font-color-white);
-      border-radius: var(--base-border-radius);
-      background-color: var(--secondary-bg-darck-blue);
-      cursor: pointer;
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      &:hover {
-        background-color: var(--base-hover-color-purple);
-        box-shadow: var(--base-box-shadow);
-        transition: background-color 0.5s;
-      }
+      @include link-btn;
     }
 
     &-metrics {
@@ -195,7 +178,7 @@
 .idea-mobile {
   padding: 20px;
   box-shadow: var(--base-box-shadow);
-  border-radius: 8px;
+  border-radius: var(--base-border-radius);
   min-width: 320px;
   width: 100%;
   display: flex;
@@ -232,13 +215,13 @@
       gap: 20px;
 
       &-title {
-        font-size: 24px;
-        font-weight: 600;
-        width: 100%;
+        @include title;
         @include center-element;
+        width: 100%;
       }
 
       &-description {
+        line-height: normal;
         font-size: 15px;
         font-weight: 400;
       }
