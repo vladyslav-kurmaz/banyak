@@ -6,13 +6,7 @@ from rest_framework import status, permissions, generics, views
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-from django.conf import settings
 from rest_framework import filters
-from uuid import UUID
-from io import BytesIO
 from .serializers import *
 from .services.google_auth import check_google_auth
 from .authentication import JWTAuthentication
@@ -22,9 +16,6 @@ from .services import github_auth
 from .documentation.users_schema_setting import users_doc
 from .documentation.profile_schema_setting import profile_doc
 from ..decorators.decorators import swagger_decorator
-from .services.verify_military_vpo import verify
-import requests
-import json
 
 
 @swagger_decorator(['post'], 'Users', users_doc)
@@ -35,6 +26,8 @@ class UserRegister(generics.GenericAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        print('Register')
+        print(request.data)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get('email')
@@ -75,6 +68,8 @@ class UserAuthLogin(views.APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
+        print('Login')
+        print(request.data)
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         email = serializer.data['email']

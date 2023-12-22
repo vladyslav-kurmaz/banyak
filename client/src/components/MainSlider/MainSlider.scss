@@ -177,3 +177,29 @@
   }
 }
 
+@media screen and (max-width: 400px) {
+  .main-slider {
+  
+    &__container {
+      max-width: 300px;
+    }
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .main-slider {
+  
+    &__container {
+      max-width: 280px;
+    }
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .main-slider {
+  
+    &__container {
+      max-width: 270px;
+    }
+  }
+}

@@ -154,7 +154,7 @@ const ProfileStackInfo = ({
             <h2 className="title-h2-l technologies__title title-mb-20">
               Мої технології:
             </h2>
-            {allStack.length > 0 ? (
+            {allStack.length > -1? (
               <div className="technologies__textfield">
                 <TagsField
                   stackUser={userProfil?.stack}
