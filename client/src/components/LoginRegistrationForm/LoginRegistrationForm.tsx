@@ -51,6 +51,8 @@ const LoginRegistrationForm = () => {
     (state) => state.stateElement
   );
 
+  
+
   useEffect(() => {
     if (loginOrSingUp === "ВХІД") {
       setName("");
@@ -73,6 +75,18 @@ const LoginRegistrationForm = () => {
     }
     // eslint-disable-next-line
   }, [loginOrSingUp]);
+
+  // useEffect(() => {
+  //   if (popupLocation) {
+  //     document.body.style.overflow = 'hidden';
+  //     console.log(1);
+      
+  //   } else {
+  //     document.body.style.overflow = '';
+  //     console.log(2);
+  //   }
+  //   console.log(popupLocation);
+  // }, [popupLocation])
 
   useEffect(() => {
     if (location.search === '?login') {
@@ -139,7 +153,7 @@ const LoginRegistrationForm = () => {
       email: email,
       password: pass,
     };
-    document.body.style.overflow = "";
+    // document.body.style.overflow = "";
 
     try {
       const registration = await singUpNewUser(JSON.stringify(data));
@@ -168,7 +182,7 @@ const LoginRegistrationForm = () => {
       if (typeof e === "object" && e !== null && "status" in e) {
         dispatch(changeErrorStatus(e.status));
       }
-      document.body.style.overflow = "";
+      // document.body.style.overflow = "";
       setName("");
       setSurName("");
       setEmail("");
@@ -203,7 +217,7 @@ const LoginRegistrationForm = () => {
       setEmail("");
       setPass("");
     } catch (e) {
-      document.body.style.overflow = "";
+      // document.body.style.overflow = "";
       dispatch(changreMainPreloader(false));
       if (typeof e === "object" && e !== null && "status" in e) {
         dispatch(changeErrorStatus(e.status));

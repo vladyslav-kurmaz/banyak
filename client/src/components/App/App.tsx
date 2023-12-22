@@ -55,7 +55,16 @@ function App() {
       }
     }
     // eslint-disable-next-line
-  }, [])
+  }, [])  
+
+  useEffect(() => {
+    if (popupLocation) {
+      document.body.style.overflow = 'hidden';      
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [popupLocation])
+
 
   return (
     <>
