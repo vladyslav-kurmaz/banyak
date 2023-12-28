@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  text-align: center;
 }
 
 @mixin logo-96 {
@@ -47,6 +48,7 @@
 }
 
 @mixin title {
+  text-align: center;
   font-size: 20px;
   font-weight: 600;
   line-height: normal;

@@ -1,0 +1,81 @@
+import { Link } from 'react-router-dom'
+import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
+import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
+import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
+import plugIcon from '../../image/logo/small_logo.webp'
+
+import './IdeaDescriptionPageTablet.scss'
+
+function IdeaDescriptionPageTablet() {
+  return (
+    <div className="tablet-idea-description">
+      <div className="tablet-idea-description__logo-title">
+        <img
+          src={plugIcon}
+          alt="logo for idea"
+          className="tablet-idea-description__img"
+        />
+        <h1 className="tablet-idea-description__title">
+          Мобільний застосунок для домогосподарок
+        </h1>
+      </div>
+      <p className="tablet-idea-description__description">
+        Шукаю UI/UX дизайнера щоб розробити мобільний застосунок, для
+        домогосподарок, під ios платформу. Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Architecto vel, quasi exercitationem
+        provident suscipit, maiores, molestias odio dolor officiis blanditiis
+        delectus dolores a expedita earum labore sapiente harum accusamus! Modi,
+        aliquam itaque amet dolor vitae doloribus! Nisi, optio numquam
+        voluptatem consequatur officia hic illum in! Dolore aperiam voluptas
+        praesentium nesciunt.
+      </p>
+      <div className="tablet-idea-description__stack">
+        <h4 className="tablet-idea-description__stack-title">
+          Потрібні технології:
+        </h4>
+        <div className="tablet-idea-description__stack-items-wraper">
+          <p className="tablet-idea-description__stack-item">+Figma</p>
+          <p className="tablet-idea-description__stack-item">+A/B testing</p>
+          <p className="tablet-idea-description__stack-item">
+            +Adobe ILLustrator
+          </p>
+          <p className="tablet-idea-description__stack-item">React Native</p>
+          <p className="tablet-idea-description__stack-item">Type Script</p>
+        </div>
+      </div>
+      <div className="tablet-idea-description__specialities-btn-wraper">
+        <div className="tablet-idea-description__specialities">
+          <h4 className="tablet-idea-description__specialities-title">
+            Потрібні фахівці:
+          </h4>
+          <div className="tablet-idea-description__specialities-items-wraper">
+            <p className="tablet-idea-description__specialities-item">
+              UI/UX Designer
+            </p>
+            <p className="tablet-idea-description__specialities-item">
+              Frontend Developer
+            </p>
+            <p className="tablet-idea-description__specialities-item">
+              Backend Developer
+            </p>
+            <p className="tablet-idea-description__specialities-item">
+              Frontend Developer
+            </p>
+          </div>
+        </div>
+
+        <Link className="tablet-idea-description__link-btn" to="/">
+          Відгукнутися
+        </Link>
+      </div>
+
+      <div className="tablet-idea-description__views-date-wraper">
+        <QuestionMark />
+        <ViewsIconAndQuantity viewsQuantity={10} />
+        <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />
+      </div>
+    </div>
+  )
+}
+
+export default IdeaDescriptionPageTablet
