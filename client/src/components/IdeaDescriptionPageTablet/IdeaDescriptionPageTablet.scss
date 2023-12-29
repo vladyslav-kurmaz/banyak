@@ -44,7 +44,7 @@
     flex-direction: column;
     justify-content: flex-start;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
 
     &-title {
@@ -70,6 +70,7 @@
   }
 
   &__specialities-btn-wraper {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -89,6 +90,7 @@
     }
 
     &-items-wraper {
+      width: 100%;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;

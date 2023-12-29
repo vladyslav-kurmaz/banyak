@@ -78,6 +78,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
 
   return (
     <>
+      {/* Desctop version */}
       <div className="idea">
         <div className="idea__container">
           <div className="idea__img">
@@ -113,7 +114,11 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
         <div className="idea__metric">
           <div>
             {myIdea ? null : (
-              <Link to={`${idea.slug}`} className="idea__metric-button">
+              <Link
+                to={`${idea.slug}`}
+                state={{ ...idea }}
+                className="idea__metric-button"
+              >
                 Детальніше
               </Link>
             )}

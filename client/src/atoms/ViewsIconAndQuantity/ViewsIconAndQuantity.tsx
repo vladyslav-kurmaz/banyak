@@ -1,4 +1,8 @@
-function ViewsIconAndQuantity({ viewsQuantity }: { viewsQuantity: number }) {
+function ViewsIconAndQuantity({
+  viewsQuantity,
+}: {
+  viewsQuantity: number | string
+}) {
   return (
     <div className="idea__metric-metrics-view">
       <svg

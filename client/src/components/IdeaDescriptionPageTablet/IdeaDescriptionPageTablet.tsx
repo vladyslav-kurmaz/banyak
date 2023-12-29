@@ -1,14 +1,75 @@
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
 import plugIcon from '../../image/logo/small_logo.webp'
+import { IdeaRespType } from '../../types/types'
 
 import './IdeaDescriptionPageTablet.scss'
 
-function IdeaDescriptionPageTablet() {
+function IdeaDescriptionPageTablet({ ideaInfo }: { ideaInfo: IdeaRespType }) {
   return (
     <div className="tablet-idea-description">
+      <div className="tablet-idea-description__logo-title">
+        <img
+          src={plugIcon}
+          alt="logo for idea"
+          className="tablet-idea-description__img"
+        />
+        <h1 className="tablet-idea-description__title">{ideaInfo.title}</h1>
+      </div>
+      <p className="tablet-idea-description__description">
+        {ideaInfo.description}
+      </p>
+      <div className="tablet-idea-description__stack">
+        <h4 className="tablet-idea-description__stack-title">
+          Потрібні технології:
+        </h4>
+        <ul className="tablet-idea-description__stack-items-wraper">
+          {ideaInfo.stack.map((technology) => (
+            <li key={uuidv4()} className="tablet-idea-description__stack-item">
+              {technology.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="tablet-idea-description__specialities-btn-wraper">
+        <div className="tablet-idea-description__specialities">
+          <h4 className="tablet-idea-description__specialities-title">
+            Потрібні фахівці:
+          </h4>
+          <ul className="tablet-idea-description__specialities-items-wraper">
+            {ideaInfo.specialization.map((speciality) => (
+              <li
+                key={uuidv4()}
+                className="tablet-idea-description__specialities-item"
+              >
+                {speciality.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Change route here to chat page */}
+        <Link className="tablet-idea-description__link-btn" to="/">
+          Відгукнутися
+        </Link>
+      </div>
+
+      <div className="tablet-idea-description__views-date-wraper">
+        <QuestionMark />
+        <ViewsIconAndQuantity viewsQuantity={ideaInfo.idea_views} />
+        <DisplayDateFromDB date={ideaInfo.updated_at} />
+      </div>
+    </div>
+  )
+}
+
+export default IdeaDescriptionPageTablet
+
+// Template for tablet
+{
+  /* <div className="tablet-idea-description">
       <div className="tablet-idea-description__logo-title">
         <img
           src={plugIcon}
@@ -74,8 +135,5 @@ function IdeaDescriptionPageTablet() {
         <ViewsIconAndQuantity viewsQuantity={10} />
         <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />
       </div>
-    </div>
-  )
+    </div> */
 }
-
-export default IdeaDescriptionPageTablet
