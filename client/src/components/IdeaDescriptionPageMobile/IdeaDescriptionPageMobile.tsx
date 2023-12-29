@@ -9,6 +9,7 @@ import { IdeaRespType } from '../../types/types'
 import './IdeaDescriptionPageMobile.scss'
 
 function IdeaDescriptionPageMobile({ ideaInfo }: { ideaInfo: IdeaRespType }) {
+  console.log('IdeaDescriptionPageMobile', ideaInfo)
   return (
     <div className="mobile-idea-description">
       <div className="mobile-idea-description__content-wraper">

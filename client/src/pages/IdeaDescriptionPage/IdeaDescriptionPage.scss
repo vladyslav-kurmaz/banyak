@@ -2,10 +2,10 @@
 @import '../../scss/mixins';
 
 .idea-description-page-wraper {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
 }
 /* Mobile styles up to 660px */
 @media only screen and (max-width: 660px) {

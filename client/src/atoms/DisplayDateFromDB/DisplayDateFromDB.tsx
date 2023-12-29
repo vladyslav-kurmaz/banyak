@@ -1,10 +1,12 @@
 import formateDateToDisplay from '../../utils/formateDateToDisplay'
 
 function DisplayDateFromDB({ date }: { date: string }) {
-  return (
+  return date ? (
     <div className="idea__metric-metrics-data">
       {formateDateToDisplay(date)}
     </div>
+  ) : (
+    <div></div>
   )
 }
 

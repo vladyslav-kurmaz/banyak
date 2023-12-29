@@ -9,7 +9,6 @@ import { IdeaRespType } from '../../types/types'
 import './IdeaDescriptionPageDesktop.scss'
 
 function IdeaDescriptionPageDesktop({ ideaInfo }: { ideaInfo: IdeaRespType }) {
-  console.log('IdeaDescriptionPageDesktop', ideaInfo)
   return (
     <div className="idea-description">
       <div className="idea-description__logo-specialities-question-wraper">
@@ -24,7 +23,7 @@ function IdeaDescriptionPageDesktop({ ideaInfo }: { ideaInfo: IdeaRespType }) {
             <h4 className="idea-description__specialities-title">
               Потрібні фахівці:
             </h4>
-            <ul className="idea-description__specialities-wraper">
+            <ul>
               {ideaInfo.specialization.map((speciality) => (
                 <li
                   key={uuidv4()}
