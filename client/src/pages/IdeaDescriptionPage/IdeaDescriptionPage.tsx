@@ -1,152 +1,20 @@
-import { Link } from 'react-router-dom'
-import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
-import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
-import plugIcon from '../../image/logo/small_logo.webp'
+import { useLocation } from 'react-router-dom'
+import IdeaDescriptionPageTablet from '../../components/IdeaDescriptionPageTablet/IdeaDescriptionPageTablet'
+import IdeaDescriptionPageMobile from '../../components/IdeaDescriptionPageMobile/IdeaDescriptionPageMobile'
+import IdeaDescriptionPageDesktop from '../../components/IdeaDescriptionPageDesktop/IdeaDescriptionPageDesktop'
+import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 
 import './IdeaDescriptionPage.scss'
 
 const IdeaDescriptionPage = () => {
+  let { state } = useLocation()
   return (
-    <>
-      <div className="mobile-idea-description">
-        <div className="mobile-idea-description__content-wraper">
-          <div className="mobile-idea-description__header">
-            <img
-              src={plugIcon}
-              alt="logo for idea"
-              className="mobile-idea-description__header-img"
-            />
-            <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />
-            <ViewsIconAndQuantity viewsQuantity={10} />
-          </div>
-          <div className="mobile-idea-description__info">
-            <h1 className="mobile-idea-description__info-title">
-              Мобільний застосунок для домогосподарок
-            </h1>
-            <p className="mobile-idea-description__info-description">
-              Шукаю UI/UX дизайнера щоб розробити мобільний застосунок, для
-              домогосподарок, під ios платформу. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Architecto vel, quasi exercitationem
-              provident suscipit, maiores, molestias odio dolor officiis
-              blanditiis delectus dolores a expedita earum labore sapiente harum
-              accusamus! Modi, aliquam itaque amet dolor vitae doloribus! Nisi,
-              optio numquam voluptatem consequatur officia hic illum in! Dolore
-              aperiam voluptas praesentium nesciunt.
-            </p>
-          </div>
-          <div className="mobile-idea-description__stack">
-            <h4 className="mobile-idea-description__stack-title">
-              Потрібні технології:
-            </h4>
-            <div className="mobile-idea-description__stack-items-wraper">
-              <p className="mobile-idea-description__stack-item">+Figma</p>
-              <p className="mobile-idea-description__stack-item">
-                +A/B testing
-              </p>
-              <p className="mobile-idea-description__stack-item">
-                +Adobe ILLustrator
-              </p>
-              <p className="mobile-idea-description__stack-item">
-                React Native
-              </p>
-              <p className="mobile-idea-description__stack-item">Type Script</p>
-            </div>
-          </div>
-          <div className="mobile-idea-description__specialities">
-            <h4 className="mobile-idea-description__specialities-title">
-              Потрібні фахівці:
-            </h4>
-            <div className="mobile-idea-description__specialities-wraper">
-              <p className="mobile-idea-description__specialities-item">
-                UI/UX Designer
-              </p>
-              <p className="mobile-idea-description__specialities-item">
-                Frontend Developer
-              </p>
-              <p className="mobile-idea-description__specialities-item">
-                Backend Developer
-              </p>
-              <p className="mobile-idea-description__specialities-item">
-                Frontend Developer
-              </p>
-            </div>
-          </div>
-          <div className="mobile-idea-description__btn-wraper">
-            <Link
-              className="mobile-idea-description__btn-wraper-link-btn"
-              to="/"
-            >
-              Відгукнутися
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="idea-description">
-        <div className="idea-description__content-wraper">
-          <div className="idea-description__header">
-            <img
-              src={plugIcon}
-              alt="logo for idea"
-              className="idea-description__header-img"
-            />
-            <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />
-            <ViewsIconAndQuantity viewsQuantity={10} />
-          </div>
-          <div className="idea-description__info">
-            <h1 className="idea-description__info-title">
-              Мобільний застосунок для домогосподарок
-            </h1>
-            <p className="idea-description__info-description">
-              Шукаю UI/UX дизайнера щоб розробити мобільний застосунок, для
-              домогосподарок, під ios платформу. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Architecto vel, quasi exercitationem
-              provident suscipit, maiores, molestias odio dolor officiis
-              blanditiis delectus dolores a expedita earum labore sapiente harum
-              accusamus! Modi, aliquam itaque amet dolor vitae doloribus! Nisi,
-              optio numquam voluptatem consequatur officia hic illum in! Dolore
-              aperiam voluptas praesentium nesciunt.
-            </p>
-          </div>
-          <div className="idea-description__stack">
-            <h4 className="idea-description__stack-title">
-              Потрібні технології:
-            </h4>
-            <div className="idea-description__stack-items-wraper">
-              <p className="idea-description__stack-item">+Figma</p>
-              <p className="idea-description__stack-item">+A/B testing</p>
-              <p className="idea-description__stack-item">+Adobe ILLustrator</p>
-              <p className="idea-description__stack-item">React Native</p>
-              <p className="idea-description__stack-item">Type Script</p>
-            </div>
-          </div>
-          <div className="idea-description__specialities">
-            <h4 className="idea-description__specialities-title">
-              Потрібні фахівці:
-            </h4>
-            <div className="idea-description__specialities-wraper">
-              <p className="idea-description__specialities-item">
-                UI/UX Designer
-              </p>
-              <p className="idea-description__specialities-item">
-                Frontend Developer
-              </p>
-              <p className="idea-description__specialities-item">
-                Backend Developer
-              </p>
-              <p className="idea-description__specialities-item">
-                Frontend Developer
-              </p>
-            </div>
-          </div>
-          <div className="idea-description__btn-wraper">
-            <Link className="idea-description__btn-wraper-link-btn" to="/">
-              Відгукнутися
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="idea-description-page-wraper">
+      <ButtonBack />
+      <IdeaDescriptionPageMobile ideaInfo={state} />
+      <IdeaDescriptionPageTablet ideaInfo={state} />
+      <IdeaDescriptionPageDesktop ideaInfo={state} />
+    </div>
   )
 }
 
