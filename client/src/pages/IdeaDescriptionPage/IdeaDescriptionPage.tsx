@@ -8,6 +8,7 @@ import './IdeaDescriptionPage.scss'
 
 const IdeaDescriptionPage = () => {
   let { state } = useLocation()
+
   return (
     <div className="idea-description-page-wraper">
       <ButtonBack />

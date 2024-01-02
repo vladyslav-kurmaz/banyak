@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Link } from 'react-router-dom'
 import plugIcon from '../../image/logo/small_logo.webp'
 import { IdeaRespType } from '../../types/types'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
-import { Link } from 'react-router-dom'
-
-import './Idea.scss'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
+
+import './Idea.scss'
 
 const IDEA_TITLE_LENGTH = 24
 const IDEA_DESCRIPTION_LENGTH = 90
@@ -167,7 +167,11 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
         <div className="idea-mobile__metric">
           <div>
             {myIdea ? null : (
-              <Link to={`${idea.slug}`} className="idea-mobile__metric-button">
+              <Link
+                to={`${idea.slug}`}
+                state={{ ...idea }}
+                className="idea-mobile__metric-button"
+              >
                 Детальніше
               </Link>
             )}
