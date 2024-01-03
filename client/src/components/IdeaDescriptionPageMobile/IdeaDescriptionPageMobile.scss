@@ -36,6 +36,7 @@
       @include title;
       @include center-element;
       width: 100%;
+      font-size: 20px;
     }
     &-description {
       line-height: normal;
@@ -52,6 +53,7 @@
 
     &-title {
       @include title;
+      font-size: 20px;
     }
 
     &-items-wraper {
@@ -81,6 +83,7 @@
 
     &-title {
       @include title;
+      font-size: 20px;
     }
 
     &-wraper {
@@ -118,6 +121,22 @@
 
   &___question-mark {
     align-self: flex-start;
+  }
+}
+
+// Talent styles
+.mobile-talent-description {
+  &__portfolio-btn {
+    @include link-btn;
+    width: 120px;
+    align-self: center;
+  }
+
+  &__connect-btn {
+    @include link-btn;
+    // padding: 10px 100px;
+    width: 84%;
+    margin-bottom: 10px;
   }
 }
 

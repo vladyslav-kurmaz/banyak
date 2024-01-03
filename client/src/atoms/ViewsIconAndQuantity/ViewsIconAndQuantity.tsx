@@ -1,7 +1,7 @@
 function ViewsIconAndQuantity({
   viewsQuantity,
 }: {
-  viewsQuantity: number | string
+  viewsQuantity: number | string | undefined
 }) {
   return (
     <div className="idea__metric-metrics-view">

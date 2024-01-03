@@ -1,24 +1,27 @@
-import './Talent.scss'
+import { Link } from 'react-router-dom'
 import plugIcon from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { TalentRespType } from '../../types/types'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
-import { Link } from 'react-router-dom'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
-// class знайденого елементу це found
 
-const Talent = ({ talantInfo }: { talantInfo: TalentRespType }) => {
-  const data = [
-    'Figma',
-    'A/B testing',
-    'Adobe Illustrator',
-    'Adobe Illustrator',
-  ]
+import './Talent.scss'
 
-  const renderStack = (data: string[]) => {
+const TALENT_TITLE_LENGTH = 30
+const TALENT_DESCRIPTION_LENGTH = 60
+const TALENT_STACK_ITEM_LENGTH = 8
+
+const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
+  const renderStack = (data: { name: string }[]) => {
     return data.map((item, i) => {
-      const itemLengh = item.length < 18 ? `+${item}` : `+${item}...`
+      const itemLengh =
+        item.name.length < 18
+          ? `+${makesTextShorterAddsDots(item.name, TALENT_STACK_ITEM_LENGTH)}`
+          : `+${makesTextShorterAddsDots(
+              item.name,
+              TALENT_STACK_ITEM_LENGTH
+            )}...`
       if (i < 3) {
         return (
           <li className="talant__container-technologies-item">
@@ -28,13 +31,13 @@ const Talent = ({ talantInfo }: { talantInfo: TalentRespType }) => {
           </li>
         )
       } else {
-        return null
+        return ''
       }
     })
   }
 
   const allStack =
-    data.length > 3 ? (
+    talentInfo.stack.length > 3 ? (
       <li className="talant__container-technologies-item all-technologies">
         ...
       </li>
@@ -53,10 +56,16 @@ const Talent = ({ talantInfo }: { talantInfo: TalentRespType }) => {
       <div className="talant__container">
         <div className="talant__container-info">
           <h2 className="talant__container-info-title">
-            {makesTextShorterAddsDots(talantInfo.speciality[0]?.name, 30)}
+            {makesTextShorterAddsDots(
+              talentInfo.speciality[0]?.name,
+              TALENT_TITLE_LENGTH
+            )}
           </h2>
           <p className="talant__container-info-description">
-            {makesTextShorterAddsDots(talantInfo.description, 60)}
+            {makesTextShorterAddsDots(
+              talentInfo.description,
+              TALENT_DESCRIPTION_LENGTH
+            )}
           </p>
           <div className="talant__container-button">
             <ButtonSmall
@@ -66,79 +75,31 @@ const Talent = ({ talantInfo }: { talantInfo: TalentRespType }) => {
                 'padding-top': '2px',
                 'font-size': '15px',
               }}
-              href={talantInfo.portfolio}
+              href={talentInfo.portfolio}
             />
           </div>
         </div>
         <ul className="talant__container-technologies">
-          {renderStack(data)}
+          {renderStack(talentInfo.stack)}
           {allStack}
         </ul>
       </div>
 
       <div className="talant__button">
-        <Link to={`${talantInfo.id}`} className="buttonSmall">
+        <Link
+          to={`${talentInfo.slug}`}
+          state={{ ...talentInfo }}
+          className="buttonSmall"
+        >
           Детальніше
         </Link>
       </div>
       <div className="talant__metrics">
-        <ViewsIconAndQuantity viewsQuantity={120} />
-        <DisplayDateFromDB date={'2023-12-05T10:41:14.154207Z'} />
+        <ViewsIconAndQuantity viewsQuantity={talentInfo.profile_view} />
+        <DisplayDateFromDB date={talentInfo.updated_at} />
       </div>
     </div>
   )
 }
 
 export default Talent
-// *******Tmplate for Idea component*******
-//  <div className="talant">
-//       <div className="talant__img">
-//         <img src={plugIcon} alt="" className="talant__img-picture" />
-//       </div>
-
-//       <div className="talant__container">
-//         <div className="talant__container-info">
-/* <h2 className='talant__container-info-title'>UI/UX Designer</h2> */
-//       <h2 className="talant__container-info-title">UI/UX Designer</h2>
-//       <p className="talant__container-info-description">
-//         Шукаю цікавий проект для підвищення навичків в командній роботі
-//       </p>
-//       <div className="talant__container-button">
-//         <ButtonSmall
-//           text="Портфоліо"
-//           style={{
-//             'padding-bottom': '2px',
-//             'padding-top': '2px',
-//             'font-size': '15px',
-//           }}
-//         />
-//       </div>
-//     </div>
-//     <ul className="talant__container-technologies">
-//       {renderStack(data)}
-//       {allStack}
-//     </ul>
-//   </div>
-
-//   <div className="talant__button">
-//     <ButtonSmall text="Зв’язатись" />
-//   </div>
-//   <div className="talant__metrics">
-//     <div className="talant__metrics-view">
-//       <svg
-//         xmlns="http://www.w3.org/2000/svg"
-//         width="24"
-//         height="24"
-//         viewBox="0 0 24 24"
-//         fill="none"
-//       >
-//         <path
-//           d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z"
-//           fill="#061730"
-//         />
-//       </svg>
-//       <span className="talant__metrics-view-total">5</span>
-//     </div>
-//     <div className="talant__metrics-data">13.07.2023</div>
-//   </div>
-// </div>

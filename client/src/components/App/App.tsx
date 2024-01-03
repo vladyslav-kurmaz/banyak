@@ -24,13 +24,13 @@ import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChoosePro
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 import TalentDescriptionPage from '../../pages/TalentDescriptionPage/TalentDescriptionPage'
 
-import './App.scss';
+import './App.scss'
 import { TUserProfile } from '../../types/types'
 
 function App() {
   const { mainPreloader } = useAppSelector((state) => state.stateElement)
 
-  const location = useLocation();
+  const location = useLocation()
   const popupLocation =
     location.search === '?login' || location.search === '?singup'
   const { profileUser } = ServiceBanyak()
@@ -55,16 +55,15 @@ function App() {
       }
     }
     // eslint-disable-next-line
-  }, [])  
+  }, [])
 
   useEffect(() => {
     if (popupLocation) {
-      document.body.style.overflow = 'hidden';      
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = ''
     }
   }, [popupLocation])
-
 
   return (
     <>
@@ -79,7 +78,10 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="aboutus" element={<AboutUs />} />
             <Route path="ideas" element={<IdeasAndTalent isIdea={true} />} />
-            <Route path="ideas/:slug" element={<IdeaDescriptionPage />} />
+            <Route
+              path="ideas/:slug"
+              element={<IdeaDescriptionPage isIdea={true} />}
+            />
             <Route path="talents" element={<IdeasAndTalent isIdea={false} />} />
             <Route path="talents/:slug" element={<TalentDescriptionPage />} />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />

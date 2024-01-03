@@ -3,18 +3,20 @@ import IdeaDescriptionPageTablet from '../../components/IdeaDescriptionPageTable
 import IdeaDescriptionPageMobile from '../../components/IdeaDescriptionPageMobile/IdeaDescriptionPageMobile'
 import IdeaDescriptionPageDesktop from '../../components/IdeaDescriptionPageDesktop/IdeaDescriptionPageDesktop'
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
+import { IdeaRespType } from '../../types/types'
 
 import './IdeaDescriptionPage.scss'
 
-const IdeaDescriptionPage = () => {
-  let { state } = useLocation()
+const IdeaDescriptionPage = (isIdea: { isIdea: boolean }) => {
+  const location = useLocation()
+  const state = location.state as IdeaRespType | undefined
 
   return (
     <div className="idea-description-page-wraper">
       <ButtonBack />
-      <IdeaDescriptionPageMobile ideaInfo={state} />
-      <IdeaDescriptionPageTablet ideaInfo={state} />
-      <IdeaDescriptionPageDesktop ideaInfo={state} />
+      <IdeaDescriptionPageMobile ideaInfo={state} isIdea={isIdea} />
+      <IdeaDescriptionPageTablet ideaInfo={state} isIdea={isIdea} />
+      <IdeaDescriptionPageDesktop ideaInfo={state} isIdea={isIdea} />
     </div>
   )
 }

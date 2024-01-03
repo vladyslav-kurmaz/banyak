@@ -1,0 +1,16 @@
+.idea-talent-stack-item {
+  padding: 2px 8px 2px 6px;
+  border-radius: 8px;
+  background: var(--light-blue);
+  color: var(--secondary-font-color-white);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  &__dots {
+    color: var(--light-blue);
+    font-size: 32px;
+    font-weight: 1000;
+  }
+}

@@ -37,7 +37,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
     } else {
       getTalents()
         .then((res) => res.json() as Promise<ServerResForTalents>)
-        .then((talantsData) => talantsData.results)
+        .then((talentsData) => talentsData.results)
         .then((talentsList) => setTalents(talentsList))
         .then(() => dispatch(changreMainPreloader(false)))
         .catch((e) => {
@@ -58,7 +58,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
           ))
         : talents.map((talentItem) => (
-            <Talent key={talentItem.id} talantInfo={talentItem} />
+            <Talent key={talentItem.id} talentInfo={talentItem} />
           ))}
 
       {isIdea ? (
