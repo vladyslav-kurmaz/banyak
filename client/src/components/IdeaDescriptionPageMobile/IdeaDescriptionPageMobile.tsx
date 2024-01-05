@@ -4,11 +4,19 @@ import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
 import plugIcon from '../../image/logo/small_logo.webp'
-import { IdeaRespType } from '../../types/types'
+import { IdeaRespType, TalentRespType } from '../../types/types'
 
 import './IdeaDescriptionPageMobile.scss'
 
-function IdeaDescriptionPageMobile({ ideaInfo }: { ideaInfo: IdeaRespType }) {
+function IdeaDescriptionPageMobile({
+  isIdea,
+  ideaInfo,
+  talentInfo,
+}: {
+  isIdea?: { isIdea: boolean }
+  ideaInfo?: IdeaRespType
+  talentInfo?: TalentRespType
+}) {
   return (
     <div className="mobile-idea-description">
       <div className="mobile-idea-description__content-wraper">
@@ -18,52 +26,103 @@ function IdeaDescriptionPageMobile({ ideaInfo }: { ideaInfo: IdeaRespType }) {
             alt="logo for idea"
             className="mobile-idea-description__header-img"
           />
-          <DisplayDateFromDB date={ideaInfo.updated_at} />
-          <ViewsIconAndQuantity viewsQuantity={ideaInfo.idea_views} />
+          <DisplayDateFromDB
+            date={isIdea ? ideaInfo?.updated_at : talentInfo?.updated_at}
+          />
+          <ViewsIconAndQuantity
+            viewsQuantity={
+              isIdea ? ideaInfo?.idea_views : talentInfo?.profile_view
+            }
+          />
         </div>
         <div className="mobile-idea-description__info">
-          <h1 className="mobile-idea-description__info-title">
-            {ideaInfo.title}
-          </h1>
+          {isIdea ? (
+            <h1 className="mobile-idea-description__info-title">
+              {ideaInfo?.title}
+            </h1>
+          ) : (
+            <>
+              <h4 className="mobile-idea-description__info-title">
+                {`${talentInfo?.user.first_name} ${talentInfo?.user.last_name}`}
+              </h4>
+              <h1 className="mobile-idea-description__info-title">
+                {talentInfo?.speciality[0].name}
+              </h1>
+              <Link
+                className="mobile-talent-description__portfolio-btn"
+                to={`${talentInfo?.portfolio}`}
+              >
+                Портфоліо
+              </Link>
+            </>
+          )}
+
           <p className="mobile-idea-description__info-description">
-            {ideaInfo.description}
+            {isIdea ? ideaInfo?.description : talentInfo?.description}
           </p>
         </div>
         <div className="mobile-idea-description__stack">
           <h4 className="mobile-idea-description__stack-title">
-            Потрібні технології:
+            {isIdea ? 'Потрібні технології:' : 'Володію технологіями:'}
           </h4>
-          <ul className="mobile-idea-description__stack-items-wraper">
-            {ideaInfo.stack.map((technology) => (
-              <li
-                key={uuidv4()}
-                className="mobile-idea-description__stack-item"
-              >
-                {technology.name}
-              </li>
-            ))}
-          </ul>
+          {isIdea ? (
+            <ul className="mobile-idea-description__stack-items-wraper">
+              {ideaInfo?.stack.map((technology) => (
+                <li
+                  key={uuidv4()}
+                  className="mobile-idea-description__stack-item"
+                >
+                  {`+${technology.name}`}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul className="mobile-idea-description__stack-items-wraper">
+              {talentInfo?.stack.map((technology) => (
+                <li
+                  key={uuidv4()}
+                  className="mobile-idea-description__stack-item"
+                >
+                  {`+${technology.name}`}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <div className="mobile-idea-description__specialities">
-          <h4 className="mobile-idea-description__specialities-title">
-            Потрібні фахівці:
-          </h4>
-          <ul className="mobile-idea-description__specialities-wraper">
-            {ideaInfo.specialization.map((speciality) => (
-              <li
-                key={uuidv4()}
-                className="mobile-idea-description__specialities-item"
-              >
-                {speciality.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {isIdea ? (
+          <div className="mobile-idea-description__specialities">
+            <h4 className="mobile-idea-description__specialities-title">
+              Потрібні фахівці:
+            </h4>
+            <ul className="mobile-idea-description__specialities-wraper">
+              {ideaInfo?.specialization.map((speciality) => (
+                <li
+                  key={uuidv4()}
+                  className="mobile-idea-description__specialities-item"
+                >
+                  {speciality.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          ''
+        )}
         <div className="mobile-idea-description__btn-wraper">
           {/* Change route here to chat page */}
-          <Link className="mobile-idea-description__btn-wraper-link-btn" to="/">
-            Відгукнутися
-          </Link>
+          {isIdea ? (
+            <Link
+              className="mobile-idea-description__btn-wraper-link-btn"
+              to="/"
+            >
+              Відгукнутися
+            </Link>
+          ) : (
+            <Link className="mobile-talent-description__connect-btn" to="/">
+              Зв’язатись
+            </Link>
+          )}
+
           <div className="mobile-idea-description___question-mark">
             <QuestionMark />
           </div>

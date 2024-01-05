@@ -40,7 +40,7 @@
     flex-direction: column;
     justify-content: flex-start;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
 
     &-title {
@@ -88,6 +88,7 @@
       @include title;
       @include center-element;
       width: 100%;
+      font-size: 24px;
     }
 
     &-description {
@@ -145,6 +146,15 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-between;
+  }
+}
+
+// Talent styles
+.talent-description {
+  &__portfolio-btn {
+    @include link-btn;
+    width: 160px;
+    margin-top: 14px;
   }
 }
 

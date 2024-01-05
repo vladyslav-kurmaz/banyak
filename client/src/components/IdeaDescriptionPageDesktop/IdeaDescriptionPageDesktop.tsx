@@ -4,12 +4,20 @@ import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
 import plugIcon from '../../image/logo/small_logo.webp'
-import { IdeaRespType } from '../../types/types'
+import { IdeaRespType, TalentRespType } from '../../types/types'
 
 import './IdeaDescriptionPageDesktop.scss'
 
-function IdeaDescriptionPageDesktop({ ideaInfo }: { ideaInfo: IdeaRespType }) {
-  console.log('IdeaDescriptionPageDesktop', ideaInfo)
+function IdeaDescriptionPageDesktop({
+  isIdea,
+  ideaInfo,
+  talentInfo,
+}: {
+  isIdea?: { isIdea: boolean }
+  ideaInfo?: IdeaRespType
+  talentInfo?: TalentRespType
+}) {
+  console.log('Received ideaInfo:', talentInfo)
   return (
     <div className="idea-description">
       <div className="idea-description__logo-specialities-question-wraper">
@@ -20,58 +28,103 @@ function IdeaDescriptionPageDesktop({ ideaInfo }: { ideaInfo: IdeaRespType }) {
             alt="logo for idea"
             className="idea-description__img"
           />
-          <div className="idea-description__specialities">
-            <h4 className="idea-description__specialities-title">
-              Потрібні фахівці:
-            </h4>
-            <ul className="idea-description__specialities-wraper">
-              {ideaInfo.specialization.map((speciality) => (
-                <li
-                  key={uuidv4()}
-                  className="idea-description__specialities-item"
-                >
-                  {speciality.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {isIdea ? (
+            <div className="idea-description__specialities">
+              <h4 className="idea-description__specialities-title">
+                Потрібні фахівці:
+              </h4>
+              <ul>
+                {ideaInfo?.specialization.map((speciality) => (
+                  <li
+                    key={uuidv4()}
+                    className="idea-description__specialities-item"
+                  >
+                    {speciality.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="idea-description__specialities">
+              <h4 className="idea-description__specialities-title">
+                {`${talentInfo?.user.first_name} ${talentInfo?.user.last_name}`}
+              </h4>
+              <Link
+                className="talent-description__portfolio-btn"
+                to={`${talentInfo?.portfolio}`}
+              >
+                Портфоліо
+              </Link>
+            </div>
+          )}
         </div>
         <div className="idea-description__question-mark">
           <QuestionMark />
         </div>
       </div>
       <div className="idea-description__info">
-        <div className="idea-description__info-title-description-wraper">
-          <h1 className="idea-description__info-title">{ideaInfo.title}</h1>
-          <p className="idea-description__info-description">
-            {ideaInfo.description}
-          </p>
-        </div>
+        {isIdea ? (
+          <div className="idea-description__info-title-description-wraper">
+            <h1 className="idea-description__info-title">{ideaInfo?.title}</h1>
+            <p className="idea-description__info-description">
+              {ideaInfo?.description}
+            </p>
+          </div>
+        ) : (
+          <div className="idea-description__info-title-description-wraper">
+            <h1 className="idea-description__info-title">
+              {talentInfo?.speciality[0].name}
+            </h1>
+            <p className="idea-description__info-description">
+              {talentInfo?.description}
+            </p>
+          </div>
+        )}
         <div className="idea-description__info-stack-btn-wraper">
           <div className="idea-description__info-stack">
             <h4 className="idea-description__info-stack-title">
-              Потрібні технології:
+              {isIdea ? 'Потрібні технології:' : 'Володію технологіями:'}
             </h4>
-            <ul className="idea-description__info-stack-items-wraper">
-              {ideaInfo.stack.map((technology) => (
-                <li
-                  key={uuidv4()}
-                  className="idea-description__info-stack-item"
-                >
-                  {technology.name}
-                </li>
-              ))}
-            </ul>
+            {isIdea ? (
+              <ul className="idea-description__info-stack-items-wraper">
+                {ideaInfo?.stack.map((technology) => (
+                  <li
+                    key={uuidv4()}
+                    className="idea-description__info-stack-item"
+                  >
+                    {`+${technology.name}`}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="idea-description__info-stack-items-wraper">
+                {talentInfo?.stack.map((technology) => (
+                  <li
+                    key={uuidv4()}
+                    className="idea-description__info-stack-item"
+                  >
+                    {`+${technology.name}`}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+
           {/* Change route here to chat page */}
           <Link className="idea-description__info-link-btn" to="/">
-            Відгукнутися
+            {isIdea ? 'Відгукнутися' : "Зв'язатися"}
           </Link>
         </div>
       </div>
       <div className="idea-description__views-date-wraper">
-        <ViewsIconAndQuantity viewsQuantity={ideaInfo.idea_views} />
-        <DisplayDateFromDB date={ideaInfo.updated_at} />
+        <ViewsIconAndQuantity
+          viewsQuantity={
+            isIdea ? ideaInfo?.idea_views : talentInfo?.profile_view
+          }
+        />
+        <DisplayDateFromDB
+          date={isIdea ? ideaInfo?.updated_at : talentInfo?.updated_at}
+        />
       </div>
     </div>
   )
