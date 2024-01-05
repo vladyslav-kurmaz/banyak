@@ -14,6 +14,9 @@ import {
   ServerResForIdeas,
 } from '../../types/types'
 
+import SearchForSpecialty from '../../atoms/SearchForSpecialty/SearchForSpecialty'
+import SearchForStack from '../../atoms/SearchForStak/SearchForStack'
+
 import './IdeasAndTalent.scss'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
@@ -53,6 +56,10 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
   return (
     <div className="ideaAndTalent">
+      <div className="ideaAndTalent__search-wraper">
+        <SearchForStack />
+        <SearchForSpecialty />
+      </div>
       {isIdea
         ? ideas.map((ideaItem) => (
             <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
