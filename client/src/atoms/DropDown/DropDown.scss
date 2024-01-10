@@ -1,0 +1,51 @@
+.dropdown {
+  box-sizing: border-box;
+  position: absolute;
+  width: 285px;
+  max-height: 300px;
+  top: 41px;
+  left: -249px;
+  border: 2px solid var(--secondary-bg-darck-blue);
+  background: var(--base-bg-white);
+  color: var(--base-font-color-blue);
+  text-align: left;
+  border-radius: var(--base-border-radius);
+  overflow: scroll;
+
+  &__item {
+    margin: 0;
+    padding: 0.375rem 0.88rem;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    min-width: 140px;
+    font-family: var(--base-font);
+    font-size: 18px;
+
+    &:hover {
+      color: var(--base-bg-white);
+      background-color: var(--base-hover-color-purple);
+      border-radius: var(--base-border-radius);
+    }
+
+    &:active {
+      color: var(--base-font-color-blue);
+      background-color: var(--base-hover-color-purple);
+      border-radius: var(--base-border-radius);
+    }
+  }
+
+  // Scrollbar
+  &::-webkit-scrollbar {
+    width: 8px; /* ширина всей полосы прокрутки */
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--secondary-bg-darck-blue); /* цвет зоны отслеживания */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--base-hover-color-purple); /* цвет бегунка */
+    border-radius: 20px; /* округлось бегунка */
+    border: 1px solid var(--secondary-bg-darck-blue); /* отступ вокруг бегунка */
+  }
+}

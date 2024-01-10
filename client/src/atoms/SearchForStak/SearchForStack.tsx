@@ -1,17 +1,42 @@
+import { ChangeEvent, FC } from 'react'
 import './SearchForStack.scss'
 
 // Watch redux searc implementing
 
-const handleStackFilterChange = (e: React.FormEvent<HTMLInputElement>) => {
-  console.log(e.currentTarget.value)
+const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+  console.log(e.target.value)
 }
 
-function SearchForStack() {
+const SearchForStack: FC<{
+  fn?: () => void
+  formStyle?: object
+  inputStyle?: object
+  buttonStyle?: object
+  svgStyle?: object
+}> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
   return (
-    <div onChange={handleStackFilterChange}>
-      <input type="text" placeholder="Технологія"></input>
-      <button className="test">
+    <div
+      className="search-for-stack"
+      style={formStyle}
+      onSubmit={(e) => e.preventDefault()}
+    >
+      <input
+        className="search-for-stack__input"
+        // onChange={handleStackFilterChange}
+        type="text"
+        placeholder="Технологія"
+        style={inputStyle}
+        onClick={(e) => e.preventDefault()}
+      ></input>
+      <button
+        className="search-for-stack__button"
+        // type="submit"
+        onClick={(e) => e.preventDefault()}
+        style={buttonStyle}
+      >
         <svg
+          style={svgStyle}
+          className="search-for-stack__image"
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"

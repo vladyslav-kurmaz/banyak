@@ -19,7 +19,10 @@ import SearchForStack from '../../atoms/SearchForStak/SearchForStack'
 
 import './IdeasAndTalent.scss'
 
+// lesson 345 to add filtered ideas or talents
+
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
+  // console.log('render IdeasAndTalent')
   const [talents, setTalents] = useState<TalentRespType[]>([])
   const [ideas, setIdeas] = useState<IdeaRespType[]>([])
 
@@ -51,8 +54,8 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
     // eslint-disable-next-line
   }, [isIdea])
 
-  console.log('ideas', ideas)
-  console.log('talents', talents)
+  // console.log('ideas', ideas)
+  // console.log('talents', talents)
 
   return (
     <div className="ideaAndTalent">
