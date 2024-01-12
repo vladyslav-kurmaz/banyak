@@ -29,6 +29,7 @@ body {
   height: 100%;
 }
 
+/* Styling for Webkit browsers Chrome and Safari */
 body::-webkit-scrollbar {
   width: 8px; /* ширина всей полосы прокрутки */
 }
@@ -42,6 +43,27 @@ body::-webkit-scrollbar-thumb {
   border-radius: 20px; /* округлось бегунка */
   border: 1px solid var(--secondary-bg-darck-blue); /* отступ вокруг бегунка */
 }
+
+// /* For Firefox */
+// body {
+//   scrollbar-width: thin;
+//   scrollbar-color: var(--base-hover-color-purple) var(--secondary-bg-darck-blue);
+// }
+
+// /* For Microsoft Edge */
+// body {
+//   -ms-overflow-style: none; /* Remove default scrollbar in Edge */
+// }
+
+// body::-ms-scrollbar {
+//   width: 8px;
+// }
+
+// body::-ms-scrollbar-thumb {
+//   background-color: var(--base-hover-color-purple);
+//   border-radius: 20px;
+//   border: 1px solid var(--secondary-bg-darck-blue);
+// }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
