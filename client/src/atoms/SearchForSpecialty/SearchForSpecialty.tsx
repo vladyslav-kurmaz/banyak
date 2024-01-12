@@ -1,6 +1,10 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import DropDown from '../DropDown/DropDown'
 import './SearchForSpecialty.scss'
+import ServiceBanyak from '../../service/ServiceBanyak'
+import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { SpecialtyResType } from '../../types/types'
 
 const SearchForSpecialty: FC<{
   fn?: () => void
@@ -9,10 +13,11 @@ const SearchForSpecialty: FC<{
   buttonStyle?: object
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
-  // console.log('render SearchForSpecialty')
-
+  const { getAllSpecialties } = ServiceBanyak()
+  const dispatch = useAppDispatch()
   const [showDropDown, setShowDropDown] = useState<boolean>(false)
   const [selectSpecialty, setSelectSpecialty] = useState<string>('')
+  const [specialtiesList, setSpecialtiesList] = useState<SpecialtyResType[]>([])
 
   const specialties = () => {
     return [
@@ -31,31 +36,40 @@ const SearchForSpecialty: FC<{
     ]
   }
 
-  /**
-   * Toggle the drop down menu
-   */
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const specialties = await getAllSpecialties()
+        if (specialties) {
+          setSpecialtiesList(specialties.results)
+          dispatch(changreMainPreloader(false))
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.stack)
+          throw error
+        } else {
+          console.error('An unknown error occurred:', error)
+        }
+
+        return null
+      }
+    }
+
+    fetchSpecialties()
+  }, [])
+  console.log(specialtiesList)
+
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown)
   }
 
-  /**
-   * Hide the drop down menu if click occurs
-   * outside of the drop-down element.
-   *
-   * @param event  The mouse event
-   */
   const dismissHandler = (event: React.FocusEvent<HTMLButtonElement>): void => {
     if (event.currentTarget === event.target) {
       setShowDropDown(false)
     }
   }
 
-  /**
-   * Callback function to consume the
-   * city name from the child component
-   *
-   * @param city  The selected city
-   */
   const specialtySelection = (specialty: string): void => {
     setSelectSpecialty(specialty)
   }
@@ -73,17 +87,16 @@ const SearchForSpecialty: FC<{
         style={inputStyle}
       ></input>
       <button
-        // className={showDropDown ? 'search-for-specialty active' : undefined}
         className="search-for-specialty__button"
         style={buttonStyle}
         onClick={(): void => toggleDropDown()}
-        // onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-        //   dismissHandler(e)
-        // }
+        onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
+          dismissHandler(e)
+        }
       >
         {showDropDown && (
           <DropDown
-            specialties={specialties()}
+            specialties={specialtiesList}
             showDropDown={false}
             toggleDropDown={(): void => toggleDropDown()}
             specialtySelection={specialtySelection}
@@ -91,7 +104,11 @@ const SearchForSpecialty: FC<{
         )}
         <svg
           style={svgStyle}
-          className="search-for-specialty__image"
+          className={
+            showDropDown
+              ? 'search-for-specialty__activ'
+              : 'search-for-specialty__image'
+          }
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"
