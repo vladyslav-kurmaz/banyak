@@ -6,6 +6,7 @@ import { SpecialtyResType } from '../../types/types'
 
 type DropDownProps = {
   specialties: SpecialtyResType[]
+  filteredSpecialties: SpecialtyResType[]
   showDropDown: boolean
   toggleDropDown: Function
   specialtySelection: Function
@@ -15,15 +16,18 @@ const DropDown: React.FC<DropDownProps> = ({
   specialties,
   specialtySelection,
   toggleDropDown,
+  filteredSpecialties,
 }: DropDownProps): JSX.Element => {
   const onClickHandler = (specialty: string): void => {
     specialtySelection(specialty)
     toggleDropDown()
   }
 
+  const specialtiesToDisplay =
+    filteredSpecialties.length > 1 ? filteredSpecialties : specialties
   return (
     <ul className="dropdown">
-      {specialties.map((specialty) => (
+      {specialtiesToDisplay.map((specialty) => (
         <li
           className="dropdown__item"
           key={uuidv4()}
