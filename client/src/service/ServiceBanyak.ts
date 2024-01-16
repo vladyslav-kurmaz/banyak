@@ -224,11 +224,6 @@ const ServiceBanyak = () => {
         {}
       )
 
-      // const fetchSpecialities = await fetch(
-      //   `${hostname}/api/v1/users/specilaity-list/`
-      // )
-      // const response = fetchSpecialities
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }

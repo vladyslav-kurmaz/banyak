@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
 
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
@@ -14,10 +14,11 @@ import {
   ServerResForIdeas,
 } from '../../types/types'
 
-import SearchForSpecialty from '../../atoms/SearchForSpecialty/SearchForSpecialty'
-import SearchForStack from '../../atoms/SearchForStak/SearchForStack'
+import SearchBySpecialty from '../../atoms/SearchForSpecialty/SearchBySpecialty'
+import SearchByStack from '../../atoms/SearchForStak/SearchByStack'
 
 import './IdeasAndTalent.scss'
+import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
 
 // lesson 345 to add filtered ideas or talents
 
@@ -28,10 +29,15 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
+  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
+  // const selectedSpecialtyForSearch = select()
+  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
+
+  // add props to getIdeas to display search spesialty
 
   useEffect(() => {
     if (isIdea) {
-      getIdeas()
+      getIdeas() //correct error handing make like in All specialtyes
         .then((res) => res.json() as Promise<ServerResForIdeas>)
         .then((ideasData) => ideasData.results)
         .then((ideasList) => setIdeas(ideasList))
@@ -41,7 +47,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
           dispatch(changreMainPreloader(false))
         })
     } else {
-      getTalents()
+      getTalents() //correct error handing make like in All specialtyes
         .then((res) => res.json() as Promise<ServerResForTalents>)
         .then((talentsData) => talentsData.results)
         .then((talentsList) => setTalents(talentsList))
@@ -60,8 +66,8 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   return (
     <div className="ideaAndTalent">
       <div className="ideaAndTalent__search-wraper">
-        <SearchForStack />
-        <SearchForSpecialty />
+        <SearchByStack />
+        <SearchBySpecialty />
       </div>
       {isIdea
         ? ideas.map((ideaItem) => (

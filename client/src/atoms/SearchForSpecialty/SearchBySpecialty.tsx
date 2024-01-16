@@ -1,12 +1,16 @@
 import { FC, useEffect, useState } from 'react'
 import DropDown from '../DropDown/DropDown'
-import './SearchForSpecialty.scss'
+import './SearchBySpecialty.scss'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import {
+  setSpecialty,
+  selectSerchBySpecialty,
+} from '../../store/serchBySpecialtySlice'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
-const SearchForSpecialty: FC<{
+const SearchBySpecialty: FC<{
   fn?: () => void
   formStyle?: object
   inputStyle?: object
@@ -44,7 +48,6 @@ const SearchForSpecialty: FC<{
 
     fetchSpecialties()
   }, [])
-  console.log(specialtiesList)
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown)
@@ -74,6 +77,12 @@ const SearchForSpecialty: FC<{
 
     // Set the input value in the state
     setSelectSpecialty(inputValue)
+  }
+
+  if (!showDropDown && selectSpecialty) {
+    console.log('specialty choosen')
+    console.log('selectSpecialty', selectSpecialty)
+    dispatch(setSpecialty({ specialty: selectSpecialty }))
   }
 
   return (
@@ -128,4 +137,4 @@ const SearchForSpecialty: FC<{
   )
 }
 
-export default SearchForSpecialty
+export default SearchBySpecialty

@@ -1,5 +1,5 @@
 import { ChangeEvent, FC } from 'react'
-import './SearchForStack.scss'
+import './SearchByStack.scss'
 
 // Watch redux searc implementing
 
@@ -7,7 +7,7 @@ const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
   console.log(e.target.value)
 }
 
-const SearchForStack: FC<{
+const SearchByStack: FC<{
   fn?: () => void
   formStyle?: object
   inputStyle?: object
@@ -59,4 +59,4 @@ const SearchForStack: FC<{
   )
 }
 
-export default SearchForStack
+export default SearchByStack
