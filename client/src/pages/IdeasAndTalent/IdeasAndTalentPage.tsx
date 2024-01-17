@@ -33,29 +33,74 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   // const selectedSpecialtyForSearch = select()
   console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
 
-  // add props to getIdeas to display search spesialty
+  // useEffect(() => {
+  //   if (isIdea) {
+  //     getIdeas() //correct error handing make like in All specialtyes
+  //       .then((res) => res.json() as Promise<ServerResForIdeas>)
+  //       .then((ideasData) => ideasData.results)
+  //       .then((ideasList) => setIdeas(ideasList))
+  //       .then(() => dispatch(changreMainPreloader(false)))
+  //       .catch((e) => {
+  //         console.error(e.message)
+  //         dispatch(changreMainPreloader(false))
+  //       })
+  //   } else {
+  //     getTalents() //correct error handing make like in All specialtyes
+  //       .then((res) => res.json() as Promise<ServerResForTalents>)
+  //       .then((talentsData) => talentsData.results)
+  //       .then((talentsList) => setTalents(talentsList))
+  //       .then(() => dispatch(changreMainPreloader(false)))
+  //       .catch((e) => {
+  //         console.error(e.message)
+  //         dispatch(changreMainPreloader(false))
+  //       })
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isIdea])
 
   useEffect(() => {
     if (isIdea) {
-      getIdeas() //correct error handing make like in All specialtyes
-        .then((res) => res.json() as Promise<ServerResForIdeas>)
-        .then((ideasData) => ideasData.results)
-        .then((ideasList) => setIdeas(ideasList))
-        .then(() => dispatch(changreMainPreloader(false)))
-        .catch((e) => {
-          console.error(e.message)
-          dispatch(changreMainPreloader(false))
-        })
+      const fetchIdeas = async () => {
+        try {
+          const ideas = await getIdeas()
+          if (ideas) {
+            setIdeas(ideas.results)
+            dispatch(changreMainPreloader(false))
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            console.error(error.stack)
+            throw error
+          } else {
+            console.error('An unknown error occurred:', error)
+          }
+
+          return null
+        }
+      }
+
+      fetchIdeas()
     } else {
-      getTalents() //correct error handing make like in All specialtyes
-        .then((res) => res.json() as Promise<ServerResForTalents>)
-        .then((talentsData) => talentsData.results)
-        .then((talentsList) => setTalents(talentsList))
-        .then(() => dispatch(changreMainPreloader(false)))
-        .catch((e) => {
-          console.error(e.message)
-          dispatch(changreMainPreloader(false))
-        })
+      const fetchTalents = async () => {
+        try {
+          const ideas = await getTalents()
+          if (ideas) {
+            setTalents(ideas.results)
+            dispatch(changreMainPreloader(false))
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            console.error(error.stack)
+            throw error
+          } else {
+            console.error('An unknown error occurred:', error)
+          }
+
+          return null
+        }
+      }
+
+      fetchTalents()
     }
     // eslint-disable-next-line
   }, [isIdea])
