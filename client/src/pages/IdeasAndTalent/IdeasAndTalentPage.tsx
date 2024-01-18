@@ -7,15 +7,10 @@ import { changreMainPreloader } from '../../components/SettingMenu/StateElementS
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'
-import {
-  IdeaRespType,
-  TalentRespType,
-  ServerResForTalents,
-  ServerResForIdeas,
-} from '../../types/types'
+import { IdeaRespType, TalentRespType } from '../../types/types'
 
-import SearchBySpecialty from '../../atoms/SearchForSpecialty/SearchBySpecialty'
-import SearchByStack from '../../atoms/SearchForStak/SearchByStack'
+import SearchBySpecialty from '../../atoms/SearchBySpecialty/SearchBySpecialty'
+import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
 
 import './IdeasAndTalent.scss'
 import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
@@ -29,34 +24,12 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
-  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
-  // const selectedSpecialtyForSearch = select()
-  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
 
-  // useEffect(() => {
-  //   if (isIdea) {
-  //     getIdeas() //correct error handing make like in All specialtyes
-  //       .then((res) => res.json() as Promise<ServerResForIdeas>)
-  //       .then((ideasData) => ideasData.results)
-  //       .then((ideasList) => setIdeas(ideasList))
-  //       .then(() => dispatch(changreMainPreloader(false)))
-  //       .catch((e) => {
-  //         console.error(e.message)
-  //         dispatch(changreMainPreloader(false))
-  //       })
-  //   } else {
-  //     getTalents() //correct error handing make like in All specialtyes
-  //       .then((res) => res.json() as Promise<ServerResForTalents>)
-  //       .then((talentsData) => talentsData.results)
-  //       .then((talentsList) => setTalents(talentsList))
-  //       .then(() => dispatch(changreMainPreloader(false)))
-  //       .catch((e) => {
-  //         console.error(e.message)
-  //         dispatch(changreMainPreloader(false))
-  //       })
-  //   }
-  //   // eslint-disable-next-line
-  // }, [isIdea])
+  // add selectedSpecialtyForSearch to getTalents() or getIdeas() props and setIdeas or setTalents acording to response
+
+  // useEffect(() =>{}, []) wrap selectedSpecialtyForSearch
+  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
+  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
 
   useEffect(() => {
     if (isIdea) {

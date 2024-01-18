@@ -79,11 +79,13 @@ const SearchBySpecialty: FC<{
     setSelectSpecialty(inputValue)
   }
 
-  if (!showDropDown && selectSpecialty) {
-    console.log('specialty choosen')
-    console.log('selectSpecialty', selectSpecialty)
-    dispatch(setSpecialty({ specialty: selectSpecialty }))
-  }
+  useEffect(() => {
+    if (!showDropDown && selectSpecialty) {
+      console.log('specialty choosen')
+      console.log('selectSpecialty', selectSpecialty)
+      dispatch(setSpecialty({ specialty: selectSpecialty }))
+    }
+  }, [showDropDown, selectSpecialty])
 
   return (
     <div className="search-for-specialty" style={formStyle}>

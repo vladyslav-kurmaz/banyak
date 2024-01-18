@@ -23,6 +23,6 @@ export const serchBySpecialtySlice = createSlice({
 export const { setSpecialty } = serchBySpecialtySlice.actions
 
 export const selectSerchBySpecialty = (state: RootState) =>
-  state.serchBySpecialty.specialty
+  state.serchBySpecialty
 
 export default serchBySpecialtySlice.reducer

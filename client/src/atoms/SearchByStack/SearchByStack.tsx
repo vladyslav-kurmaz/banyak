@@ -14,19 +14,16 @@ const SearchByStack: FC<{
   buttonStyle?: object
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
+  console.log('render SearchByStack')
   return (
-    <div
-      className="search-for-stack"
-      style={formStyle}
-      onSubmit={(e) => e.preventDefault()}
-    >
+    <div className="search-for-stack" style={formStyle}>
       <input
         className="search-for-stack__input"
         // onChange={handleStackFilterChange}
         type="text"
         placeholder="Технологія"
         style={inputStyle}
-        onClick={(e) => e.preventDefault()}
+        // onClick={(e) => e.preventDefault()}
       ></input>
       <button
         className="search-for-stack__button"
