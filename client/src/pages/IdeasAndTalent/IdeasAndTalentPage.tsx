@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
 
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'
-import {
-  IdeaRespType,
-  TalentRespType,
-  ServerResForTalents,
-  ServerResForIdeas,
-} from '../../types/types'
+import { IdeaRespType, TalentRespType } from '../../types/types'
 
-import SearchForSpecialty from '../../atoms/SearchForSpecialty/SearchForSpecialty'
-import SearchForStack from '../../atoms/SearchForStak/SearchForStack'
+import SearchBySpecialty from '../../atoms/SearchBySpecialty/SearchBySpecialty'
+import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
 
 import './IdeasAndTalent.scss'
+import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
 
 // lesson 345 to add filtered ideas or talents
 
@@ -29,27 +25,55 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
+  // add selectedSpecialtyForSearch to getTalents() or getIdeas() props and setIdeas or setTalents acording to response
+
+  // useEffect(() =>{}, []) wrap selectedSpecialtyForSearch
+  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
+  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
+
   useEffect(() => {
     if (isIdea) {
-      getIdeas()
-        .then((res) => res.json() as Promise<ServerResForIdeas>)
-        .then((ideasData) => ideasData.results)
-        .then((ideasList) => setIdeas(ideasList))
-        .then(() => dispatch(changreMainPreloader(false)))
-        .catch((e) => {
-          console.error(e.message)
-          dispatch(changreMainPreloader(false))
-        })
+      const fetchIdeas = async () => {
+        try {
+          const ideas = await getIdeas()
+          if (ideas) {
+            setIdeas(ideas.results)
+            dispatch(changreMainPreloader(false))
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            console.error(error.stack)
+            throw error
+          } else {
+            console.error('An unknown error occurred:', error)
+          }
+
+          return null
+        }
+      }
+
+      fetchIdeas()
     } else {
-      getTalents()
-        .then((res) => res.json() as Promise<ServerResForTalents>)
-        .then((talentsData) => talentsData.results)
-        .then((talentsList) => setTalents(talentsList))
-        .then(() => dispatch(changreMainPreloader(false)))
-        .catch((e) => {
-          console.error(e.message)
-          dispatch(changreMainPreloader(false))
-        })
+      const fetchTalents = async () => {
+        try {
+          const ideas = await getTalents()
+          if (ideas) {
+            setTalents(ideas.results)
+            dispatch(changreMainPreloader(false))
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            console.error(error.stack)
+            throw error
+          } else {
+            console.error('An unknown error occurred:', error)
+          }
+
+          return null
+        }
+      }
+
+      fetchTalents()
     }
     // eslint-disable-next-line
   }, [isIdea])
@@ -60,8 +84,8 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   return (
     <div className="ideaAndTalent">
       <div className="ideaAndTalent__search-wraper">
-        <SearchForStack />
-        <SearchForSpecialty />
+        <SearchByStack />
+        <SearchBySpecialty />
       </div>
       {isIdea
         ? ideas.map((ideaItem) => (

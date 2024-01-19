@@ -5,7 +5,11 @@ import { changeUserProfile } from '../store/userSlice'
 import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
 
 import workWithCookies from '../utils/workWithCookies'
-import { ServerResForAllSpecialtiesType } from '../types/types'
+import {
+  ServerResForAllSpecialtiesType,
+  ServerResForIdeas,
+  ServerResForTalents,
+} from '../types/types'
 
 const ServiceBanyak = () => {
   const dispatch = useAppDispatch()
@@ -189,31 +193,72 @@ const ServiceBanyak = () => {
     }
   }
 
+  // const getTalents = async () => {
+  //   try {
+  //     const req = await request(`${hostname}/api/v1/talents/talent/`, {})
+
+  //     if (!req.ok) {
+  //       return Promise.reject(req)
+  //     }
+
+  //     return Promise.resolve(req)
+  //   } catch (e) {
+  //     return Promise.reject(e)
+  //   }
+  // }
+
   const getTalents = async () => {
     try {
-      const req = await request(`${hostname}/api/v1/talents/talent/`, {})
+      const response = await request(`${hostname}/api/v1/talents/talent/`, {})
 
-      if (!req.ok) {
-        return Promise.reject(req)
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
 
-      return Promise.resolve(req)
-    } catch (e) {
-      return Promise.reject(e)
+      return response.json() as Promise<ServerResForTalents>
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.stack)
+        throw error
+      } else {
+        console.error('An unknown error occurred:', error)
+      }
+
+      return null
     }
   }
 
+  // const getIdeas = async () => {
+  //   try {
+  //     const req = await request(`${hostname}/api/v1/ideas/ideas/`, {})
+
+  //     if (!req.ok) {
+  //       return Promise.reject(req)
+  //     }
+
+  //     return Promise.resolve(req)
+  //   } catch (e) {
+  //     return Promise.reject(e)
+  //   }
+  // }
+
   const getIdeas = async () => {
     try {
-      const req = await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      const response = await request(`${hostname}/api/v1/ideas/ideas/`, {})
 
-      if (!req.ok) {
-        return Promise.reject(req)
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
+      }
+      return response.json() as Promise<ServerResForIdeas>
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.stack)
+        throw error
+      } else {
+        console.error('An unknown error occurred:', error)
       }
 
-      return Promise.resolve(req)
-    } catch (e) {
-      return Promise.reject(e)
+      return null
     }
   }
 
@@ -223,12 +268,6 @@ const ServiceBanyak = () => {
         `${hostname}/api/v1/users/specilaity-list/`,
         {}
       )
-
-      // const fetchSpecialities = await fetch(
-      //   `${hostname}/api/v1/users/specilaity-list/`
-      // )
-
-      // const response = fetchSpecialities
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)

@@ -1,12 +1,16 @@
 import { FC, useEffect, useState } from 'react'
 import DropDown from '../DropDown/DropDown'
-import './SearchForSpecialty.scss'
+import './SearchBySpecialty.scss'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import {
+  setSpecialty,
+  selectSerchBySpecialty,
+} from '../../store/serchBySpecialtySlice'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
-const SearchForSpecialty: FC<{
+const SearchBySpecialty: FC<{
   fn?: () => void
   formStyle?: object
   inputStyle?: object
@@ -18,23 +22,9 @@ const SearchForSpecialty: FC<{
   const [showDropDown, setShowDropDown] = useState<boolean>(false)
   const [selectSpecialty, setSelectSpecialty] = useState<string>('')
   const [specialtiesList, setSpecialtiesList] = useState<SpecialtyResType[]>([])
-
-  const specialties = () => {
-    return [
-      'Frontend',
-      'Backend',
-      'FullStack',
-      'Designer',
-      'Python developer',
-      'Data Since',
-      'Frontend',
-      'Backend',
-      'FullStack',
-      'Frontend',
-      'Backend',
-      'FullStack',
-    ]
-  }
+  const [filteredSpecialties, setFilteredSpecialties] = useState<
+    SpecialtyResType[]
+  >([])
 
   useEffect(() => {
     const fetchSpecialties = async () => {
@@ -58,7 +48,6 @@ const SearchForSpecialty: FC<{
 
     fetchSpecialties()
   }, [])
-  console.log(specialtiesList)
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown)
@@ -74,6 +63,30 @@ const SearchForSpecialty: FC<{
     setSelectSpecialty(specialty)
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value
+    setShowDropDown(true)
+
+    // Filter specialties based on the input value
+    const filtered = specialtiesList.filter((item) =>
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
+    )
+
+    // Set the filtered specialties in the state
+    setFilteredSpecialties(filtered)
+
+    // Set the input value in the state
+    setSelectSpecialty(inputValue)
+  }
+
+  useEffect(() => {
+    if (!showDropDown && selectSpecialty) {
+      console.log('specialty choosen')
+      console.log('selectSpecialty', selectSpecialty)
+      dispatch(setSpecialty({ specialty: selectSpecialty }))
+    }
+  }, [showDropDown, selectSpecialty])
+
   return (
     <div className="search-for-specialty" style={formStyle}>
       <input
@@ -81,8 +94,8 @@ const SearchForSpecialty: FC<{
         type="text"
         placeholder="Спеціалізація"
         value={selectSpecialty}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSelectSpecialty(e.target.value)
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+          handleInputChange(e)
         }
         style={inputStyle}
       ></input>
@@ -97,6 +110,7 @@ const SearchForSpecialty: FC<{
         {showDropDown && (
           <DropDown
             specialties={specialtiesList}
+            filteredSpecialties={filteredSpecialties}
             showDropDown={false}
             toggleDropDown={(): void => toggleDropDown()}
             specialtySelection={specialtySelection}
@@ -125,4 +139,4 @@ const SearchForSpecialty: FC<{
   )
 }
 
-export default SearchForSpecialty
+export default SearchBySpecialty

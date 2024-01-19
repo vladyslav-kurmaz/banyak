@@ -12,7 +12,7 @@ import './Idea.scss'
 const IDEA_TITLE_LENGTH = 24
 const IDEA_DESCRIPTION_LENGTH = 90
 const SPECIALITY_NAME_LENGTH = 12
-const STACK_ITEMS_QUANTITY = 4
+const STACK_ITEMS_QUANTITY = 3
 
 const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
   const renderSpeciality = (specialities: { name: string }[]) => {
@@ -96,7 +96,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
             )}
           </div>
           <div className="idea__metric-metrics">
-            <ViewsIconAndQuantity viewsQuantity={10} />
+            <ViewsIconAndQuantity viewsQuantity={idea.idea_views} />
             <DisplayDateFromDB date={idea.updated_at} />
           </div>
         </div>
@@ -112,7 +112,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
           />
           <DisplayDateFromDB date={idea.updated_at} />
 
-          <ViewsIconAndQuantity viewsQuantity={10} />
+          <ViewsIconAndQuantity viewsQuantity={idea.idea_views} />
         </div>
         <div className="idea-mobile__container">
           <div className="idea-mobile__container-info">
