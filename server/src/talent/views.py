@@ -2,10 +2,12 @@ from rest_framework.views import status
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Value, IntegerField, Case, When
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 from src.users.models import UserProfile
 from src.user_idea.models import Idea
 from .serializers import ListTalentSerializer, InviteTalentIdeaSerializer, AcceptInviteTalentIdeaSerializer
+from .filters import FilterTalentsBySpeciality
 from .models import InviteTalentIdea
 from .paginate import CustomPaginate
 
@@ -29,6 +31,8 @@ class TalentsViews(viewsets.ModelViewSet):
     - The 'talent_send_invite_idea' action allows talents to send invitations to participate in ideas.
     """
     permission_classes = [permissions.AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    search_fields = ['speciality__name']
     serializer_class = ListTalentSerializer
     pagination_class = CustomPaginate
 
@@ -78,6 +82,38 @@ class TalentsViews(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except UserProfile.DoesNotExist:
             return Response({'message': 'Talent not found'})
+
+    @action(methods=['GET'], detail=False, url_path='talents-filter')
+    def filter_talents(self, request):
+        queryset = self.get_queryset()
+        speciality = request.query_params.get('speciality')
+        if speciality:
+            talents = queryset.filter(speciality__name=speciality)
+            page = self.paginate_queryset(talents)
+            if page is not None:
+                serializer = self.serializer_class(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.serializer_class(talents, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['GET'], detail=False, url_path='search')
+    def search_talents(self, request):
+        # print(request.GET)
+        query = request.GET.get('search')
+        # print(query)
+
+        if not query or query == '':
+            return Response({'result': []}, status=status.HTTP_200_OK)
+
+        talents = UserProfile.objects.filter(
+            Q(stack__name__icontains=query)
+        )
+        page = self.paginate_queryset(talents)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(talents, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=['GET'], detail=False, url_path='list-invites-talent')
     def list_invite_talent(self, request):
@@ -139,21 +175,10 @@ class TalentsViews(viewsets.ModelViewSet):
             invite.idea = idea
             invite.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-            # owner_profile = self.get_owner_profile().get(user=owner)
-            # talent_profile = UserProfile.objects.get(
-            #     pk=talent_profile)  # Retrieve the talent's UserProfile instance by 'pk'
-            # idea = Idea.objects.get(id=idea_id)
-            #
-            # serializer = InviteTalentIdeaSerializer(data=request.data)
-            # serializer.is_valid(raise_exception=True)
-            # invite = serializer.save(owner=owner_profile, talent=talent_profile, idea=idea)
-            #
-            # return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'message': str(e)})
-        # except UserProfile.DoesNotExist:
-        #     return Response({'message': 'Profile not found'})
+        except UserProfile.DoesNotExist:
+            return Response({'message': 'Profile not found'})
 
     @action(methods=['PATCH'], detail=True)
     def accept_talent_invite(self, request, *args, **kwargs):
@@ -167,3 +192,7 @@ class TalentsViews(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except InviteTalentIdeaSerializer.DoesNotExist:
             return Response({'message': 'Invite not found'})
+
+
+class FilterTalents(viewsets.ModelViewSet):
+    serializer_class = ListTalentSerializer

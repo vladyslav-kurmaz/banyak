@@ -4,4 +4,4 @@ from .views import *
 
 router = DefaultRouter()
 router.register('talent', TalentsViews, basename='talents')
-# router.register('talent-create', TalentsViews, basename='talent-create')
+# router.register('talent-create', TalentsViews, basename='talent-cearte')

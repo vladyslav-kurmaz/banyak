@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status, permissions, generics, views
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import filters
@@ -367,12 +367,12 @@ class LinkedInAuth(APIView):
         pass
 
 
-class SearchUsers(generics.ListAPIView):
-    queryset = UserProfile.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = SearchUsersSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['stack__name']
+# class SearchUsers(generics.ListAPIView):
+#     queryset = UserProfile.objects.all()
+#     # permission_classes = [permissions.IsAuthenticated]
+#     serializer_class = SearchUsersSerializer
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['stack__name']
 
 
 def google_page(request):

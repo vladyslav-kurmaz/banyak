@@ -1,6 +1,9 @@
 from rest_framework.response import Response
-from rest_framework import permissions, status, viewsets
+from rest_framework import permissions, status, viewsets, filters
+from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponse
+from django.db.models import Q
 from ..decorators.decorators import swagger_decorator
 from .documentation.schema_setting import ideas_doc
 from .paginate import CustomPaginate
@@ -20,6 +23,8 @@ class IdeaViewSet(viewsets.ModelViewSet):
     """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = IdeasListSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['stack__name']
     pagination_class = CustomPaginate
     lookup_field = 'slug'
 
@@ -89,6 +94,36 @@ class IdeaViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Delete'})
         except Idea.DoesNotExist:
             return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(methods=['GET'], detail=False, url_path='search')
+    def search_ideas(self, request):
+        query = request.GET.get('search')
+
+        if not query or query == '':
+            return Response({'result': []}, status=status.HTTP_200_OK)
+
+        ideas = Idea.objects.filter(
+            Q(stack__name__icontains=query)
+        )
+        page = self.paginate_queryset(ideas)
+        if page:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(ideas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['GET'], detail=False, url_path='ideas-filter')
+    def filter_ideas(self, request):
+        queryset = self.get_queryset()
+        speciality = request.GET.get('speciality')
+        if speciality:
+            ideas = queryset.filter(specialization__name=speciality)
+            page = self.paginate_queryset(ideas)
+            if page:
+                serializer = self.serializer_class(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.serializer_class(ideas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def downland_swagger(request):
