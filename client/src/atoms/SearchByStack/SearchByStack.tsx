@@ -14,7 +14,6 @@ const SearchByStack: FC<{
   buttonStyle?: object
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
-  console.log('render SearchByStack')
   return (
     <div className="search-for-stack" style={formStyle}>
       <input

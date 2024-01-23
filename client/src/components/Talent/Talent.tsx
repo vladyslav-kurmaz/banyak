@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import plugIcon from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { TalentRespType } from '../../types/types'
@@ -24,7 +25,7 @@ const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
             )}...`
       if (i < 3) {
         return (
-          <li className="talant__container-technologies-item">
+          <li key={uuidv4()} className="talant__container-technologies-item">
             <span className="talant__container-technologies-item-teh">
               {itemLengh}
             </span>
@@ -71,9 +72,9 @@ const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
             <ButtonSmall
               text="Портфоліо"
               style={{
-                'padding-bottom': '2px',
-                'padding-top': '2px',
-                'font-size': '15px',
+                paddingBottom: '2px',
+                paddingTop: '2px',
+                fontSize: '15px',
               }}
               href={talentInfo.portfolio}
             />

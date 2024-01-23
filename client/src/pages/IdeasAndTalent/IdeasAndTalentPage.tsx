@@ -1,41 +1,30 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
-
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
-
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'
 import { IdeaRespType, TalentRespType } from '../../types/types'
-
 import SearchBySpecialty from '../../atoms/SearchBySpecialty/SearchBySpecialty'
 import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
-
-import './IdeasAndTalent.scss'
 import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
-
-// lesson 345 to add filtered ideas or talents
+import './IdeasAndTalent.scss'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
-  // console.log('render IdeasAndTalent')
   const [talents, setTalents] = useState<TalentRespType[]>([])
   const [ideas, setIdeas] = useState<IdeaRespType[]>([])
 
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
-  // add selectedSpecialtyForSearch to getTalents() or getIdeas() props and setIdeas or setTalents acording to response
-
-  // useEffect(() =>{}, []) wrap selectedSpecialtyForSearch
   const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
-  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
 
   useEffect(() => {
     if (isIdea) {
       const fetchIdeas = async () => {
         try {
-          const ideas = await getIdeas()
+          const ideas = await getIdeas(selectedSpecialtyForSearch.specialty)
           if (ideas) {
             setIdeas(ideas.results)
             dispatch(changreMainPreloader(false))
@@ -56,9 +45,10 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
     } else {
       const fetchTalents = async () => {
         try {
-          const ideas = await getTalents()
-          if (ideas) {
-            setTalents(ideas.results)
+          const talents = await getTalents(selectedSpecialtyForSearch.specialty)
+          if (talents) {
+            console.log('test', talents)
+            setTalents(talents.results)
             dispatch(changreMainPreloader(false))
           }
         } catch (error) {
@@ -76,7 +66,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchTalents()
     }
     // eslint-disable-next-line
-  }, [isIdea])
+  }, [isIdea, selectedSpecialtyForSearch])
 
   // console.log('ideas', ideas)
   // console.log('talents', talents)

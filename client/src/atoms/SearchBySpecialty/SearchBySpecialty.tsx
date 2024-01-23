@@ -81,8 +81,6 @@ const SearchBySpecialty: FC<{
 
   useEffect(() => {
     if (!showDropDown && selectSpecialty) {
-      console.log('specialty choosen')
-      console.log('selectSpecialty', selectSpecialty)
       dispatch(setSpecialty({ specialty: selectSpecialty }))
     }
   }, [showDropDown, selectSpecialty])
