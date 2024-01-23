@@ -14,6 +14,8 @@ import './IdeasAndTalent.scss'
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const [talents, setTalents] = useState<TalentRespType[]>([])
   const [ideas, setIdeas] = useState<IdeaRespType[]>([])
+  const [noIdeas, setNoIdeas] = useState(false)
+  const [noTalents, setNoTalents] = useState(false)
 
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
@@ -25,8 +27,10 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       const fetchIdeas = async () => {
         try {
           const ideas = await getIdeas(selectedSpecialtyForSearch.specialty)
+          ideas?.count === 0 ? setNoIdeas(true) : setNoIdeas(false)
           if (ideas) {
             setIdeas(ideas.results)
+
             dispatch(changreMainPreloader(false))
           }
         } catch (error) {
@@ -46,6 +50,9 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       const fetchTalents = async () => {
         try {
           const talents = await getTalents(selectedSpecialtyForSearch.specialty)
+
+          talents?.count === 0 ? setNoTalents(true) : setNoTalents(false)
+
           if (talents) {
             console.log('test', talents)
             setTalents(talents.results)
@@ -77,6 +84,20 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
         <SearchByStack />
         <SearchBySpecialty />
       </div>
+      {noIdeas ? (
+        <h1 className="ideaAndTalent__not-found">
+          Нажаль, за вашим запитом ідеї не знайдені
+        </h1>
+      ) : (
+        ''
+      )}
+      {noTalents ? (
+        <h1 className="ideaAndTalent__not-found">
+          Нажаль, за вашим запитом таланти не знайдені
+        </h1>
+      ) : (
+        ''
+      )}
       {isIdea
         ? ideas.map((ideaItem) => (
             <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
