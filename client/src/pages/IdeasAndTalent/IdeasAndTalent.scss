@@ -11,13 +11,6 @@
     gap: 20px;
     flex-wrap: wrap;
   }
-
-  &__not-found {
-    font-size: 25px;
-    margin: 50px;
-    text-align: center;
-    color: var(--base-hover-color-purple);
-  }
 }
 
 @media screen and (max-width: 810px) {

@@ -5,8 +5,8 @@ import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import {
   setSpecialty,
-  selectSerchBySpecialty,
-} from '../../store/serchBySpecialtySlice'
+  selectSearchBySpecialty,
+} from '../../store/searchBySpecialtySlice'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 

@@ -8,7 +8,8 @@ import Talent from '../../components/Talent/Talent'
 import { IdeaRespType, TalentRespType } from '../../types/types'
 import SearchBySpecialty from '../../atoms/SearchBySpecialty/SearchBySpecialty'
 import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
-import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
+import { selectSearchBySpecialty } from '../../store/searchBySpecialtySlice'
+import IdeasOrTalentNotFind from '../../atoms/IdeasOrTalentNotFind/IdeasOrTalentNotFind'
 import './IdeasAndTalent.scss'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
@@ -20,18 +21,23 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
-  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
+  const selectedSpecialtyForSearch = useAppSelector(selectSearchBySpecialty)
 
   useEffect(() => {
     if (isIdea) {
       const fetchIdeas = async () => {
+        setNoTalents(false)
         try {
           const ideas = await getIdeas(selectedSpecialtyForSearch.specialty)
-          ideas?.count === 0 ? setNoIdeas(true) : setNoIdeas(false)
-          if (ideas) {
-            setIdeas(ideas.results)
 
+          if (ideas?.count) {
+            setNoTalents(false)
+            setNoIdeas(false)
+            setIdeas(ideas.results)
             dispatch(changreMainPreloader(false))
+          } else {
+            setIdeas([])
+            setNoIdeas(true)
           }
         } catch (error) {
           if (error instanceof Error) {
@@ -48,15 +54,18 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchIdeas()
     } else {
       const fetchTalents = async () => {
+        setNoIdeas(false)
         try {
           const talents = await getTalents(selectedSpecialtyForSearch.specialty)
 
-          talents?.count === 0 ? setNoTalents(true) : setNoTalents(false)
-
-          if (talents) {
-            console.log('test', talents)
+          if (talents?.count) {
+            setNoIdeas(false)
+            setNoTalents(false)
             setTalents(talents.results)
             dispatch(changreMainPreloader(false))
+          } else {
+            setTalents([])
+            setNoTalents(true)
           }
         } catch (error) {
           if (error instanceof Error) {
@@ -85,24 +94,27 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
         <SearchBySpecialty />
       </div>
       {noIdeas ? (
-        <h1 className="ideaAndTalent__not-found">
-          Нажаль, за вашим запитом ідеї не знайдені
-        </h1>
+        <IdeasOrTalentNotFind
+          searchQuery={selectedSpecialtyForSearch.specialty}
+          isTalent={false}
+        />
       ) : (
         ''
       )}
       {noTalents ? (
-        <h1 className="ideaAndTalent__not-found">
-          Нажаль, за вашим запитом таланти не знайдені
-        </h1>
+        <IdeasOrTalentNotFind
+          searchQuery={selectedSpecialtyForSearch.specialty}
+          isTalent={true}
+        />
       ) : (
         ''
       )}
+
       {isIdea
-        ? ideas.map((ideaItem) => (
+        ? ideas?.map((ideaItem) => (
             <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
           ))
-        : talents.map((talentItem) => (
+        : talents?.map((talentItem) => (
             <Talent key={talentItem.id} talentInfo={talentItem} />
           ))}
 

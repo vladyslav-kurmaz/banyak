@@ -1,11 +1,7 @@
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import './SearchByStack.scss'
 
 // Watch redux searc implementing
-
-const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-  console.log(e.target.value)
-}
 
 const SearchByStack: FC<{
   fn?: () => void
@@ -14,20 +10,37 @@ const SearchByStack: FC<{
   buttonStyle?: object
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
+  const [stackFilter, setStackFilter] = useState<string>('')
+
+  const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    const inputValue = e.currentTarget.value
+
+    console.log(inputValue)
+    setStackFilter(inputValue)
+  }
+
   return (
     <div className="search-for-stack" style={formStyle}>
       <input
         className="search-for-stack__input"
-        // onChange={handleStackFilterChange}
         type="text"
         placeholder="Технологія"
         style={inputStyle}
-        // onClick={(e) => e.preventDefault()}
+        value={stackFilter}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+          handleStackFilterChange(e)
+        }
       ></input>
       <button
+        type="submit"
         className="search-for-stack__button"
         // type="submit"
-        onClick={(e) => e.preventDefault()}
+        onClick={(e) => {
+          console.log(e.currentTarget)
+          console.log('stackFilter', stackFilter)
+          // e.preventDefault()
+        }}
         style={buttonStyle}
       >
         <svg
