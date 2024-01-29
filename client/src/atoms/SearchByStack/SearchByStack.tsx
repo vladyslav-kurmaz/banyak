@@ -1,11 +1,9 @@
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import './SearchByStack.scss'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { selectSerchByStack, setStack } from '../../store/searchByStackSlice'
 
 // Watch redux searc implementing
-
-const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-  console.log(e.target.value)
-}
 
 const SearchByStack: FC<{
   fn?: () => void
@@ -14,21 +12,42 @@ const SearchByStack: FC<{
   buttonStyle?: object
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
-  console.log('render SearchByStack')
+  const [stackFilter, setStackFilter] = useState<string>('')
+  const dispatch = useAppDispatch()
+  // const stackForSearch = useAppSelector(selectSerchByStack)
+  console.log('stackFilter test', stackFilter)
+
+  const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.currentTarget.value
+    // console.log(inputValue)
+    setStackFilter(inputValue)
+    // dispatch(setStack({ stack: inputValue }))
+  }
+
+  const handleButtonClick = () => {
+    dispatch(setStack({ stack: stackFilter }))
+  }
+  // change redux state control to useState
+
   return (
     <div className="search-for-stack" style={formStyle}>
       <input
         className="search-for-stack__input"
-        // onChange={handleStackFilterChange}
         type="text"
         placeholder="Технологія"
         style={inputStyle}
-        // onClick={(e) => e.preventDefault()}
+        value={stackFilter}
+        // value={stackForSearch.stack}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+          handleStackFilterChange(e)
+        }
       ></input>
       <button
+        type="button"
         className="search-for-stack__button"
-        // type="submit"
-        onClick={(e) => e.preventDefault()}
+        onClick={() => {
+          handleButtonClick()
+        }}
         style={buttonStyle}
       >
         <svg

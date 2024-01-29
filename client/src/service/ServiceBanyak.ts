@@ -207,9 +207,17 @@ const ServiceBanyak = () => {
   //   }
   // }
 
-  const getTalents = async () => {
+  const getTalents = async (filteredBySpecialty?: string) => {
     try {
-      const response = await request(`${hostname}/api/v1/talents/talent/`, {})
+      const response = filteredBySpecialty
+        ? await fetch(
+            `${hostname}/api/v1/talents/talent/talents-filter?${new URLSearchParams(
+              {
+                speciality: filteredBySpecialty,
+              }
+            )}`
+          )
+        : await request(`${hostname}/api/v1/talents/talent/`, {})
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
@@ -242,9 +250,15 @@ const ServiceBanyak = () => {
   //   }
   // }
 
-  const getIdeas = async () => {
+  const getIdeas = async (filteredBySpecialty?: string) => {
     try {
-      const response = await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      const response = filteredBySpecialty
+        ? await fetch(
+            `${hostname}/api/v1/ideas/ideas/ideas-filter?${new URLSearchParams({
+              speciality: filteredBySpecialty,
+            })}`
+          )
+        : await request(`${hostname}/api/v1/ideas/ideas/`, {})
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)

@@ -5,8 +5,8 @@ import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import {
   setSpecialty,
-  selectSerchBySpecialty,
-} from '../../store/serchBySpecialtySlice'
+  selectSearchBySpecialty,
+} from '../../store/searchBySpecialtySlice'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
@@ -30,7 +30,7 @@ const SearchBySpecialty: FC<{
     const fetchSpecialties = async () => {
       try {
         const specialties = await getAllSpecialties()
-        if (specialties) {
+        if (specialties?.count) {
           setSpecialtiesList(specialties.results)
           dispatch(changreMainPreloader(false))
         }
@@ -79,10 +79,13 @@ const SearchBySpecialty: FC<{
     setSelectSpecialty(inputValue)
   }
 
+  const handleButtonClick = () => {
+    dispatch(setSpecialty({ specialty: '' }))
+    toggleDropDown()
+  }
+
   useEffect(() => {
     if (!showDropDown && selectSpecialty) {
-      console.log('specialty choosen')
-      console.log('selectSpecialty', selectSpecialty)
       dispatch(setSpecialty({ specialty: selectSpecialty }))
     }
   }, [showDropDown, selectSpecialty])
@@ -102,7 +105,9 @@ const SearchBySpecialty: FC<{
       <button
         className="search-for-specialty__button"
         style={buttonStyle}
-        onClick={(): void => toggleDropDown()}
+        onClick={(): void => {
+          handleButtonClick()
+        }}
         onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
           dismissHandler(e)
         }

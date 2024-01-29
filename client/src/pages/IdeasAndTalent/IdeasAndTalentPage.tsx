@@ -1,44 +1,45 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
-
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
-
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'
 import { IdeaRespType, TalentRespType } from '../../types/types'
-
 import SearchBySpecialty from '../../atoms/SearchBySpecialty/SearchBySpecialty'
 import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
-
+import { selectSearchBySpecialty } from '../../store/searchBySpecialtySlice'
+import IdeasOrTalentNotFind from '../../atoms/IdeasOrTalentNotFind/IdeasOrTalentNotFind'
 import './IdeasAndTalent.scss'
-import { selectSerchBySpecialty } from '../../store/serchBySpecialtySlice'
-
-// lesson 345 to add filtered ideas or talents
+import { selectSerchByStack } from '../../store/searchByStackSlice'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
-  // console.log('render IdeasAndTalent')
   const [talents, setTalents] = useState<TalentRespType[]>([])
   const [ideas, setIdeas] = useState<IdeaRespType[]>([])
-
+  const [noIdeas, setNoIdeas] = useState(false)
+  const [noTalents, setNoTalents] = useState(false)
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
-  // add selectedSpecialtyForSearch to getTalents() or getIdeas() props and setIdeas or setTalents acording to response
-
-  // useEffect(() =>{}, []) wrap selectedSpecialtyForSearch
-  const selectedSpecialtyForSearch = useAppSelector(selectSerchBySpecialty)
-  console.log('selectedSpecialtyForSearch', selectedSpecialtyForSearch)
+  const selectedSpecialtyForSearch = useAppSelector(selectSearchBySpecialty)
+  const stackForSearch = useAppSelector(selectSerchByStack)
+  console.log('stackForSearch', stackForSearch)
 
   useEffect(() => {
     if (isIdea) {
       const fetchIdeas = async () => {
+        setNoTalents(false)
         try {
-          const ideas = await getIdeas()
-          if (ideas) {
+          const ideas = await getIdeas(selectedSpecialtyForSearch.specialty)
+
+          if (ideas?.count) {
+            setNoTalents(false)
+            setNoIdeas(false)
             setIdeas(ideas.results)
             dispatch(changreMainPreloader(false))
+          } else {
+            setIdeas([])
+            setNoIdeas(true)
           }
         } catch (error) {
           if (error instanceof Error) {
@@ -55,11 +56,18 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchIdeas()
     } else {
       const fetchTalents = async () => {
+        setNoIdeas(false)
         try {
-          const ideas = await getTalents()
-          if (ideas) {
-            setTalents(ideas.results)
+          const talents = await getTalents(selectedSpecialtyForSearch.specialty)
+
+          if (talents?.count) {
+            setNoIdeas(false)
+            setNoTalents(false)
+            setTalents(talents.results)
             dispatch(changreMainPreloader(false))
+          } else {
+            setTalents([])
+            setNoTalents(true)
           }
         } catch (error) {
           if (error instanceof Error) {
@@ -76,7 +84,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchTalents()
     }
     // eslint-disable-next-line
-  }, [isIdea])
+  }, [isIdea, selectedSpecialtyForSearch])
 
   // console.log('ideas', ideas)
   // console.log('talents', talents)
@@ -87,11 +95,28 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
         <SearchByStack />
         <SearchBySpecialty />
       </div>
+      {noIdeas ? (
+        <IdeasOrTalentNotFind
+          searchQuery={selectedSpecialtyForSearch.specialty}
+          isTalent={false}
+        />
+      ) : (
+        ''
+      )}
+      {noTalents ? (
+        <IdeasOrTalentNotFind
+          searchQuery={selectedSpecialtyForSearch.specialty}
+          isTalent={true}
+        />
+      ) : (
+        ''
+      )}
+
       {isIdea
-        ? ideas.map((ideaItem) => (
+        ? ideas?.map((ideaItem) => (
             <Idea key={ideaItem.id} myIdea={false} idea={ideaItem} />
           ))
-        : talents.map((talentItem) => (
+        : talents?.map((talentItem) => (
             <Talent key={talentItem.id} talentInfo={talentItem} />
           ))}
 
