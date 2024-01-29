@@ -1,5 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react'
 import './SearchByStack.scss'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { selectSerchByStack, setStack } from '../../store/searchByStackSlice'
 
 // Watch redux searc implementing
 
@@ -11,14 +13,21 @@ const SearchByStack: FC<{
   svgStyle?: object
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
   const [stackFilter, setStackFilter] = useState<string>('')
+  const dispatch = useAppDispatch()
+  // const stackForSearch = useAppSelector(selectSerchByStack)
+  console.log('stackFilter test', stackFilter)
 
   const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
     const inputValue = e.currentTarget.value
-
-    console.log(inputValue)
+    // console.log(inputValue)
     setStackFilter(inputValue)
+    // dispatch(setStack({ stack: inputValue }))
   }
+
+  const handleButtonClick = () => {
+    dispatch(setStack({ stack: stackFilter }))
+  }
+  // change redux state control to useState
 
   return (
     <div className="search-for-stack" style={formStyle}>
@@ -28,18 +37,16 @@ const SearchByStack: FC<{
         placeholder="Технологія"
         style={inputStyle}
         value={stackFilter}
+        // value={stackForSearch.stack}
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           handleStackFilterChange(e)
         }
       ></input>
       <button
-        type="submit"
+        type="button"
         className="search-for-stack__button"
-        // type="submit"
-        onClick={(e) => {
-          console.log(e.currentTarget)
-          console.log('stackFilter', stackFilter)
-          // e.preventDefault()
+        onClick={() => {
+          handleButtonClick()
         }}
         style={buttonStyle}
       >

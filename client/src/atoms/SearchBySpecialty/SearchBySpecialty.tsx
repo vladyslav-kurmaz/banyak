@@ -30,7 +30,7 @@ const SearchBySpecialty: FC<{
     const fetchSpecialties = async () => {
       try {
         const specialties = await getAllSpecialties()
-        if (specialties) {
+        if (specialties?.count) {
           setSpecialtiesList(specialties.results)
           dispatch(changreMainPreloader(false))
         }
@@ -79,6 +79,11 @@ const SearchBySpecialty: FC<{
     setSelectSpecialty(inputValue)
   }
 
+  const handleButtonClick = () => {
+    dispatch(setSpecialty({ specialty: '' }))
+    toggleDropDown()
+  }
+
   useEffect(() => {
     if (!showDropDown && selectSpecialty) {
       dispatch(setSpecialty({ specialty: selectSpecialty }))
@@ -100,7 +105,9 @@ const SearchBySpecialty: FC<{
       <button
         className="search-for-specialty__button"
         style={buttonStyle}
-        onClick={(): void => toggleDropDown()}
+        onClick={(): void => {
+          handleButtonClick()
+        }}
         onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
           dismissHandler(e)
         }

@@ -11,17 +11,19 @@ import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
 import { selectSearchBySpecialty } from '../../store/searchBySpecialtySlice'
 import IdeasOrTalentNotFind from '../../atoms/IdeasOrTalentNotFind/IdeasOrTalentNotFind'
 import './IdeasAndTalent.scss'
+import { selectSerchByStack } from '../../store/searchByStackSlice'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const [talents, setTalents] = useState<TalentRespType[]>([])
   const [ideas, setIdeas] = useState<IdeaRespType[]>([])
   const [noIdeas, setNoIdeas] = useState(false)
   const [noTalents, setNoTalents] = useState(false)
-
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
   const selectedSpecialtyForSearch = useAppSelector(selectSearchBySpecialty)
+  const stackForSearch = useAppSelector(selectSerchByStack)
+  console.log('stackForSearch', stackForSearch)
 
   useEffect(() => {
     if (isIdea) {
