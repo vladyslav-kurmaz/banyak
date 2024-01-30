@@ -27,7 +27,13 @@ const SearchByStack: FC<{
   const handleButtonClick = () => {
     dispatch(setStack({ stack: stackFilter }))
   }
-  // change redux state control to useState
+
+  // submit input with "Enter" key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleButtonClick()
+    }
+  }
 
   return (
     <div className="search-for-stack" style={formStyle}>
@@ -37,10 +43,8 @@ const SearchByStack: FC<{
         placeholder="Технологія"
         style={inputStyle}
         value={stackFilter}
-        // value={stackForSearch.stack}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          handleStackFilterChange(e)
-        }
+        onKeyDown={handleKeyDown}
+        onChange={(e): void => handleStackFilterChange(e)}
       ></input>
       <button
         type="button"

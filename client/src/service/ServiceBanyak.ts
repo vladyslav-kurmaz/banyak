@@ -250,15 +250,32 @@ const ServiceBanyak = () => {
   //   }
   // }
 
-  const getIdeas = async (filteredBySpecialty?: string) => {
+  const getIdeas = async (
+    filteredBySpecialty?: string,
+    filteredByStack?: string
+  ) => {
     try {
-      const response = filteredBySpecialty
-        ? await fetch(
-            `${hostname}/api/v1/ideas/ideas/ideas-filter?${new URLSearchParams({
-              speciality: filteredBySpecialty,
-            })}`
-          )
-        : await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      // const response = filteredBySpecialty
+      //   ? await fetch(
+      //       `${hostname}/api/v1/ideas/ideas/ideas-filter?${new URLSearchParams({
+      //         speciality: filteredBySpecialty,
+      //       })}`
+      //     )
+      //   : await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      const baseUrl = `${hostname}/api/v1/ideas/ideas/`
+      const params = new URLSearchParams()
+      let url = `${hostname}/api/v1/ideas/ideas/`
+
+      if (filteredBySpecialty) {
+        url = `${baseUrl}ideas-filter?`
+        params.set('speciality', filteredBySpecialty)
+      } else if (filteredByStack) {
+        url = `${baseUrl}search?`
+        params.set('search', filteredByStack)
+      }
+
+      console.log(params.toString())
+      const response = await fetch(`${url}${params.toString()}`)
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)

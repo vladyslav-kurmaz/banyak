@@ -30,8 +30,11 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       const fetchIdeas = async () => {
         setNoTalents(false)
         try {
-          const ideas = await getIdeas(selectedSpecialtyForSearch.specialty)
-
+          const ideas = await getIdeas(
+            selectedSpecialtyForSearch.specialty,
+            stackForSearch.stack
+          )
+          console.log('stackForSearch.stack', stackForSearch.stack)
           if (ideas?.count) {
             setNoTalents(false)
             setNoIdeas(false)
@@ -84,9 +87,9 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchTalents()
     }
     // eslint-disable-next-line
-  }, [isIdea, selectedSpecialtyForSearch])
+  }, [isIdea, selectedSpecialtyForSearch, stackForSearch])
 
-  // console.log('ideas', ideas)
+  console.log('ideas', ideas)
   // console.log('talents', talents)
 
   return (
