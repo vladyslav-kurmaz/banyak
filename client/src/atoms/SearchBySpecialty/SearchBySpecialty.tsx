@@ -114,9 +114,7 @@ const SearchBySpecialty: FC<{
         onClick={(): void => {
           handleButtonClick()
         }}
-        onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-          dismissHandler(e)
-        }
+        onBlur={(e) => dismissHandler(e)}
       >
         {showDropDown && (
           <DropDown

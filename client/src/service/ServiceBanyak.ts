@@ -207,17 +207,33 @@ const ServiceBanyak = () => {
   //   }
   // }
 
-  const getTalents = async (filteredBySpecialty?: string) => {
+  const getTalents = async (
+    filteredBySpecialty?: string,
+    filteredByStack?: string
+  ) => {
     try {
-      const response = filteredBySpecialty
-        ? await fetch(
-            `${hostname}/api/v1/talents/talent/talents-filter?${new URLSearchParams(
-              {
-                speciality: filteredBySpecialty,
-              }
-            )}`
-          )
-        : await request(`${hostname}/api/v1/talents/talent/`, {})
+      // const response = filteredBySpecialty
+      //   ? await fetch(
+      //       `${hostname}/api/v1/talents/talent/talents-filter?${new URLSearchParams(
+      //         {
+      //           speciality: filteredBySpecialty,
+      //         }
+      //       )}`
+      //     )
+      //   : await request(`${hostname}/api/v1/talents/talent/`, {})
+      const baseUrl = `${hostname}/api/v1/talents/talent/`
+      const params = new URLSearchParams()
+      let url = `${hostname}/api/v1/talents/talent/`
+
+      if (filteredBySpecialty) {
+        url = `${baseUrl}talents-filter?`
+        params.set('speciality', filteredBySpecialty)
+      } else if (filteredByStack) {
+        url = `${baseUrl}search?`
+        params.set('search', filteredByStack)
+      }
+
+      const response = await fetch(`${url}${params.toString()}`)
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
@@ -274,7 +290,6 @@ const ServiceBanyak = () => {
         params.set('search', filteredByStack)
       }
 
-      console.log(params.toString())
       const response = await fetch(`${url}${params.toString()}`)
 
       if (!response.ok) {

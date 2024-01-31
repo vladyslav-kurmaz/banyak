@@ -23,22 +23,21 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
   const selectedSpecialtyForSearch = useAppSelector(selectSearchBySpecialty)
   const stackForSearch = useAppSelector(selectSerchByStack)
-  console.log('stackForSearch', stackForSearch)
 
   useEffect(() => {
     if (isIdea) {
       const fetchIdeas = async () => {
         setNoTalents(false)
         try {
-          const ideas = await getIdeas(
+          const ideasRes = await getIdeas(
             selectedSpecialtyForSearch.specialty,
             stackForSearch.stack
           )
-          console.log('stackForSearch.stack', stackForSearch.stack)
-          if (ideas?.count) {
+
+          if (ideasRes?.count) {
             setNoTalents(false)
             setNoIdeas(false)
-            setIdeas(ideas.results)
+            setIdeas(ideasRes.results)
             dispatch(changreMainPreloader(false))
           } else {
             setIdeas([])
@@ -61,12 +60,17 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       const fetchTalents = async () => {
         setNoIdeas(false)
         try {
-          const talents = await getTalents(selectedSpecialtyForSearch.specialty)
+          const talentsRes = await getTalents(
+            selectedSpecialtyForSearch.specialty,
+            stackForSearch.stack
+          )
 
-          if (talents?.count) {
+          console.log(talentsRes)
+
+          if (talentsRes?.count) {
             setNoIdeas(false)
             setNoTalents(false)
-            setTalents(talents.results)
+            setTalents(talentsRes.results)
             dispatch(changreMainPreloader(false))
           } else {
             setTalents([])
@@ -100,7 +104,9 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       </div>
       {noIdeas ? (
         <IdeasOrTalentNotFind
-          searchQuery={selectedSpecialtyForSearch.specialty}
+          searchQuery={
+            selectedSpecialtyForSearch.specialty || stackForSearch.stack
+          }
           isTalent={false}
         />
       ) : (
@@ -108,7 +114,9 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       )}
       {noTalents ? (
         <IdeasOrTalentNotFind
-          searchQuery={selectedSpecialtyForSearch.specialty}
+          searchQuery={
+            selectedSpecialtyForSearch.specialty || stackForSearch.stack
+          }
           isTalent={true}
         />
       ) : (

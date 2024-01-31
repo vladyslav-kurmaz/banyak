@@ -15,7 +15,6 @@ const SearchByStack: FC<{
   const [stackFilter, setStackFilter] = useState<string>('')
   const dispatch = useAppDispatch()
   // const stackForSearch = useAppSelector(selectSerchByStack)
-  console.log('stackFilter test', stackFilter)
 
   const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value
@@ -44,7 +43,7 @@ const SearchByStack: FC<{
         style={inputStyle}
         value={stackFilter}
         onKeyDown={handleKeyDown}
-        onChange={(e): void => handleStackFilterChange(e)}
+        onChange={(e) => handleStackFilterChange(e)}
       ></input>
       <button
         type="button"
