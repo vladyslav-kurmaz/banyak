@@ -209,7 +209,8 @@ const ServiceBanyak = () => {
 
   const getTalents = async (
     filteredBySpecialty?: string,
-    filteredByStack?: string
+    filteredByStack?: string,
+    currentPage?: number
   ) => {
     try {
       // const response = filteredBySpecialty
@@ -231,6 +232,9 @@ const ServiceBanyak = () => {
       } else if (filteredByStack) {
         url = `${baseUrl}search?`
         params.set('search', filteredByStack)
+      } else if (currentPage) {
+        url = `${baseUrl}?`
+        params.set('page_size', `${currentPage}`)
       }
 
       const response = await fetch(`${url}${params.toString()}`)
@@ -268,7 +272,8 @@ const ServiceBanyak = () => {
 
   const getIdeas = async (
     filteredBySpecialty?: string,
-    filteredByStack?: string
+    filteredByStack?: string,
+    currentPage?: number
   ) => {
     try {
       // const response = filteredBySpecialty
@@ -288,6 +293,9 @@ const ServiceBanyak = () => {
       } else if (filteredByStack) {
         url = `${baseUrl}search?`
         params.set('search', filteredByStack)
+      } else if (currentPage) {
+        url = `${baseUrl}?`
+        params.set('page_size', `${currentPage}`)
       }
 
       const response = await fetch(`${url}${params.toString()}`)
