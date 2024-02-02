@@ -80,7 +80,7 @@ const SearchBySpecialty: FC<{
   }
 
   const handleButtonClick = () => {
-    dispatch(setSpecialty({ specialty: '' }))
+    // dispatch(setSpecialty({ specialty: '' }))
     toggleDropDown()
   }
 
@@ -90,6 +90,13 @@ const SearchBySpecialty: FC<{
     }
   }, [showDropDown, selectSpecialty])
 
+  // submit input with "Enter" key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleButtonClick()
+    }
+  }
+
   return (
     <div className="search-for-specialty" style={formStyle}>
       <input
@@ -97,9 +104,8 @@ const SearchBySpecialty: FC<{
         type="text"
         placeholder="Спеціалізація"
         value={selectSpecialty}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          handleInputChange(e)
-        }
+        onChange={(e) => handleInputChange(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
         style={inputStyle}
       ></input>
       <button
@@ -108,9 +114,7 @@ const SearchBySpecialty: FC<{
         onClick={(): void => {
           handleButtonClick()
         }}
-        onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-          dismissHandler(e)
-        }
+        onBlur={(e) => dismissHandler(e)}
       >
         {showDropDown && (
           <DropDown

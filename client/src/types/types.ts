@@ -124,15 +124,15 @@ export type TalentRespType = {
 
 export type ServerResForTalents = {
   count: number
-  next: string | number | null
-  previous: string | number | null
+  next: string | null
+  previous: string | null
   results: TalentRespType[]
 }
 
 export type ServerResForIdeas = {
   count: number
-  next: string | number | null
-  previous: string | number | null
+  next: string | null
+  previous: string | null
   results: IdeaRespType[]
 }
 

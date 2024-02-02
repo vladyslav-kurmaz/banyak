@@ -15,7 +15,6 @@ const SearchByStack: FC<{
   const [stackFilter, setStackFilter] = useState<string>('')
   const dispatch = useAppDispatch()
   // const stackForSearch = useAppSelector(selectSerchByStack)
-  console.log('stackFilter test', stackFilter)
 
   const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value
@@ -27,7 +26,13 @@ const SearchByStack: FC<{
   const handleButtonClick = () => {
     dispatch(setStack({ stack: stackFilter }))
   }
-  // change redux state control to useState
+
+  // submit input with "Enter" key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleButtonClick()
+    }
+  }
 
   return (
     <div className="search-for-stack" style={formStyle}>
@@ -37,10 +42,8 @@ const SearchByStack: FC<{
         placeholder="Технологія"
         style={inputStyle}
         value={stackFilter}
-        // value={stackForSearch.stack}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          handleStackFilterChange(e)
-        }
+        onKeyDown={handleKeyDown}
+        onChange={(e) => handleStackFilterChange(e)}
       ></input>
       <button
         type="button"
