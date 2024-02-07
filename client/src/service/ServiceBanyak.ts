@@ -340,6 +340,7 @@ const ServiceBanyak = () => {
   }
 
   return {
+    hostname,
     singUpNewUser,
     loginUser,
     exitUser,

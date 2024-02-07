@@ -6,10 +6,40 @@ import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import { IdeaRespType } from '../../types/types'
 
 import './IdeaDescriptionPage.scss'
+import { useEffect } from 'react'
+import ServiceBanyak from '../../service/ServiceBanyak'
 
 const IdeaDescriptionPage = (isIdea: { isIdea: boolean }) => {
   const location = useLocation()
   const state = location.state as IdeaRespType | undefined
+  const { hostname } = ServiceBanyak()
+
+  useEffect(() => {
+    // this function only adds idea's views. In layout displays data which sended to component with props (state in Link)
+    const addIdeaViews = async () => {
+      try {
+        const response = await fetch(
+          `${hostname}/api/v1/ideas/ideas/${state?.slug}`
+        )
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`)
+        }
+        const ideaInfo = await response.json()
+        return ideaInfo
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.stack)
+          throw error
+        } else {
+          console.error('An unknown error occurred:', error)
+        }
+
+        return null
+      }
+    }
+
+    addIdeaViews()
+  }, [])
 
   return (
     <div className="idea-description-page-wraper">
