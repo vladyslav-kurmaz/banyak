@@ -50,6 +50,7 @@ class IdeaViewSet(viewsets.ModelViewSet):
             # idea = Idea.objects.get(slug=slug)
             idea = self.get_queryset().get(slug=slug)
             serializer = DetailIdeaSerializer(idea)
+            # serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Idea.DoesNotExist:
             return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -96,14 +97,14 @@ class IdeaViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Idea not found'}, status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['GET'], detail=False, url_path='search')
-    def search_ideas(self, request):
+    def search(self, request):
         query = request.GET.get('search')
-
-        if not query or query == '':
+        speciality = request.GET.get('speciality')
+        if query == '' and speciality == '':
             return Response({'result': []}, status=status.HTTP_200_OK)
-
         ideas = Idea.objects.filter(
-            Q(stack__name__icontains=query)
+            stack__name__icontains=query,
+            specialization__name=speciality
         )
         page = self.paginate_queryset(ideas)
         if page:
@@ -112,18 +113,35 @@ class IdeaViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(ideas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(methods=['GET'], detail=False, url_path='ideas-filter')
-    def filter_ideas(self, request):
-        queryset = self.get_queryset()
-        speciality = request.GET.get('speciality')
-        if speciality:
-            ideas = queryset.filter(specialization__name=speciality)
-            page = self.paginate_queryset(ideas)
-            if page:
-                serializer = self.serializer_class(page, many=True)
-                return self.get_paginated_response(serializer.data)
-            serializer = self.serializer_class(ideas, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+    # @action(methods=['GET'], detail=False, url_path='search')
+    # def search_ideas(self, request):
+    #     query = request.GET.get('search')
+    #
+    #     if not query or query == '':
+    #         return Response({'result': []}, status=status.HTTP_200_OK)
+    #
+    #     ideas = Idea.objects.filter(
+    #         Q(stack__name__icontains=query)
+    #     )
+    #     page = self.paginate_queryset(ideas)
+    #     if page:
+    #         serializer = self.serializer_class(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #     serializer = self.serializer_class(ideas, many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    #
+    # @action(methods=['GET'], detail=False, url_path='ideas-filter')
+    # def filter_ideas(self, request):
+    #     queryset = self.get_queryset()
+    #     speciality = request.GET.get('speciality')
+    #     if speciality:
+    #         ideas = queryset.filter(specialization__name=speciality)
+    #         page = self.paginate_queryset(ideas)
+    #         if page:
+    #             serializer = self.serializer_class(page, many=True)
+    #             return self.get_paginated_response(serializer.data)
+    #         serializer = self.serializer_class(ideas, many=True)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def downland_swagger(request):
