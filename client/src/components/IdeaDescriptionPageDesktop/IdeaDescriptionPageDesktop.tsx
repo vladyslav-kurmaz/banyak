@@ -17,7 +17,6 @@ function IdeaDescriptionPageDesktop({
   ideaInfo?: IdeaRespType
   talentInfo?: TalentRespType
 }) {
-  console.log('Received ideaInfo:', talentInfo)
   return (
     <div className="idea-description">
       <div className="idea-description__logo-specialities-question-wraper">

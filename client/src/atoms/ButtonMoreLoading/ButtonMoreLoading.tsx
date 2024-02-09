@@ -3,20 +3,23 @@ import './ButtonMoreLoading.scss'
 const ButtonMoreLoading = ({
   text,
   setCurrentPage,
+  disabled,
 }: {
   text: string
   setCurrentPage: Function
+  disabled: boolean
 }) => {
   const handleButtonMoreLoadingClick = () => {
-    console.log('click')
     setCurrentPage((currentPage: number) => currentPage + 1)
   }
+
   return (
     <button
       className="more-loading"
       onClick={(): void => {
         handleButtonMoreLoadingClick()
       }}
+      disabled={disabled}
     >
       Ще {text}
       <svg

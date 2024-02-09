@@ -19,6 +19,8 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const [noIdeas, setNoIdeas] = useState(false)
   const [noTalents, setNoTalents] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+
+  const [disabled, setDisabled] = useState(false)
   const { getTalents, getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
 
@@ -35,12 +37,23 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             stackForSearch.stack
           )
 
+          if (ideasRes?.count && ideasRes?.count < 10) {
+            setDisabled(true)
+          } else {
+            setDisabled(false)
+          }
+
           if (ideasRes?.count && currentPage === 1) {
+            // consider to use setNoTalents(!noTalents)
             setNoTalents(false)
             setNoIdeas(false)
             setIdeas(ideasRes.results)
             dispatch(changreMainPreloader(false))
-          } else if (ideasRes?.next && currentPage > 1) {
+          } else if (
+            ideasRes?.next &&
+            currentPage > 1 &&
+            (selectedSpecialtyForSearch.specialty || stackForSearch.stack)
+          ) {
             const moreIdeasRes = await getIdeas(
               selectedSpecialtyForSearch.specialty,
               stackForSearch.stack,
@@ -49,10 +62,39 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             if (moreIdeasRes?.results.length) {
               setNoTalents(false)
               setNoIdeas(false)
-
               setIdeas((prevIdeas) => [...prevIdeas, ...moreIdeasRes?.results])
             }
+            if (currentPage * ideasRes.results.length >= ideasRes.count) {
+              setDisabled(true)
+            }
+          } else if (
+            ideasRes?.count &&
+            (selectedSpecialtyForSearch.specialty || stackForSearch.stack)
+          ) {
+            console.log(
+              'test from ideasRes?.count && (selectedSpecialtyForSearch.specialty || stackForSearch.stack)'
+            )
+            setNoTalents(false)
+            setNoIdeas(false)
+            setIdeas(ideasRes.results)
+            dispatch(changreMainPreloader(false))
+          } else if (ideasRes?.next && currentPage > 1) {
+            console.log('test from (ideasRes?.next && currentPage > 1)')
+            const moreIdeasRes = await getIdeas(
+              selectedSpecialtyForSearch.specialty,
+              stackForSearch.stack,
+              currentPage
+            )
+            if (moreIdeasRes?.results.length) {
+              setNoTalents(false)
+              setNoIdeas(false)
+              setIdeas((prevIdeas) => [...prevIdeas, ...moreIdeasRes?.results])
+            }
+            if (currentPage * ideasRes.results.length >= ideasRes.count) {
+              setDisabled(true)
+            }
           } else {
+            console.log('from last else')
             setIdeas([])
             setNoIdeas(true)
           }
@@ -70,6 +112,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
       fetchIdeas()
     } else {
+      // see what talents shows check the level of updates
       const fetchTalents = async () => {
         setNoIdeas(false)
         try {
@@ -77,14 +120,41 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             selectedSpecialtyForSearch.specialty,
             stackForSearch.stack
           )
-
-          console.log(talentsRes)
+          console.log('talentsRes', talentsRes)
+          if (talentsRes?.count && talentsRes?.count < 10) {
+            setDisabled(true)
+          } else {
+            setDisabled(false)
+          }
 
           if (talentsRes?.count && currentPage === 1) {
             setNoIdeas(false)
             setNoTalents(false)
             setTalents(talentsRes.results)
             dispatch(changreMainPreloader(false))
+          } else if (
+            talentsRes?.next &&
+            currentPage > 1 &&
+            (selectedSpecialtyForSearch.specialty || stackForSearch.stack)
+          ) {
+            const moreTalentsRes = await getTalents(
+              selectedSpecialtyForSearch.specialty,
+              stackForSearch.stack,
+              currentPage
+            )
+
+            if (moreTalentsRes?.results.length) {
+              setNoIdeas(false)
+              setNoTalents(false)
+              setTalents((prevTalents) => [
+                ...prevTalents,
+                ...moreTalentsRes?.results,
+              ])
+            }
+
+            if (currentPage * talentsRes.results.length >= talentsRes.count) {
+              setDisabled(true)
+            }
           } else if (talentsRes?.next && currentPage > 1) {
             const moreTalentsRes = await getTalents(
               selectedSpecialtyForSearch.specialty,
@@ -99,6 +169,10 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
                 ...prevTalents,
                 ...moreTalentsRes?.results,
               ])
+            }
+
+            if (currentPage * talentsRes.results.length >= talentsRes.count) {
+              setDisabled(true)
             }
           } else {
             setTalents([])
@@ -119,22 +193,15 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       fetchTalents()
     }
     // eslint-disable-next-line
-  }, [isIdea, selectedSpecialtyForSearch, stackForSearch, currentPage])
+  }, [
+    isIdea,
+    selectedSpecialtyForSearch.specialty,
+    stackForSearch.stack,
+    currentPage,
+  ])
 
-  // useEffect(() => {
-  //   if (isIdea) {
-  //     const fetchMoreIdeas = async () => {
-  //       try {
-  //         const moreIdeasRes = await getIdeas()
-  //       } catch (error) {}
-  //     }
-  //     fetchMoreIdeas()
-  //   } else {
-  //     console.log('fetch talents')
-  //   }
-  // }, [])
-  // console.log('ideas', ideas)
-  console.log('talents', talents)
+  console.log('ideas', ideas)
+  // console.log('talents', talents)
 
   return (
     <div className="ideaAndTalent">
@@ -174,6 +241,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
       <ButtonMoreLoading
         text={isIdea ? 'ідей' : 'талантів'}
         setCurrentPage={setCurrentPage}
+        disabled={disabled}
       />
     </div>
   )
