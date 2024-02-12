@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../hooks/reduxToolkidHooks'
 import useHttp from '../hooks/httpHook'
 
-import { changeUserProfile } from '../store/userSlice'
+import { setUserProfile } from '../store/userSlice'
 import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
 
 import workWithCookies from '../utils/workWithCookies'
@@ -60,7 +60,7 @@ const ServiceBanyak = () => {
         body: body,
       })
       const reqJson = await req.json()
-      dispatch(changeUserProfile(await reqJson))
+      dispatch(setUserProfile(await reqJson))
       return await reqJson
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
@@ -90,7 +90,7 @@ const ServiceBanyak = () => {
         }
       )
       // const reqJson = await req.json()
-      // dispatch(changeUserProfile(await reqJson))
+      // dispatch(setUserProfile(await reqJson))
       return await req.json()
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
@@ -119,7 +119,7 @@ const ServiceBanyak = () => {
         body: JSON.stringify({ refresh_token: tokenid }),
       })
 
-      dispatch(changeUserProfile(null))
+      dispatch(setUserProfile(null))
       deleteCookie('sessiontokenid')
       deleteCookie('tokenid')
       // return req;
@@ -155,7 +155,7 @@ const ServiceBanyak = () => {
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         if (e.status === 403) {
-          dispatch(changeUserProfile(null))
+          dispatch(setUserProfile(null))
           deleteCookie('sessiontokenid')
           deleteCookie('tokenid')
         }

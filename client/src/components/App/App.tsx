@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
-import { changeUserProfile } from '../../store/userSlice'
+import { setUserProfile } from '../../store/userSlice'
 
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
@@ -46,7 +46,7 @@ function App() {
       dispatch(changreMainPreloader(true))
       try {
         profileUser(token, 'GET').then((res) =>
-          dispatch(changeUserProfile(res as TUserProfile))
+          dispatch(setUserProfile(res as TUserProfile))
         )
         dispatch(changreMainPreloader(false))
       } catch (e) {
