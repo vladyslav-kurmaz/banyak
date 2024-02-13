@@ -74,7 +74,9 @@ export type userInfo = {
   allStack: TGetAllStack | []
 }
 
-export type TGetAllStack = [name: string]
+export type TGetAllStack = { name: string }[]
+
+export type TGetAllSpeciality = string[]
 
 export type TValidatinForm = {
   errorStatus: boolean

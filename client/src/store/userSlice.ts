@@ -20,7 +20,7 @@ export const userInfoSlice = createSlice({
     setTypeUser: (state, action: PayloadAction<boolean>) => {
       state.typeUser = action.payload
     },
-    setUserProfile: (state, action: PayloadAction<TUserProfile>) => {
+    setUserProfile: (state, action: PayloadAction<TUserProfile | null>) => {
       state.userProfile = action.payload
     },
     setAllStack: (state, action: PayloadAction<TGetAllStack>) => {

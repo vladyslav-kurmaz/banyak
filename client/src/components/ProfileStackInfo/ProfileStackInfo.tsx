@@ -52,7 +52,8 @@ const ProfileStackInfo = ({
     if (allStack! as TGetAllStack) {
       getAllStack('stack-list/', 'GET')
         .then((res: { results: { name: string }[] }) => {
-          const result = res.results.map((item) => item.name)
+          // const result = res.results.map((item) => item.name)
+          const result = res.results
           dispatch(setAllStack(result))
         })
         .then(() => dispatch(changreMainPreloader(false)))
