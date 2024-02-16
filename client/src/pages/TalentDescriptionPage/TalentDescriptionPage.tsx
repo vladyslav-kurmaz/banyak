@@ -28,7 +28,7 @@ function TalentDescriptionPage() {
         }
 
         const talentInfo = await response.json()
-        console.log(talentInfo)
+
         return talentInfo
       } catch (error) {
         if (error instanceof Error) {
