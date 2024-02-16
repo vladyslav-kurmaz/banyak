@@ -140,8 +140,10 @@ const LoginRegistrationForm = () => {
     // document.body.style.overflow = "";
 
     try {
+      console.log('registration data', data)
       const registration = await singUpNewUser(JSON.stringify(data))
-      console.log(await registration.json())
+      const registrationJson = await registration.json()
+      console.log('registrationJson', registrationJson)
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
@@ -191,7 +193,6 @@ const LoginRegistrationForm = () => {
       setCookies('tokenid', await loginJson.refresh_token, 1)
 
       const createProfile = await profileUser(loginJson.access_token, 'GET')
-      console.log(createProfile)
 
       dispatch(setUserProfile(await createProfile))
       document.body.style.overflow = ''

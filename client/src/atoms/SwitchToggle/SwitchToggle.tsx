@@ -5,7 +5,7 @@ import {
   changeStatusInstr,
   changeLoginOrSingUp,
 } from '../../components/SettingMenu/StateElementSlice'
-import { setTypeUser } from '../../store/userSlice'
+import { selectUserInfo, setTypeUser } from '../../store/userSlice'
 
 import './SwitchToggle.scss'
 
@@ -19,7 +19,7 @@ const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
   const { mainLanguage, statusInstr, loginOrSingUp } = useAppSelector(
     (state) => state.stateElement
   )
-  const { typeUser } = useAppSelector((state) => state.userInfo)
+  const { typeUser } = useAppSelector(selectUserInfo)
   const translateTypeUser = typeUser ? 'Я талант' : 'Я власник ідеї'
 
   const changeActiveLanguage = (status: string) => {

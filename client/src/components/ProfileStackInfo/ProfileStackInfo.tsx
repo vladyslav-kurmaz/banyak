@@ -9,7 +9,7 @@ import validationProfile from '../../utils/validationProfile'
 
 import { TGetAllStack, TUserProfile, TprofileChange } from '../../types/types'
 import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
-import { setAllStack } from '../../store/userSlice'
+import { selectUserInfo, setAllStack } from '../../store/userSlice'
 
 import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
 
@@ -32,7 +32,7 @@ const ProfileStackInfo = ({
 
   const { profileUser, getAllStack } = ServiceBanyak()
   const { getCookies } = workWithCookies()
-  const { allStack } = useAppSelector((state) => state.userInfo)
+  const { allStack } = useAppSelector(selectUserInfo)
 
   const speciality =
     newUserProfile.speciality && newUserProfile?.speciality[0]
@@ -65,11 +65,9 @@ const ProfileStackInfo = ({
     const token = getCookies('sessiontokenid')
 
     if (typeof token === 'string') {
-      console.log(newUserProfile)
-
       profileUser(token, 'PUT', JSON.stringify(newUserProfile))
         .then((res) => {
-          console.log(res)
+          // console.log(res)
         })
         .then(() => dispatch(changreMainPreloader(false)))
     }

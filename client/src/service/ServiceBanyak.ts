@@ -29,7 +29,7 @@ const ServiceBanyak = () => {
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
-    console.log(req)
+    console.log('singUpNewUser resp', req)
     return req
   }
 
@@ -39,6 +39,7 @@ const ServiceBanyak = () => {
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
+
     return req
   }
 
@@ -147,7 +148,6 @@ const ServiceBanyak = () => {
         body: JSON.stringify({ refresh_token: tokenid }),
       })
       const newToken = await req.json()
-      console.log('try')
 
       setCookies('sessiontokenid', await newToken.access_token, 1)
 

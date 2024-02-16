@@ -1,29 +1,30 @@
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
+import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
 
-import ButtonBack from "../../atoms/ButtonBack/ButtonBack";
-import logo from "../../image/logo/small_logo.webp";
+import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
+import logo from '../../image/logo/small_logo.webp'
 
-import TagFieldSpeciality from "../../atoms/TagFieldSpeciality/TagFieldSpeciality";
-import TagsField from "../../atoms/TagsField/TagsField";
-import ButtonSmall from "../../atoms/ButtonSmall/ButtonSmall";
+import TagFieldSpeciality from '../../atoms/TagFieldSpeciality/TagFieldSpeciality'
+import TagsField from '../../atoms/TagsField/TagsField'
+import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 
-import { TIdeasChange, TprofileChange } from "../../types/types";
+import { TIdeasChange, TprofileChange } from '../../types/types'
 
-import "./CreateIdea.scss";
+import './CreateIdea.scss'
+import { selectUserInfo } from '../../store/userSlice'
 
 const CreateIdea = () => {
-  const dispatch = useAppDispatch();
-  const { allStack } = useAppSelector((state) => state.userInfo);
+  const dispatch = useAppDispatch()
+  const { allStack } = useAppSelector(selectUserInfo)
 
   const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
-    name: "",
+    name: '',
     speciality: [],
     stack: [],
-    description: "",
+    description: '',
 
-    portfolio: "",
-  });
+    portfolio: '',
+  })
 
   return (
     <div className="create-idea  create-idea__outside">
@@ -60,7 +61,11 @@ const CreateIdea = () => {
               placeholder="Сайт Арт-платформа"
               className="specialization__input"
               value={newIdeaData?.name}
-              onChange={(e) => setNewIdeaData(state => state && ({...state, name: e.target.value}))}
+              onChange={(e) =>
+                setNewIdeaData(
+                  (state) => state && { ...state, name: e.target.value }
+                )
+              }
             />
           </div>
 
@@ -74,7 +79,11 @@ const CreateIdea = () => {
               value={newIdeaData?.description}
               className="description about-me__description"
               placeholder="Шукаю бажаючих долучитись до розробки ідеї арт-сайту."
-              onChange={(e) => setNewIdeaData(state => state && ({...state, description: e.target.value}))}
+              onChange={(e) =>
+                setNewIdeaData(
+                  (state) => state && { ...state, description: e.target.value }
+                )
+              }
             ></textarea>
           </div>
 
@@ -126,13 +135,13 @@ const CreateIdea = () => {
           </div>
 
           <ButtonSmall
-            style={{ position: "relative" }}
+            style={{ position: 'relative' }}
             text="Опублікувати ідею"
           />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateIdea;
+export default CreateIdea

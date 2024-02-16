@@ -6,14 +6,14 @@ import ProfileStackInfo from '../../components/ProfileStackInfo/ProfileStackInfo
 
 import './ProfilePage.scss'
 import { TprofileChange } from '../../types/types'
-import { setTypeUser } from '../../store/userSlice'
+import { selectUserInfo, setTypeUser } from '../../store/userSlice'
 
 const ProfilePage = ({
   fc,
 }: {
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const { userProfile, typeUser } = useAppSelector((state) => state.userInfo)
+  const { userProfile, typeUser } = useAppSelector(selectUserInfo)
   const [disabled, setDisabled] = useState(false)
   const dispatch = useAppDispatch()
 

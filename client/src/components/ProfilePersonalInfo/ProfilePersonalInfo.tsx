@@ -4,7 +4,7 @@ import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
-import { setUserProfile } from '../../store/userSlice'
+import { selectUserInfo, setUserProfile } from '../../store/userSlice'
 import logo from '../../image/logo/small_logo.webp'
 
 import './ProfilePersonalInfo.scss'
@@ -31,14 +31,13 @@ const ProfilePersonalInfo = ({
 
   // const inputRef = useRef(null);
 
-  const { userProfile } = useAppSelector((state) => state.userInfo)
+  const { userProfile } = useAppSelector(selectUserInfo)
   // const {} = userProfile as TUserProfile
 
   const changeFile = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     const target = e.target
     if (target && target.files !== null) {
       const file = target.files[0]
-      // console.log(userProfile);
 
       setNewAvatar(file)
     }

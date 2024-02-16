@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
@@ -23,9 +23,9 @@ import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
 import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 import TalentDescriptionPage from '../../pages/TalentDescriptionPage/TalentDescriptionPage'
+import { TUserProfile } from '../../types/types'
 
 import './App.scss'
-import { TUserProfile } from '../../types/types'
 
 function App() {
   const { mainPreloader } = useAppSelector((state) => state.stateElement)
@@ -86,25 +86,7 @@ function App() {
             <Route path="talents/:slug" element={<TalentDescriptionPage />} />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />
             <Route path="create-idea" element={<CreateIdea />} />
-            <Route
-              path="chose-profile"
-              element={
-                <ChooseProfilePage
-                  buttonOne={
-                    <ButtonChooseProfile
-                      text="Опублікувати ідею та знайти фахівців для реалізації проєкта"
-                      type={false}
-                    />
-                  }
-                  buttonTwo={
-                    <ButtonChooseProfile
-                      text="Знайти проєкт для отримання досвіду роботи в IT команді"
-                      type={true}
-                    />
-                  }
-                />
-              }
-            />
+            <Route path="chose-profile" element={<ChooseProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

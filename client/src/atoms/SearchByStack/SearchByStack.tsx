@@ -18,7 +18,7 @@ const SearchByStack: FC<{
 
   const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value
-    // console.log(inputValue)
+
     setStackFilter(inputValue)
     // dispatch(setStack({ stack: inputValue }))
   }

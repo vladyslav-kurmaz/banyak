@@ -2,10 +2,10 @@ import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import { useNavigate } from 'react-router-dom'
 
-import { changreMainPreloader } from "../../components/SettingMenu/StateElementSlice";
+import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
-import ServiceBanyak from "../../service/ServiceBanyak";
-import workWithCookies from "../../utils/workWithCookies";
+import ServiceBanyak from '../../service/ServiceBanyak'
+import workWithCookies from '../../utils/workWithCookies'
 
 import './ButtonChooseProfile.scss'
 
@@ -16,31 +16,29 @@ const ButtonChooseProfile = ({
   text: string
   type: boolean
 }) => {
+  const { profileUser } = ServiceBanyak()
+  const { getCookies } = workWithCookies()
+  const dispatch = useAppDispatch()
 
-  const { profileUser } = ServiceBanyak();
-  const { getCookies } = workWithCookies();
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const chooseProfile = async (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const typeProfile = target.getAttribute("data-type");
-    const token = getCookies("sessiontokenid");
-    console.log(token);
+    const target = e.target as HTMLElement
+    const typeProfile = target.getAttribute('data-type')
+    const token = getCookies('sessiontokenid')
 
     if (token) {
       try {
         // eslint-disable-next-line
         const getUser = await profileUser(
           token,
-          "PUT",
+          'PUT',
           JSON.stringify({ is_talent: typeProfile })
-        );
-        navigate("/");
-        dispatch(changreMainPreloader(false));
+        )
+        navigate('/')
+        dispatch(changreMainPreloader(false))
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     }
   }
