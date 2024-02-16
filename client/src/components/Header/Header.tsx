@@ -1,24 +1,22 @@
-import SettingMeny from "../SettingMenu/SettingMeny";
-import { NavLink, useNavigate } from "react-router-dom";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/reduxToolkidHooks";
-import { changeOpenOrCloseLoginPopup } from "../SettingMenu/StateElementSlice";
+import SettingMeny from '../SettingMenu/SettingMeny'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { changeOpenOrCloseLoginPopup } from '../SettingMenu/StateElementSlice'
 
-import logo from "../../image/logo/LOGO_Banyak.webp";
+import logo from '../../image/logo/LOGO_Banyak.webp'
 
-import "./Header.scss";
+import './Header.scss'
+import { selectUserInfo } from '../../store/userSlice'
 
 const Header = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { userProfile } = useAppSelector((state) => state.userInfo);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { userProfile } = useAppSelector(selectUserInfo)
 
   const showLoginForm = () => {
-    dispatch(changeOpenOrCloseLoginPopup(true));
-    navigate("?login");
-  };
+    dispatch(changeOpenOrCloseLoginPopup(true))
+    navigate('?login')
+  }
 
   return (
     <header className="header">
@@ -32,7 +30,7 @@ const Header = () => {
             <NavLink
               to="/aboutus"
               className={({ isActive, isPending }) =>
-                isActive ? "active" : isPending ? "pending" : ""
+                isActive ? 'active' : isPending ? 'pending' : ''
               }
             >
               Про нас
@@ -42,7 +40,7 @@ const Header = () => {
             <NavLink
               to="/ideas"
               className={({ isActive, isPending }) =>
-                isActive ? "active" : isPending ? "pending" : ""
+                isActive ? 'active' : isPending ? 'pending' : ''
               }
             >
               Ідеї
@@ -52,7 +50,7 @@ const Header = () => {
             <NavLink
               to="/talents"
               className={({ isActive, isPending }) =>
-                isActive ? "active" : isPending ? "pending" : ""
+                isActive ? 'active' : isPending ? 'pending' : ''
               }
             >
               Таланти
@@ -64,7 +62,7 @@ const Header = () => {
       <div className="header__settings">
         {userProfile === null ? (
           <NavLink
-            to={"?login"}
+            to={'?login'}
             className="header__settings-login"
             onClick={showLoginForm}
           >
@@ -72,7 +70,7 @@ const Header = () => {
           </NavLink>
         ) : (
           <NavLink
-            to={"/profile"}
+            to={'/profile'}
             className="header__settings-login"
             onClick={showLoginForm}
           >
@@ -89,10 +87,10 @@ const Header = () => {
             Мій профіль
           </NavLink>
         )}
-        <SettingMeny/>
+        <SettingMeny />
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

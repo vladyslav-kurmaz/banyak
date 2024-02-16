@@ -1,78 +1,71 @@
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, memo } from 'react'
 
-import Tagify from "@yaireo/tagify";
-import { TGetAllStack, TIdeasChange, TprofileChange } from "../../types/types";
+import Tagify from '@yaireo/tagify'
+import { TGetAllStack, TIdeasChange, TprofileChange } from '../../types/types'
 
-import "@yaireo/tagify/src/tagify.scss";
-import "./TagsField.scss";
-
+import '@yaireo/tagify/src/tagify.scss'
+import './TagsField.scss'
 
 const TagsField = ({
   stackUser,
   allStack,
-  changeStack
+  changeStack,
 }: {
-
-  stackUser: {name: string}[];
-  allStack: string[];
-  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>> 
+  stackUser: { name: string }[]
+  allStack: TGetAllStack
+  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>>
 }) => {
-
-  const tagifyRef = useRef(null);  
-
-  
+  const tagifyRef = useRef(null)
 
   useEffect(() => {
-    if (tagifyRef.current !== null && allStack as TGetAllStack ) {
+    if (tagifyRef.current !== null && allStack) {
       const tagify = new Tagify(tagifyRef.current, {
         enforceWhitelist: false,
-        whitelist: allStack,
-  
-        placeholder: "Введіть потрібних фахівців",
+        whitelist: Array.from(allStack.values(), (item) => item.name),
+
+        placeholder: 'Введіть потрібних фахівців',
         dropdown: {
-          maxItems: 20, 
+          maxItems: 20,
         },
-      });      
-  
-      tagify.on("add", (e) => {  
-  
-        if (e.detail.data !== undefined ) {
-  
-          const addedTags = e.detail.data.value; 
- 
-          changeStack(state => state && state !== null ? 
-            ({
-              ...state,
-              stack: [...state.stack, {name: addedTags.toUpperCase()}]
-            })
-            :
-            null
+      })
+
+      tagify.on('add', (e) => {
+        if (e.detail.data !== undefined) {
+          const addedTags = e.detail.data.value
+
+          changeStack((state) =>
+            state && state !== null
+              ? {
+                  ...state,
+                  stack: [...state.stack, { name: addedTags.toUpperCase() }],
+                }
+              : null
           )
         }
-      });
-  
-      tagify.on("remove", (e) => {
-  
-        if (e.detail.data !== undefined ) {
-          
-          const deleteTags = e.detail.data.value           
-          
+      })
+
+      tagify.on('remove', (e) => {
+        if (e.detail.data !== undefined) {
+          const deleteTags = e.detail.data.value
+
           if (changeStack) {
-            changeStack(state => state && state !== null ? 
-              ({
-                ...state,
-                stack: state.stack.filter(item => item.name !== deleteTags)
-              })
-              :
-              null
+            changeStack((state) =>
+              state && state !== null
+                ? {
+                    ...state,
+                    stack: state.stack.filter(
+                      (item) => item.name !== deleteTags
+                    ),
+                  }
+                : null
             )
           }
         }
-      });  
-    } 
+      })
+    }
     // eslint-disable-next-line
-  }, []);
- 
+  }, [])
+
   const renderTags = () => {
     if (stackUser && stackUser.length > 0) {
       return stackUser.map((item) => item.name)
@@ -88,11 +81,11 @@ const TagsField = ({
         name=""
         id=""
         value={renderTags()}
-        onChange={() => {''}}
+        onChange={() => {}}
         ref={tagifyRef}
       ></textarea>
     </div>
-  );
-};
+  )
+}
 
-export default memo(TagsField) ;
+export default memo(TagsField)

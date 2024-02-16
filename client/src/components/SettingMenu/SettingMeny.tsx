@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxToolkidHooks";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
@@ -18,14 +18,15 @@ import chatIcon from '../../image/header/chat.svg'
 import exitIcon from '../../image/header/exit.svg'
 
 import './SettingMeny.scss'
+import { selectUserInfo } from '../../store/userSlice'
 
 const SettingMeny: FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { headerSetting } = useAppSelector((state) => state.stateElement);
-  const { userProfile } = useAppSelector((state) => state.userInfo);
-  const { exitUser } = ServiceBanyak();
+  const { headerSetting } = useAppSelector((state) => state.stateElement)
+  const { userProfile } = useAppSelector(selectUserInfo)
+  const { exitUser } = ServiceBanyak()
   const shouldShowPopup =
     new URLSearchParams(window.location.search).get('login') === 'true'
 
@@ -34,11 +35,10 @@ const SettingMeny: FC = () => {
   }
 
   const exitUserProfil = () => {
-    exitUser();
+    exitUser()
 
-    navigate("/");
-  };
-
+    navigate('/')
+  }
 
   const openCloseSettingMenu = useCallback(
     (status: boolean): void => {
