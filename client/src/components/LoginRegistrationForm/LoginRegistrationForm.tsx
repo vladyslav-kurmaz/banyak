@@ -36,11 +36,10 @@ const LoginRegistrationForm = () => {
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [disabled, setDisabled] = useState(true)
+  const [modalLocation, setModalLocation] = useState<string[]>([])
   const location = useLocation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
-  const [modalLocation, setModalLocation] = useState<string[]>([])
 
   const { setCookies, deleteCookie } = workWithCookies()
 
@@ -141,9 +140,9 @@ const LoginRegistrationForm = () => {
 
     try {
       console.log('registration data', data)
-      const registration = await singUpNewUser(JSON.stringify(data))
-      const registrationJson = await registration.json()
-      console.log('registrationJson', registrationJson)
+      const registrationResponse = await singUpNewUser(JSON.stringify(data))
+
+      console.log('registration status', registrationResponse.statusText)
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
