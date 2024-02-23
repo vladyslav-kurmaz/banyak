@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,34 +10,33 @@ import './ButtonChooseProfile.scss'
 
 const ButtonChooseProfile = ({
   text,
-  type,
+  isTalent,
 }: {
   text: string
-  type: boolean
+  isTalent: boolean
 }) => {
-  const { profileUser } = ServiceBanyak()
+  const { updateUserProfile, handleError } = ServiceBanyak()
   const { getCookies } = workWithCookies()
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
 
-  const chooseProfile = async (e: MouseEvent) => {
-    const target = e.target as HTMLElement
-    const typeProfile = target.getAttribute('data-type')
+  const chooseProfile = async () => {
     const token = getCookies('sessiontokenid')
 
     if (token) {
       try {
         // eslint-disable-next-line
-        const getUser = await profileUser(
+        const putUserType = await updateUserProfile(
           token,
-          'PUT',
-          JSON.stringify({ is_talent: typeProfile })
+          JSON.stringify({ is_talent: isTalent })
         )
-        navigate('/')
+
+        console.log('patchUserType', putUserType)
+        navigate('/') //make navigation to user profile
         dispatch(changreMainPreloader(false))
       } catch (e) {
-        console.error(e)
+        handleError(e)
       }
     }
   }
@@ -46,8 +44,8 @@ const ButtonChooseProfile = ({
   return (
     <button
       className="button-chose-profile"
-      data-type={type}
-      onClick={(e) => chooseProfile(e)}
+      data-type={isTalent}
+      onClick={chooseProfile}
     >
       {text}
     </button>
