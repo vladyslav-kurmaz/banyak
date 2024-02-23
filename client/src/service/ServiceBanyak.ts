@@ -23,14 +23,35 @@ const ServiceBanyak = () => {
   const hostname =
     window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi
 
-  const singUpNewUser = (body: BodyInit | null | undefined) => {
-    const req = request(`${hostname}/api/v1/users/register/`, {
+  const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
+
+  // provide handlError to all functions
+
+  const handleError = (error: any) => {
+    if (error instanceof Error) {
+      console.error(error.stack)
+      throw error
+    } else {
+      console.error('An unknown error occurred:', error)
+    }
+
+    return null
+  }
+
+  const singUpNewUser = async (body: BodyInit | null | undefined) => {
+    return fetch(`${hostname}/api/v1/users/register/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
-    console.log('singUpNewUser resp', req)
-    return req
+      .then((response) => {
+        console.log('singUpNewUser resp', response.statusText)
+        return response
+      })
+      .catch((error) => {
+        console.error('Error in singUpNewUser:', error)
+        throw error
+      })
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
@@ -339,9 +360,36 @@ const ServiceBanyak = () => {
     }
   }
 
+  const updateUserProfile = async (
+    token: string,
+    body?: BodyInit | null | undefined
+  ) => {
+    try {
+      const response = await fetch(USER_PROFILE_URL, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
+      }
+
+      console.log('updateUserProfile response', response)
+      return response.json()
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
   return {
     hostname,
+    handleError,
     singUpNewUser,
+    updateUserProfile,
     loginUser,
     exitUser,
     profileUser,
