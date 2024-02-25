@@ -20,7 +20,6 @@ import workWithCookies from '../../utils/workWithCookies'
 
 import ProfilePage from '../../pages/ProfilePage/ProfilePage'
 import ChooseProfilePage from '../../pages/ChooseProfilePage/ChooseProfilePage'
-import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
 import IdeaDescriptionPage from '../../pages/IdeaDescriptionPage/IdeaDescriptionPage'
 import TalentDescriptionPage from '../../pages/TalentDescriptionPage/TalentDescriptionPage'
 import { TUserProfile } from '../../types/types'
