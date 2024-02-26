@@ -74,7 +74,9 @@ export type userInfo = {
   allStack: TGetAllStack | []
 }
 
-export type TGetAllStack = [name: string]
+export type TGetAllStack = { name: string }[]
+
+export type TGetAllSpeciality = string[]
 
 export type TValidatinForm = {
   errorStatus: boolean
@@ -124,15 +126,15 @@ export type TalentRespType = {
 
 export type ServerResForTalents = {
   count: number
-  next: string | number | null
-  previous: string | number | null
+  next: string | null
+  previous: string | null
   results: TalentRespType[]
 }
 
 export type ServerResForIdeas = {
   count: number
-  next: string | number | null
-  previous: string | number | null
+  next: string | null
+  previous: string | null
   results: IdeaRespType[]
 }
 

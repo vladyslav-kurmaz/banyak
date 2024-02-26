@@ -1,12 +1,16 @@
 import { FC, useEffect, useState } from 'react'
 import DropDown from '../DropDown/DropDown'
-import './SearchForSpecialty.scss'
+import './SearchBySpecialty.scss'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import {
+  setSpecialty,
+  selectSearchBySpecialty,
+} from '../../store/searchBySpecialtySlice'
 import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
-const SearchForSpecialty: FC<{
+const SearchBySpecialty: FC<{
   fn?: () => void
   formStyle?: object
   inputStyle?: object
@@ -18,29 +22,15 @@ const SearchForSpecialty: FC<{
   const [showDropDown, setShowDropDown] = useState<boolean>(false)
   const [selectSpecialty, setSelectSpecialty] = useState<string>('')
   const [specialtiesList, setSpecialtiesList] = useState<SpecialtyResType[]>([])
-
-  const specialties = () => {
-    return [
-      'Frontend',
-      'Backend',
-      'FullStack',
-      'Designer',
-      'Python developer',
-      'Data Since',
-      'Frontend',
-      'Backend',
-      'FullStack',
-      'Frontend',
-      'Backend',
-      'FullStack',
-    ]
-  }
+  const [filteredSpecialties, setFilteredSpecialties] = useState<
+    SpecialtyResType[]
+  >([])
 
   useEffect(() => {
     const fetchSpecialties = async () => {
       try {
         const specialties = await getAllSpecialties()
-        if (specialties) {
+        if (specialties?.count) {
           setSpecialtiesList(specialties.results)
           dispatch(changreMainPreloader(false))
         }
@@ -58,7 +48,6 @@ const SearchForSpecialty: FC<{
 
     fetchSpecialties()
   }, [])
-  console.log(specialtiesList)
 
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown)
@@ -74,6 +63,40 @@ const SearchForSpecialty: FC<{
     setSelectSpecialty(specialty)
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value
+    setShowDropDown(true)
+
+    // Filter specialties based on the input value
+    const filtered = specialtiesList.filter((item) =>
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
+    )
+
+    // Set the filtered specialties in the state
+    setFilteredSpecialties(filtered)
+
+    // Set the input value in the state
+    setSelectSpecialty(inputValue)
+  }
+
+  const handleButtonClick = () => {
+    // dispatch(setSpecialty({ specialty: '' }))
+    toggleDropDown()
+  }
+
+  useEffect(() => {
+    if (!showDropDown && selectSpecialty) {
+      dispatch(setSpecialty({ specialty: selectSpecialty }))
+    }
+  }, [showDropDown, selectSpecialty])
+
+  // submit input with "Enter" key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleButtonClick()
+    }
+  }
+
   return (
     <div className="search-for-specialty" style={formStyle}>
       <input
@@ -81,22 +104,22 @@ const SearchForSpecialty: FC<{
         type="text"
         placeholder="Спеціалізація"
         value={selectSpecialty}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSelectSpecialty(e.target.value)
-        }
+        onChange={(e) => handleInputChange(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
         style={inputStyle}
       ></input>
       <button
         className="search-for-specialty__button"
         style={buttonStyle}
-        onClick={(): void => toggleDropDown()}
-        onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-          dismissHandler(e)
-        }
+        onClick={(): void => {
+          handleButtonClick()
+        }}
+        onBlur={(e) => dismissHandler(e)}
       >
         {showDropDown && (
           <DropDown
             specialties={specialtiesList}
+            filteredSpecialties={filteredSpecialties}
             showDropDown={false}
             toggleDropDown={(): void => toggleDropDown()}
             specialtySelection={specialtySelection}
@@ -125,4 +148,4 @@ const SearchForSpecialty: FC<{
   )
 }
 
-export default SearchForSpecialty
+export default SearchBySpecialty

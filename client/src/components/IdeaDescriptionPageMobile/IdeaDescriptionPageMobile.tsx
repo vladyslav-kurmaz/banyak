@@ -5,6 +5,7 @@ import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQ
 import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
 import plugIcon from '../../image/logo/small_logo.webp'
 import { IdeaRespType, TalentRespType } from '../../types/types'
+import useUUID from '../../hooks/useUUID'
 
 import './IdeaDescriptionPageMobile.scss'
 
@@ -17,6 +18,9 @@ function IdeaDescriptionPageMobile({
   ideaInfo?: IdeaRespType
   talentInfo?: TalentRespType
 }) {
+  const ideaSpecializationKeys = useUUID(ideaInfo?.specialization.length)
+  const ideaStackKeys = useUUID(ideaInfo?.stack.length)
+  const talentStackKeys = useUUID(talentInfo?.stack.length)
   return (
     <div className="mobile-idea-description">
       <div className="mobile-idea-description__content-wraper">
@@ -67,9 +71,9 @@ function IdeaDescriptionPageMobile({
           </h4>
           {isIdea ? (
             <ul className="mobile-idea-description__stack-items-wraper">
-              {ideaInfo?.stack.map((technology) => (
+              {ideaInfo?.stack.map((technology, index) => (
                 <li
-                  key={uuidv4()}
+                  key={ideaStackKeys[index]}
                   className="mobile-idea-description__stack-item"
                 >
                   {`+${technology.name}`}
@@ -78,9 +82,9 @@ function IdeaDescriptionPageMobile({
             </ul>
           ) : (
             <ul className="mobile-idea-description__stack-items-wraper">
-              {talentInfo?.stack.map((technology) => (
+              {talentInfo?.stack.map((technology, index) => (
                 <li
-                  key={uuidv4()}
+                  key={talentStackKeys[index]}
                   className="mobile-idea-description__stack-item"
                 >
                   {`+${technology.name}`}
@@ -95,9 +99,9 @@ function IdeaDescriptionPageMobile({
               Потрібні фахівці:
             </h4>
             <ul className="mobile-idea-description__specialities-wraper">
-              {ideaInfo?.specialization.map((speciality) => (
+              {ideaInfo?.specialization.map((speciality, index) => (
                 <li
-                  key={uuidv4()}
+                  key={ideaSpecializationKeys[index]}
                   className="mobile-idea-description__specialities-item"
                 >
                   {speciality.name}

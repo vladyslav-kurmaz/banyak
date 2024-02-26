@@ -1,11 +1,15 @@
 import { useAppDispatch } from '../hooks/reduxToolkidHooks'
 import useHttp from '../hooks/httpHook'
 
-import { changeUserProfile } from '../store/userSlice'
+import { setUserProfile } from '../store/userSlice'
 import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
 
 import workWithCookies from '../utils/workWithCookies'
-import { ServerResForAllSpecialtiesType } from '../types/types'
+import {
+  ServerResForAllSpecialtiesType,
+  ServerResForIdeas,
+  ServerResForTalents,
+} from '../types/types'
 
 const ServiceBanyak = () => {
   const dispatch = useAppDispatch()
@@ -19,22 +23,46 @@ const ServiceBanyak = () => {
   const hostname =
     window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi
 
-  const singUpNewUser = (body: BodyInit | null | undefined) => {
-    const req = request(`${hostname}/api/v1/users/register/`, {
+  const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
+  const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
+  const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
+  const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
+  const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
+  const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
+
+  const handleError = (error: any) => {
+    if (error instanceof Error) {
+      console.error(error.stack)
+      throw error
+    } else {
+      console.error('An unknown error occurred:', error)
+    }
+
+    return null
+  }
+
+  const singUpNewUser = async (body: BodyInit | null | undefined) => {
+    return fetch(USER_REGISTRATION_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
-    console.log(req)
-    return req
+      .then((response) => {
+        console.log('singUpNewUser resp', response.statusText)
+        return response
+      })
+      .catch((error) => {
+        handleError(error)
+      })
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
-    const req = await request(`${hostname}/api/v1/users/login/`, {
+    const req = await request(USER_LOGIN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
+
     return req
   }
 
@@ -44,7 +72,7 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
     try {
-      const req = await request(`${hostname}/api/v1/users/user-profile/`, {
+      const req = await request(USER_PROFILE_URL, {
         method: method,
         headers:
           typeof body === 'string'
@@ -56,7 +84,7 @@ const ServiceBanyak = () => {
         body: body,
       })
       const reqJson = await req.json()
-      dispatch(changeUserProfile(await reqJson))
+      dispatch(setUserProfile(await reqJson))
       return await reqJson
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
@@ -77,16 +105,13 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
     try {
-      const req = await request(
-        `${hostname}/api/v1/users/user-profile-avatar/`,
-        {
-          method: method,
-          headers: { Authorization: `Bearer ${token}` },
-          body: body,
-        }
-      )
+      const req = await request(USER_PROFILE_AVATAR, {
+        method: method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: body,
+      })
       // const reqJson = await req.json()
-      // dispatch(changeUserProfile(await reqJson))
+      // dispatch(setUserProfile(await reqJson))
       return await req.json()
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
@@ -106,7 +131,7 @@ const ServiceBanyak = () => {
 
     try {
       // eslint-disable-next-line
-      const req = await request(`${hostname}/api/v1/users/logout/`, {
+      const req = await request(USER_LOGOUT_URL, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${tokensesion}`,
@@ -115,7 +140,7 @@ const ServiceBanyak = () => {
         body: JSON.stringify({ refresh_token: tokenid }),
       })
 
-      dispatch(changeUserProfile(null))
+      dispatch(setUserProfile(null))
       deleteCookie('sessiontokenid')
       deleteCookie('tokenid')
       // return req;
@@ -137,13 +162,12 @@ const ServiceBanyak = () => {
     const tokenid = getCookies('tokenid')
 
     try {
-      const req = await request(`${hostname}/api/v1/users/new-access/`, {
+      const req = await request(USER_NEW_ACCESS, {
         method: 'PUT',
         headers: { 'Content-Type': 'application-json' },
         body: JSON.stringify({ refresh_token: tokenid }),
       })
       const newToken = await req.json()
-      console.log('try')
 
       setCookies('sessiontokenid', await newToken.access_token, 1)
 
@@ -151,7 +175,7 @@ const ServiceBanyak = () => {
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         if (e.status === 403) {
-          dispatch(changeUserProfile(null))
+          dispatch(setUserProfile(null))
           deleteCookie('sessiontokenid')
           deleteCookie('tokenid')
         }
@@ -189,31 +213,84 @@ const ServiceBanyak = () => {
     }
   }
 
-  const getTalents = async () => {
+  const getTalents = async (
+    filteredBySpecialty?: string,
+    filteredByStack?: string,
+    currentPage?: number
+  ) => {
     try {
-      const req = await request(`${hostname}/api/v1/talents/talent/`, {})
+      // const response = filteredBySpecialty
+      //   ? await fetch(
+      //       `${hostname}/api/v1/talents/talent/talents-filter?${new URLSearchParams(
+      //         {
+      //           speciality: filteredBySpecialty,
+      //         }
+      //       )}`
+      //     )
+      //   : await request(`${hostname}/api/v1/talents/talent/`, {})
+      const baseUrl = `${hostname}/api/v1/talents/talent/`
+      const params = new URLSearchParams()
+      let url = `${hostname}/api/v1/talents/talent/`
 
-      if (!req.ok) {
-        return Promise.reject(req)
+      if (filteredBySpecialty) {
+        url = `${baseUrl}talents-filter?`
+        params.set('speciality', filteredBySpecialty)
+      } else if (filteredByStack) {
+        url = `${baseUrl}search?`
+        params.set('search', filteredByStack)
+      } else if (currentPage) {
+        url = `${baseUrl}?`
+        params.set('page_size', `${currentPage}`)
       }
 
-      return Promise.resolve(req)
-    } catch (e) {
-      return Promise.reject(e)
+      const response = await fetch(`${url}${params.toString()}`)
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
+      }
+
+      return response.json() as Promise<ServerResForTalents>
+    } catch (error) {
+      handleError(error)
     }
   }
 
-  const getIdeas = async () => {
+  const getIdeas = async (
+    filteredBySpecialty?: string,
+    filteredByStack?: string,
+    currentPage?: number
+  ) => {
     try {
-      const req = await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      // const response = filteredBySpecialty
+      //   ? await fetch(
+      //       `${hostname}/api/v1/ideas/ideas/ideas-filter?${new URLSearchParams({
+      //         speciality: filteredBySpecialty,
+      //       })}`
+      //     )
+      //   : await request(`${hostname}/api/v1/ideas/ideas/`, {})
+      const baseUrl = `${hostname}/api/v1/ideas/ideas/`
+      const params = new URLSearchParams()
+      let url = `${hostname}/api/v1/ideas/ideas/`
 
-      if (!req.ok) {
-        return Promise.reject(req)
+      if (filteredBySpecialty) {
+        url = `${baseUrl}ideas-filter?`
+        params.set('speciality', filteredBySpecialty)
+      } else if (filteredByStack) {
+        url = `${baseUrl}search?`
+        params.set('search', filteredByStack)
+      } else if (currentPage) {
+        url = `${baseUrl}?`
+        params.set('page_size', `${currentPage}`)
       }
 
-      return Promise.resolve(req)
-    } catch (e) {
-      return Promise.reject(e)
+      const response = await fetch(`${url}${params.toString()}`)
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
+      }
+      return response.json() as Promise<ServerResForIdeas>
+    } catch (error) {
+      handleError(error)
     }
   }
 
@@ -224,30 +301,45 @@ const ServiceBanyak = () => {
         {}
       )
 
-      // const fetchSpecialities = await fetch(
-      //   `${hostname}/api/v1/users/specilaity-list/`
-      // )
-
-      // const response = fetchSpecialities
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
       return response.json() as Promise<ServerResForAllSpecialtiesType>
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.stack)
-        throw error
-      } else {
-        console.error('An unknown error occurred:', error)
+      handleError(error)
+    }
+  }
+
+  const updateUserProfile = async (
+    token: string,
+    body?: BodyInit | null | undefined
+  ) => {
+    try {
+      const response = await fetch(USER_PROFILE_URL, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
 
-      return null
+      console.log('updateUserProfile response', response)
+      return response.json()
+    } catch (error) {
+      handleError(error)
     }
   }
 
   return {
+    hostname,
+    handleError,
     singUpNewUser,
+    updateUserProfile,
     loginUser,
     exitUser,
     profileUser,

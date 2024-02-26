@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
 import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQuantity'
 import QuestionMark from '../../atoms/QuestionMark/QuestionMark'
 import plugIcon from '../../image/logo/small_logo.webp'
 import { IdeaRespType, TalentRespType } from '../../types/types'
+import useUUID from '../../hooks/useUUID'
 
 import './IdeaDescriptionPageDesktop.scss'
 
@@ -17,7 +17,9 @@ function IdeaDescriptionPageDesktop({
   ideaInfo?: IdeaRespType
   talentInfo?: TalentRespType
 }) {
-  console.log('Received ideaInfo:', talentInfo)
+  const ideaSpecializationKeys = useUUID(ideaInfo?.specialization.length)
+  const ideaStackKeys = useUUID(ideaInfo?.stack.length)
+  const talentStackKeys = useUUID(talentInfo?.stack.length)
   return (
     <div className="idea-description">
       <div className="idea-description__logo-specialities-question-wraper">
@@ -34,9 +36,9 @@ function IdeaDescriptionPageDesktop({
                 Потрібні фахівці:
               </h4>
               <ul>
-                {ideaInfo?.specialization.map((speciality) => (
+                {ideaInfo?.specialization.map((speciality, index) => (
                   <li
-                    key={uuidv4()}
+                    key={ideaSpecializationKeys[index]}
                     className="idea-description__specialities-item"
                   >
                     {speciality.name}
@@ -87,9 +89,9 @@ function IdeaDescriptionPageDesktop({
             </h4>
             {isIdea ? (
               <ul className="idea-description__info-stack-items-wraper">
-                {ideaInfo?.stack.map((technology) => (
+                {ideaInfo?.stack.map((technology, index) => (
                   <li
-                    key={uuidv4()}
+                    key={ideaStackKeys[index]}
                     className="idea-description__info-stack-item"
                   >
                     {`+${technology.name}`}
@@ -98,9 +100,9 @@ function IdeaDescriptionPageDesktop({
               </ul>
             ) : (
               <ul className="idea-description__info-stack-items-wraper">
-                {talentInfo?.stack.map((technology) => (
+                {talentInfo?.stack.map((technology, index) => (
                   <li
-                    key={uuidv4()}
+                    key={talentStackKeys[index]}
                     className="idea-description__info-stack-item"
                   >
                     {`+${technology.name}`}

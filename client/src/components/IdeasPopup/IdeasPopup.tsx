@@ -20,11 +20,26 @@ const IdeasPopup = ({
   const { getIdeas } = ServiceBanyak()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    getIdeas()
-      .then((res) => res.json())
-      .then((res) => setIdeas(res))
-      .then(() => dispatch(changreMainPreloader(false)))
-      .catch(() => dispatch(changreMainPreloader(false)))
+    const fetchIdeas = async () => {
+      try {
+        const ideas = await getIdeas()
+        if (ideas) {
+          setIdeas(ideas.results)
+          dispatch(changreMainPreloader(false))
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.stack)
+          throw error
+        } else {
+          console.error('An unknown error occurred:', error)
+        }
+
+        return null
+      }
+    }
+
+    fetchIdeas()
   }, [])
 
   return (

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,9 @@ SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://banyak-api.onrender.com']
+ALLOWED_HOSTS = ['*']
+
+# ALLOWED_HOSTS = ['https://banyak-api.onrender.com']
 
 # Application definition
 
@@ -97,6 +100,10 @@ DATABASES = {
 }
 
 # DATABASES = {
+#     'default': dj_database_url.parse(os.getenv('DB_URL'))
+# }
+
+# DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         'NAME': os.getenv('POSTGRES_NAME'),
@@ -159,29 +166,23 @@ REST_FRAMEWORK = {
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'src.users.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
-# GOOGLE_SECRET_KEY = os.getenv('GOOGLE_SECRET_KEY')
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_SECRET_KEY = os.getenv('GOOGLE_SECRET_KEY')
 
-GOOGLE_CLIENT_ID = ''
-GOOGLE_SECRET_KEY = ''
 
-# GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
-# GITHUB_SECRET_KEY = os.getenv('GITHUB_SECRET_KEY')
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
+GITHUB_SECRET_KEY = os.getenv('GITHUB_SECRET_KEY')
 
-GITHUB_CLIENT_ID = ''
-GITHUB_SECRET_KEY = ''
+LINKEDIN_CLIENT_ID = os.getenv('LINKEDIN_CLIENT_ID')
+LINKEDIN_SECRET_KEY = os.getenv('LINKEDIN_SECRET_KEY')
 
-# LINKEDIN_CLIENT_ID = os.getenv('LINKEDIN_CLIENT_ID')
-# LINKEDIN_SECRET_KEY = os.getenv('LINKEDIN_SECRET_KEY')
-
-LINKEDIN_CLIENT_ID = ''
-LINKEDIN_SECRET_KEY = ''
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -224,11 +225,11 @@ SWAGGER_SETTINGS = {
 
 #   Cors
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    'https://banyak-eta.vercel.app'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://banyak-eta.vercel.app'
+# ]
 
 CORS_ALLOW_METHODS = (
     'DELETE',

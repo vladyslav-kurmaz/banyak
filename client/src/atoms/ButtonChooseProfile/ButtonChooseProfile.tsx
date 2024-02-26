@@ -1,46 +1,37 @@
-import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
 import { useNavigate } from 'react-router-dom'
 
-import { changreMainPreloader } from "../../components/SettingMenu/StateElementSlice";
+import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
-import ServiceBanyak from "../../service/ServiceBanyak";
-import workWithCookies from "../../utils/workWithCookies";
+import ServiceBanyak from '../../service/ServiceBanyak'
+import workWithCookies from '../../utils/workWithCookies'
 
 import './ButtonChooseProfile.scss'
 
 const ButtonChooseProfile = ({
   text,
-  type,
+  isTalent,
 }: {
   text: string
-  type: boolean
+  isTalent: boolean
 }) => {
+  const { updateUserProfile, handleError } = ServiceBanyak()
+  const { getCookies } = workWithCookies()
+  const dispatch = useAppDispatch()
 
-  const { profileUser } = ServiceBanyak();
-  const { getCookies } = workWithCookies();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
-  const navigate = useNavigate();
-
-  const chooseProfile = async (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const typeProfile = target.getAttribute("data-type");
-    const token = getCookies("sessiontokenid");
-    console.log(token);
+  const chooseProfile = async () => {
+    const token = getCookies('sessiontokenid')
 
     if (token) {
       try {
-        // eslint-disable-next-line
-        const getUser = await profileUser(
-          token,
-          "PUT",
-          JSON.stringify({ is_talent: typeProfile })
-        );
-        navigate("/");
-        dispatch(changreMainPreloader(false));
+        await updateUserProfile(token, JSON.stringify({ is_talent: isTalent }))
+
+        navigate('/profile')
+        dispatch(changreMainPreloader(false))
       } catch (e) {
-        console.error(e);
+        handleError(e)
       }
     }
   }
@@ -48,8 +39,8 @@ const ButtonChooseProfile = ({
   return (
     <button
       className="button-chose-profile"
-      data-type={type}
-      onClick={(e) => chooseProfile(e)}
+      data-type={isTalent}
+      onClick={chooseProfile}
     >
       {text}
     </button>

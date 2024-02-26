@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import plugIcon from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { TalentRespType } from '../../types/types'
@@ -7,12 +8,14 @@ import ViewsIconAndQuantity from '../../atoms/ViewsIconAndQuantity/ViewsIconAndQ
 import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 
 import './Talent.scss'
+import useUUID from '../../hooks/useUUID'
 
 const TALENT_TITLE_LENGTH = 30
 const TALENT_DESCRIPTION_LENGTH = 60
 const TALENT_STACK_ITEM_LENGTH = 8
 
 const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
+  const stackKeys = useUUID(talentInfo.stack.length)
   const renderStack = (data: { name: string }[]) => {
     return data.map((item, i) => {
       const itemLengh =
@@ -24,7 +27,10 @@ const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
             )}...`
       if (i < 3) {
         return (
-          <li className="talant__container-technologies-item">
+          <li
+            key={stackKeys[i]}
+            className="talant__container-technologies-item"
+          >
             <span className="talant__container-technologies-item-teh">
               {itemLengh}
             </span>
@@ -71,9 +77,9 @@ const Talent = ({ talentInfo }: { talentInfo: TalentRespType }) => {
             <ButtonSmall
               text="Портфоліо"
               style={{
-                'padding-bottom': '2px',
-                'padding-top': '2px',
-                'font-size': '15px',
+                paddingBottom: '2px',
+                paddingTop: '2px',
+                fontSize: '15px',
               }}
               href={talentInfo.portfolio}
             />

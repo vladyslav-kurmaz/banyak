@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import useUUID from '../../hooks/useUUID'
 
 import './RenderStack.scss'
 
@@ -9,6 +9,7 @@ function RenderStack({
   stack: { name: string }[]
   stackItemsQuantity?: number
 }) {
+  const stackKeys = useUUID(stack.length)
   if (stack.length > stackItemsQuantity) {
     return (
       <>
@@ -16,7 +17,7 @@ function RenderStack({
           i < stackItemsQuantity ? (
             <span
               className="idea-talent-stack-item"
-              key={uuidv4()}
+              key={stackKeys[i]}
             >{`+${technology.name}`}</span>
           ) : (
             ''
@@ -28,10 +29,10 @@ function RenderStack({
   } else if (stack.length < stackItemsQuantity && stack.length > 0) {
     return (
       <>
-        {stack.map((technology) => (
+        {stack.map((technology, index) => (
           <span
             className="idea-talent-stack-item"
-            key={uuidv4()}
+            key={stackKeys[index]}
           >{`+${technology.name}`}</span>
         ))}
       </>

@@ -1,41 +1,43 @@
-import { useEffect, useRef, memo, useState } from "react";
+import { useEffect, useRef, memo, useState } from 'react'
 
-import Tagify from "@yaireo/tagify";
-import { TGetAllStack, TIdeasChange, TprofileChange } from "../../types/types";
+import Tagify from '@yaireo/tagify'
+import {
+  TGetAllSpeciality,
+  TGetAllStack,
+  TIdeasChange,
+  TprofileChange,
+} from '../../types/types'
 
-import "@yaireo/tagify/src/tagify.scss";
-import './TagFieldSpeciality.scss';
+import '@yaireo/tagify/src/tagify.scss'
+import './TagFieldSpeciality.scss'
 
 const TagFieldSpeciality = ({
-    speciality,
-    allSpeciality,
-    changeSpeciality
-  }: {
-    speciality: {name: string}[];
-    allSpeciality: string[];
-    changeSpeciality: React.Dispatch<React.SetStateAction<TprofileChange | null>> 
-  }) => {
-  
-    const tagifyRef = useRef(null);  
-    const [find, setFind] = useState(false);
-  
-    
-  
-    useEffect(() => {
-      if (tagifyRef.current !== null && allSpeciality as TGetAllStack ) {
-        const tagify = new Tagify(tagifyRef.current, {
-          enforceWhitelist: false,
-          whitelist: allSpeciality,
-          duplicates: true,
-          placeholder: "Введіть технології",
-          // editTags: false,
-          dropdown: {
-            maxItems: 20, 
-          },
-          templates: {
-            tag({value}){
-              return find ? 
-                    `<div class="custom-tag">
+  speciality,
+  allSpeciality,
+  changeSpeciality,
+}: {
+  speciality: { name: string }[]
+  allSpeciality: string[]
+  changeSpeciality: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+}) => {
+  const tagifyRef = useRef(null)
+  const [find, setFind] = useState(false)
+
+  useEffect(() => {
+    if (tagifyRef.current !== null && (allSpeciality as TGetAllSpeciality)) {
+      const tagify = new Tagify(tagifyRef.current, {
+        enforceWhitelist: false,
+        whitelist: allSpeciality,
+        duplicates: true,
+        placeholder: 'Введіть технології',
+        // editTags: false,
+        dropdown: {
+          maxItems: 20,
+        },
+        templates: {
+          tag({ value }) {
+            return find
+              ? `<div class="custom-tag">
  
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="11" stroke="#061730" stroke-width="2"/>
@@ -44,8 +46,7 @@ const TagFieldSpeciality = ({
                       <span class="tag-label">${value}</span>
                       
                     </div>`
-                    :
-                    `<div class="custom-tag">
+              : `<div class="custom-tag">
  
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <g clip-path="url(#clip0_168_8867)">
@@ -63,71 +64,72 @@ const TagFieldSpeciality = ({
                       
                     </div>`
 
-                      // <span class="${this.settings.classNames.tagText}">${tagData[this.settings.tagTextProp] || tagData.value}</span>
-                      // ${this.getAttributes(tagData)}
+            // <span class="${this.settings.classNames.tagText}">${tagData[this.settings.tagTextProp] || tagData.value}</span>
+            // ${this.getAttributes(tagData)}
 
-              // return `<tag class="custom-tag"><i class="custom-icon">X</i>${value}</tag>`;
-            }
-          }
-        });      
-    
-        tagify.on("add", (e) => {  
-    
-          if (e.detail.data !== undefined ) {
-    
-            const addedTags = e.detail.data.value.toUpperCase(); 
-   
-            changeSpeciality(state => state && state !== null ? 
-              ({
-                ...state,
-                speciality: [...state.speciality, {name: addedTags.toUpperCase()}]
-              })
-              :
-              null
-            )
-          }
-        });
-    
-        tagify.on("remove", (e) => {
-    
-          if (e.detail.data !== undefined ) {
-            
-            const deleteTags = e.detail.data.value           
-            
-            changeSpeciality(state => state && state !== null ? 
-              ({
-                ...state,
-                speciality: state.speciality.filter(item => item.name !== deleteTags)
-              })
-              :
-              null
-            )
-          }
-        });  
-      } 
-      // eslint-disable-next-line
-    }, []);
-   
-    const renderTags = () => {
-      if (speciality && speciality.length > 0) {
-        return speciality.map((item) => item.name)
-      } else {
-        return []
-      }
+            // return `<tag class="custom-tag"><i class="custom-icon">X</i>${value}</tag>`;
+          },
+        },
+      })
+
+      tagify.on('add', (e) => {
+        if (e.detail.data !== undefined) {
+          const addedTags = e.detail.data.value.toUpperCase()
+
+          changeSpeciality((state) =>
+            state && state !== null
+              ? {
+                  ...state,
+                  speciality: [
+                    ...state.speciality,
+                    { name: addedTags.toUpperCase() },
+                  ],
+                }
+              : null
+          )
+        }
+      })
+
+      tagify.on('remove', (e) => {
+        if (e.detail.data !== undefined) {
+          const deleteTags = e.detail.data.value
+
+          changeSpeciality((state) =>
+            state && state !== null
+              ? {
+                  ...state,
+                  speciality: state.speciality.filter(
+                    (item) => item.name !== deleteTags
+                  ),
+                }
+              : null
+          )
+        }
+      })
     }
-  
-    return (
-      <div className="tags-field-spesiality">
-        <textarea
-          className="tags-field-spesiality__textarea"
-          name=""
-          id=""
-          value={renderTags()}
-          onChange={() => {''}}
-          ref={tagifyRef}
-        ></textarea>
-      </div>
-    );
+    // eslint-disable-next-line
+  }, [])
+
+  const renderTags = () => {
+    if (speciality && speciality.length > 0) {
+      return speciality.map((item) => item.name)
+    } else {
+      return []
+    }
+  }
+
+  return (
+    <div className="tags-field-spesiality">
+      <textarea
+        className="tags-field-spesiality__textarea"
+        name=""
+        id=""
+        value={renderTags()}
+        onChange={() => {}}
+        ref={tagifyRef}
+      ></textarea>
+    </div>
+  )
 }
 
-export default memo(TagFieldSpeciality);
+export default memo(TagFieldSpeciality)

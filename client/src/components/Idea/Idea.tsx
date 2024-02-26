@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import plugIcon from '../../image/logo/small_logo.webp'
 import { IdeaRespType } from '../../types/types'
 import makesTextShorterAddsDots from '../../utils/makesTextShorterAddsDots'
@@ -8,18 +8,24 @@ import DisplayDateFromDB from '../../atoms/DisplayDateFromDB/DisplayDateFromDB'
 import RenderStack from '../../atoms/RenderStack/RenderStack'
 
 import './Idea.scss'
+import useUUID from '../../hooks/useUUID'
 
 const IDEA_TITLE_LENGTH = 24
 const IDEA_DESCRIPTION_LENGTH = 90
 const SPECIALITY_NAME_LENGTH = 12
-const STACK_ITEMS_QUANTITY = 4
+const STACK_ITEMS_QUANTITY = 3
 
 const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
+  const specialtiesKeys = useUUID(idea.specialization.length)
+
   const renderSpeciality = (specialities: { name: string }[]) => {
     return specialities.map((speciality, i) => {
       if (i < 2) {
         return (
-          <li key={uuidv4()} className="idea__container-specialty-item">
+          <li
+            key={specialtiesKeys[i]}
+            className="idea__container-specialty-item"
+          >
             <span className="idea__container-specialty-item-status "></span>
             <span className="idea__container-specialty-item-text">
               {makesTextShorterAddsDots(
@@ -96,7 +102,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
             )}
           </div>
           <div className="idea__metric-metrics">
-            <ViewsIconAndQuantity viewsQuantity={10} />
+            <ViewsIconAndQuantity viewsQuantity={idea.idea_views} />
             <DisplayDateFromDB date={idea.updated_at} />
           </div>
         </div>
@@ -112,7 +118,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
           />
           <DisplayDateFromDB date={idea.updated_at} />
 
-          <ViewsIconAndQuantity viewsQuantity={10} />
+          <ViewsIconAndQuantity viewsQuantity={idea.idea_views} />
         </div>
         <div className="idea-mobile__container">
           <div className="idea-mobile__container-info">
