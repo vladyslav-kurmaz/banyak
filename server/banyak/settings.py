@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from datetime import timedelta
 from pathlib import Path
-# from .asgi import application
 from dotenv import load_dotenv
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,32 +23,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^g1drk3ru@^4#-c3!w(n(^)5htd-69-h(8vcbe*=_5p^lr$j2u'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+
+# ALLOWED_HOSTS = ['https://banyak-api.onrender.com']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
-    # 'daphne',
     'django.contrib.staticfiles',
 
+    'channels',
     'rest_framework',
     'rest_framework_simplejwt',
-    # 'rest_framework.authtoken',
     'drf_yasg',
-    'channels',
     'corsheaders',
 
+    'src.chat',
     'src.users',
     'src.user_idea',
-    'src.chat',
     'src.talent'
 ]
 
@@ -88,12 +90,28 @@ ASGI_APPLICATION = 'banyak.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+load_dotenv()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.parse(os.getenv('DB_URL'))
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.getenv('POSTGRES_NAME'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -128,6 +146,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
+SITE_ID = 1
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -143,22 +166,23 @@ REST_FRAMEWORK = {
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'src.users.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
 
-
 AUTH_USER_MODEL = 'users.CustomUser'
 
-load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_SECRET_KEY = os.getenv('GOOGLE_SECRET_KEY')
+
 
 GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID')
 GITHUB_SECRET_KEY = os.getenv('GITHUB_SECRET_KEY')
 
 LINKEDIN_CLIENT_ID = os.getenv('LINKEDIN_CLIENT_ID')
 LINKEDIN_SECRET_KEY = os.getenv('LINKEDIN_SECRET_KEY')
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -188,15 +212,24 @@ SWAGGER_SETTINGS = {
 #     },
 # }
 
+
 # CHANNEL_LAYERS = {
 #     'default': {
-#         'BACKEND': "channels.layers.InMemoryChannelLayer"
-#         }
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'ROUTING': 'banyak.asgi.application',
+#         'CONFIG': {
+#             'hosts': [(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))],
+#         },
+#     },
 # }
 
 #   Cors
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     'https://banyak-eta.vercel.app'
+# ]
 
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -217,9 +250,11 @@ CORS_ALLOWED_HEADERS = (
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
-
 ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 48
 
 SECRET_JWT_KEY = os.getenv('SECRET_JWT_KEY')
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+
+IP_LOCATION_URL = os.getenv('IP_LOCATION_URL')

@@ -1,27 +1,27 @@
 .ideaAndTalent {
   margin: 0 auto;
   width: 100%;
+  height: auto;
   position: relative;
-  padding: 0 24px;
-  padding-bottom: 150px;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding: 0 34px 150px 34px;
+
+  &__search-wraper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
 }
 
 @media screen and (max-width: 810px) {
   .ideaAndTalent {
-    
-  display: flex;
-  justify-content: space-around;
-  
-  
+    padding: 0 15px 150px 15px;
   }
 }
 
-@media screen and (max-width: 760px) {
-  .ideaAndTalent {
-    flex-direction: column;
-    align-items: center;
-  
-  }
-}
+// @media screen and (max-width: 760px) {
+//   .ideaAndTalent {
+//     // flex-direction: column;
+//     // align-items: center;
+//   }
+// }

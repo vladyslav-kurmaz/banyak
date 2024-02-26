@@ -1,64 +1,65 @@
-import { FC } from "react";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/reduxToolkidHooks";
+import { FC } from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
 import {
   changeLanguage,
   changeStatusInstr,
   changeLoginOrSingUp,
-} from "../../components/SettingMenu/StateElementSlice";
-import { changeTypeUser } from "../../store/userSlice";
+} from '../../components/SettingMenu/StateElementSlice'
+import { selectUserInfo, setTypeUser } from '../../store/userSlice'
 
-import "./SwitchToggle.scss";
+import './SwitchToggle.scss'
 
 type SwitchToggle = {
-  prop1: string;
-  prop2: string;
-};
+  prop1: string
+  prop2: string
+}
 
 const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const { mainLanguage, statusInstr, loginOrSingUp } = useAppSelector(
     (state) => state.stateElement
-  );
-  const { typeUser } = useAppSelector((state) => state.userInfo);
+  )
+  const { typeUser } = useAppSelector(selectUserInfo)
+  const translateTypeUser = typeUser ? 'Я талант' : 'Я власник ідеї'
 
   const changeActiveLanguage = (status: string) => {
     if (
       status === mainLanguage ||
       status === statusInstr ||
       status === loginOrSingUp ||
-      status === typeUser
+      status === translateTypeUser
     ) {
       return {
-        backgroundColor: "#1C145E",
-        border: "2px solid #1C145E",
-        color: "#fff",
-      };
+        backgroundColor: '#1C145E',
+        border: '2px solid #1C145E',
+        color: '#fff',
+      }
     } else {
-      return {};
+      return {}
     }
-  };
+  }
 
   const changeLang = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLElement
 
     switch (prop1 || prop2) {
-      case "Власник ідеї" || "Талант":
-        dispatch(changeStatusInstr(target.getAttribute("data-prop")));
-        break;
-      case "УКР" || "ENG":
-        dispatch(changeLanguage(target.getAttribute("data-prop")));
-        break;
-      case "РЕЄСТРАЦІЯ" || "ВХІД":
-        dispatch(changeLoginOrSingUp(target.getAttribute("data-prop")));
-        break;
-      case "Я власник ідеї" || "Я талант":
-        dispatch(changeTypeUser(target.getAttribute("data-prop")));
-        break;
+      case 'Власник ідеї' || 'Талант':
+        dispatch(changeStatusInstr(target.getAttribute('data-prop')))
+        break
+      case 'УКР' || 'ENG':
+        dispatch(changeLanguage(target.getAttribute('data-prop')))
+        break
+      case 'РЕЄСТРАЦІЯ' || 'ВХІД':
+        dispatch(changeLoginOrSingUp(target.getAttribute('data-prop')))
+        break
+      case 'Я власник ідеї' || 'Я талант':
+        target.getAttribute('data-prop') === 'Я власник ідеї'
+          ? dispatch(setTypeUser(false))
+          : dispatch(setTypeUser(true))
+
+        break
     }
-  };
+  }
 
   return (
     <div className="switch-toggle">
@@ -79,7 +80,7 @@ const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
         {prop2}
       </span>
     </div>
-  );
-};
+  )
+}
 
-export default SwitchToogle;
+export default SwitchToogle

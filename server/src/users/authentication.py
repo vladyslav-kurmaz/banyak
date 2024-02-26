@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
+from .models import BlackListToken
 from .models import CustomUser
 import jwt
 
@@ -38,10 +40,11 @@ class JWTAuthentication(authentication.BaseAuthentication):
     @classmethod
     def create_access(cls, user):
         payload = {
+            'user_id': str(user.id),
             'user_email': user.email,
             'user_first_name': user.first_name,
             'user_last_name': user.last_name,
-            'exp': datetime.utcnow() + timedelta(minutes=2),
+            'exp': datetime.utcnow() + timedelta(days=1),
             'type': 'access'
         }
         access_token = jwt.encode(payload, settings.SECRET_JWT_KEY, algorithm=settings.ALGORITHM)
@@ -51,7 +54,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def create_refresh(cls, user):
         payload = {
             'user_id': str(user.id),
-            'exp': datetime.utcnow() + timedelta(minutes=5),
+            'exp': datetime.utcnow() + timedelta(days=2),
             'type': 'refresh'
         }
         refresh_token = jwt.encode(payload, settings.SECRET_JWT_KEY, algorithm=settings.ALGORITHM)
@@ -74,8 +77,24 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         user_id = payload.get('user_id')
         user = CustomUser.objects.get(id=user_id)
+
+        if not user:
+            raise AuthenticationFailed('User not found')
+
+        if BlackListToken.objects.filter(token=refresh_token).exists():
+            raise AuthenticationFailed('Please log in again.')
+
         access_token = cls.create_access(user)
         return access_token
+
+    @classmethod
+    def logout(cls, user, refresh_token: str):
+        cls.blacklist_refresh_token(user, refresh_token)
+
+    @classmethod
+    def blacklist_refresh_token(cls, user, refresh_token):
+        blacklist_refresh = BlackListToken.objects.create(user=user, token=refresh_token)
+        blacklist_refresh.save()
 
     @classmethod
     def get_the_token_from_header(cls, token: str):

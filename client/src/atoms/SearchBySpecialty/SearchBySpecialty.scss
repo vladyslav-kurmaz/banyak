@@ -1,0 +1,71 @@
+@import '../../scss/_mixins';
+
+.search-for-specialty {
+  box-sizing: border-box;
+  display: flex;
+  width: 285px;
+  height: 40px;
+  border: 2px solid var(--secondary-bg-darck-blue);
+  border-radius: var(--base-border-radius);
+
+  &:hover {
+    outline: 2px solid var(--base-hover-color-purple);
+  }
+
+  &__input {
+    box-sizing: border-box;
+    font-family: var(--base-font);
+    font-size: 24px;
+    width: 245px;
+    padding-left: 20px;
+    border-radius: 8px 0 0 8px;
+    border-width: 0;
+    z-index: 2;
+
+    &:hover {
+      outline: 2px solid var(--base-hover-color-purple);
+    }
+
+    &:focus {
+      color: var(--base-font-color-blue);
+      outline: 3px solid var(--base-hover-color-purple);
+    }
+  }
+
+  &__button {
+    position: relative;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-color: transparent transparent transparent
+      var(--secondary-bg-darck-blue);
+    border-radius: 0 8px 8px 0;
+    border-width: 0 0 0 2px;
+    z-index: 1;
+
+    // &:active {
+    //   transform: rotate(180deg);
+    // }
+  }
+
+  &__image {
+    z-index: 0;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    transition: rotate 1s linear;
+
+    &:active {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__activ {
+    z-index: 0;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    transform: rotate(180deg);
+  }
+}

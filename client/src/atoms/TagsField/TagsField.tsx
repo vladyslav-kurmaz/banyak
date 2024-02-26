@@ -1,98 +1,91 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from 'react'
 
-import Tags from "@yaireo/tagify/dist/react.tagify";
-// import { TagifySettings, TagData, AddEventData  } from "@yaireo/tagify";
-import Tagify from '@yaireo/tagify';
-// import 'tagify/dist/tagify.css';
+import Tagify from '@yaireo/tagify'
+import { TGetAllStack, TIdeasChange, TprofileChange } from '../../types/types'
+
 import '@yaireo/tagify/src/tagify.scss'
-import './TagsField.scss';
+import './TagsField.scss'
 
-const initialValue = [
-  'qa',
-  'front',
-  'back',
-  'design'
-];
-
-
-const TagsField = () => {
-
-  const tagifyRef = useRef(null);
+const TagsField = ({
+  stackUser,
+  allStack,
+  changeStack,
+}: {
+  stackUser: { name: string }[]
+  allStack: TGetAllStack
+  changeStack: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+}) => {
+  const tagifyRef = useRef(null)
 
   useEffect(() => {
-    // Ініціалізація бібліотеки Tagify
-
-    if (tagifyRef.current !== null) {
+    if (tagifyRef.current !== null && allStack) {
       const tagify = new Tagify(tagifyRef.current, {
-        enforceWhitelist: true, // Дозволяє додавати тільки технології з білих списків
-        whitelist: ['React', 'JavaScript', 'HTML', 'CSS', 'Adobe Ilistratore'], // Список доступних технологій
-        placeholder: "Введіть технології",
+        enforceWhitelist: false,
+        whitelist: Array.from(allStack.values(), (item) => item.name),
+
+        placeholder: 'Введіть потрібних фахівців',
         dropdown: {
-          maxItems: 20, // Максимальна кількість елементів в спадному списку
+          maxItems: 20,
         },
-      });
+      })
 
-      tagify.on('add', e => {
-        if (e.detail.data !== undefined && Array.isArray(e.detail.data)) {
-          const addedTags = e.detail.data.map(tag => tag.value);
-          console.log('Додано технології:', addedTags);
+      tagify.on('add', (e) => {
+        if (e.detail.data !== undefined) {
+          const addedTags = e.detail.data.value
+
+          changeStack((state) =>
+            state && state !== null
+              ? {
+                  ...state,
+                  stack: [...state.stack, { name: addedTags.toUpperCase() }],
+                }
+              : null
+          )
         }
-        
-      });
+      })
+
+      tagify.on('remove', (e) => {
+        if (e.detail.data !== undefined) {
+          const deleteTags = e.detail.data.value
+
+          if (changeStack) {
+            changeStack((state) =>
+              state && state !== null
+                ? {
+                    ...state,
+                    stack: state.stack.filter(
+                      (item) => item.name !== deleteTags
+                    ),
+                  }
+                : null
+            )
+          }
+        }
+      })
     }
+    // eslint-disable-next-line
+  }, [])
 
-    
-  })
-  // const baseTagifySettings: TagifySettings<TagData> = {
-  //   blacklist: [],
-  //   // maxTags: 6,
-  //   backspace: false,
-  //   whitelist: initialValue,
-  //   placeholder: "Введіть технології",
-  //   // editTags: 1,
-  //   classNames: {},
-  //   dropdown: {
-  //     enabled: 0
-  //   },
-  //   callbacks: {}
-  // };
-
-  // const handleChange = (e: CustomEvent<AddEventData<TagData>>) => {
-  //   // console.log(e.type, " ==> ", e.detail.tagify.value.map(item => item.value));
-  // };
-
-  // const settings: TagifySettings<TagData> = {
-  //   ...baseTagifySettings,
-  //   // whitelist: suggestions,
-  //   callbacks: {
-  //     add: handleChange,
-  //     remove: handleChange,
-  //     // blur: handleChange,
-  //     // edit: handleChange,
-  //     invalid: handleChange,
-  //     click: handleChange,
-  //     // focus: handleChange,
-  //     "edit:updated": handleChange,
-  //     "edit:start": handleChange
-  //   }
-  // };
-
-  
+  const renderTags = () => {
+    if (stackUser && stackUser.length > 0) {
+      return stackUser.map((item) => item.name)
+    } else {
+      return []
+    }
+  }
 
   return (
     <div className="tags-field">
-      {/* <Tags settings={settings}  showDropdown='true'/> */}
-      <textarea 
-        className="tags-field__textarea" 
-        name="" 
-        id="" 
+      <textarea
+        className="tags-field__textarea"
+        name=""
+        id=""
+        value={renderTags()}
+        onChange={() => {}}
         ref={tagifyRef}
-        
-      >
-
-      </textarea>
+      ></textarea>
     </div>
   )
 }
 
-export default TagsField;
+export default memo(TagsField)

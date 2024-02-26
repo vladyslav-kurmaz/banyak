@@ -6,9 +6,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 10px 20px;
-  background-color: $buttonBGWhite;
+  background-color: var(--secondary-bg-darck-blue);
   border-radius: 8px;
-  color: #fff;
+  color: var(--secondary-font-color-white);
   font-size: 16px;
   font-weight: 700;
   display: flex;
@@ -19,12 +19,21 @@
   width: 100%;
   border: none;
   outline: none;
-  transition: all .5s;
+  transition: all 0.5s;
   cursor: pointer;
 
   &:hover {
-    background-color: $buttonHoverBGWhite;
-    box-shadow: 0px 8px 20px 0px rgba(6, 23, 48, 0.20);
-    transition: background-color .5s;
+    background-color: var(--base-hover-color-purple);
+    box-shadow: var(--base-box-shadow);
+    transition: background-color 0.5s;
+  }
+  &:active {
+    background-color: var(--secondary-bg-darck-blue);
+    box-shadow: var(--base-box-shadow);
+    transition: background-color 0.5s;
+  }
+  &:disabled {
+    background-color: var(--base-disable-color-gray);
+    box-shadow: var(--base-box-shadow);
   }
 }

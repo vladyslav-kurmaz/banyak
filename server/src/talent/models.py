@@ -11,6 +11,8 @@ class InviteTalentIdea(models.Model):
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE)
     talent = models.ForeignKey(UserProfile, blank=True, null=True, on_delete=models.CASCADE, related_name='talent')
     accept_invite = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.idea} - {self.talent}'
