@@ -130,7 +130,7 @@ const LoginRegistrationForm = () => {
     e.preventDefault()
     dispatch(changeErrorStatus(null))
 
-    const data = {
+    const newUserData = {
       first_name: name,
       last_name: surName,
       email: email,
@@ -139,10 +139,12 @@ const LoginRegistrationForm = () => {
     // document.body.style.overflow = "";
 
     try {
-      console.log('registration data', data)
-      const registrationResponse = await singUpNewUser(JSON.stringify(data))
+      console.log('registration newUserData', newUserData)
+      const registrationResponse = await singUpNewUser(
+        JSON.stringify(newUserData)
+      )
 
-      console.log('registration status', registrationResponse.statusText)
+      // console.log('registration status', registrationResponse.statusText)
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
@@ -167,7 +169,7 @@ const LoginRegistrationForm = () => {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         dispatch(changeErrorStatus(e.status))
       }
-      // document.body.style.overflow = "";
+
       setName('')
       setSurName('')
       setEmail('')
@@ -180,13 +182,13 @@ const LoginRegistrationForm = () => {
     e.preventDefault()
     dispatch(changeErrorStatus(null))
 
-    const data = {
+    const userData = {
       email: email,
       password: pass,
     }
 
     try {
-      const login = await loginUser(JSON.stringify(data))
+      const login = await loginUser(JSON.stringify(userData))
       const loginJson = await login.json()
       setCookies('sessiontokenid', await loginJson.access_token, 1)
       setCookies('tokenid', await loginJson.refresh_token, 1)

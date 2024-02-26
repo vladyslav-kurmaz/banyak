@@ -7,6 +7,7 @@ import plugIcon from '../../image/logo/small_logo.webp'
 import { IdeaRespType, TalentRespType } from '../../types/types'
 
 import './IdeaDescriptionPageTablet.scss'
+import useUUID from '../../hooks/useUUID'
 
 function IdeaDescriptionPageTablet({
   isIdea,
@@ -17,6 +18,9 @@ function IdeaDescriptionPageTablet({
   ideaInfo?: IdeaRespType
   talentInfo?: TalentRespType
 }) {
+  const ideaSpecializationKeys = useUUID(ideaInfo?.specialization.length)
+  const ideaStackKeys = useUUID(ideaInfo?.stack.length)
+  const talentStackKeys = useUUID(talentInfo?.stack.length)
   return (
     <div className="tablet-idea-description">
       {isIdea ? (
@@ -66,9 +70,9 @@ function IdeaDescriptionPageTablet({
         </h4>
         {isIdea ? (
           <ul className="tablet-idea-description__stack-items-wraper">
-            {ideaInfo?.stack.map((technology) => (
+            {ideaInfo?.stack.map((technology, index) => (
               <li
-                key={uuidv4()}
+                key={ideaStackKeys[index]}
                 className="tablet-idea-description__stack-item"
               >
                 {`+${technology.name}`}
@@ -77,9 +81,9 @@ function IdeaDescriptionPageTablet({
           </ul>
         ) : (
           <ul className="tablet-idea-description__stack-items-wraper">
-            {talentInfo?.stack.map((technology) => (
+            {talentInfo?.stack.map((technology, index) => (
               <li
-                key={uuidv4()}
+                key={talentStackKeys[index]}
                 className="tablet-idea-description__stack-item"
               >
                 {`+${technology.name}`}
@@ -95,9 +99,9 @@ function IdeaDescriptionPageTablet({
               Потрібні фахівці:
             </h4>
             <ul className="tablet-idea-description__specialities-items-wraper">
-              {ideaInfo?.specialization.map((speciality) => (
+              {ideaInfo?.specialization.map((speciality, index) => (
                 <li
-                  key={uuidv4()}
+                  key={ideaSpecializationKeys[index]}
                   className="tablet-idea-description__specialities-item"
                 >
                   {speciality.name}

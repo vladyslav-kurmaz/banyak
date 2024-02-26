@@ -24,8 +24,11 @@ const ServiceBanyak = () => {
     window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi
 
   const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
-
-  // provide handlError to all functions
+  const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
+  const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
+  const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
+  const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
+  const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
 
   const handleError = (error: any) => {
     if (error instanceof Error) {
@@ -39,7 +42,7 @@ const ServiceBanyak = () => {
   }
 
   const singUpNewUser = async (body: BodyInit | null | undefined) => {
-    return fetch(`${hostname}/api/v1/users/register/`, {
+    return fetch(USER_REGISTRATION_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -49,13 +52,12 @@ const ServiceBanyak = () => {
         return response
       })
       .catch((error) => {
-        console.error('Error in singUpNewUser:', error)
-        throw error
+        handleError(error)
       })
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
-    const req = await request(`${hostname}/api/v1/users/login/`, {
+    const req = await request(USER_LOGIN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
@@ -70,7 +72,7 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
     try {
-      const req = await request(`${hostname}/api/v1/users/user-profile/`, {
+      const req = await request(USER_PROFILE_URL, {
         method: method,
         headers:
           typeof body === 'string'
@@ -103,14 +105,11 @@ const ServiceBanyak = () => {
     body?: BodyInit | null | undefined
   ) => {
     try {
-      const req = await request(
-        `${hostname}/api/v1/users/user-profile-avatar/`,
-        {
-          method: method,
-          headers: { Authorization: `Bearer ${token}` },
-          body: body,
-        }
-      )
+      const req = await request(USER_PROFILE_AVATAR, {
+        method: method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: body,
+      })
       // const reqJson = await req.json()
       // dispatch(setUserProfile(await reqJson))
       return await req.json()
@@ -132,7 +131,7 @@ const ServiceBanyak = () => {
 
     try {
       // eslint-disable-next-line
-      const req = await request(`${hostname}/api/v1/users/logout/`, {
+      const req = await request(USER_LOGOUT_URL, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${tokensesion}`,
@@ -163,7 +162,7 @@ const ServiceBanyak = () => {
     const tokenid = getCookies('tokenid')
 
     try {
-      const req = await request(`${hostname}/api/v1/users/new-access/`, {
+      const req = await request(USER_NEW_ACCESS, {
         method: 'PUT',
         headers: { 'Content-Type': 'application-json' },
         body: JSON.stringify({ refresh_token: tokenid }),
@@ -214,20 +213,6 @@ const ServiceBanyak = () => {
     }
   }
 
-  // const getTalents = async () => {
-  //   try {
-  //     const req = await request(`${hostname}/api/v1/talents/talent/`, {})
-
-  //     if (!req.ok) {
-  //       return Promise.reject(req)
-  //     }
-
-  //     return Promise.resolve(req)
-  //   } catch (e) {
-  //     return Promise.reject(e)
-  //   }
-  // }
-
   const getTalents = async (
     filteredBySpecialty?: string,
     filteredByStack?: string,
@@ -266,30 +251,9 @@ const ServiceBanyak = () => {
 
       return response.json() as Promise<ServerResForTalents>
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.stack)
-        throw error
-      } else {
-        console.error('An unknown error occurred:', error)
-      }
-
-      return null
+      handleError(error)
     }
   }
-
-  // const getIdeas = async () => {
-  //   try {
-  //     const req = await request(`${hostname}/api/v1/ideas/ideas/`, {})
-
-  //     if (!req.ok) {
-  //       return Promise.reject(req)
-  //     }
-
-  //     return Promise.resolve(req)
-  //   } catch (e) {
-  //     return Promise.reject(e)
-  //   }
-  // }
 
   const getIdeas = async (
     filteredBySpecialty?: string,
@@ -326,14 +290,7 @@ const ServiceBanyak = () => {
       }
       return response.json() as Promise<ServerResForIdeas>
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.stack)
-        throw error
-      } else {
-        console.error('An unknown error occurred:', error)
-      }
-
-      return null
+      handleError(error)
     }
   }
 
@@ -349,14 +306,7 @@ const ServiceBanyak = () => {
       }
       return response.json() as Promise<ServerResForAllSpecialtiesType>
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.stack)
-        throw error
-      } else {
-        console.error('An unknown error occurred:', error)
-      }
-
-      return null
+      handleError(error)
     }
   }
 

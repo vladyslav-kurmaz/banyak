@@ -26,14 +26,9 @@ const ButtonChooseProfile = ({
 
     if (token) {
       try {
-        // eslint-disable-next-line
-        const putUserType = await updateUserProfile(
-          token,
-          JSON.stringify({ is_talent: isTalent })
-        )
+        await updateUserProfile(token, JSON.stringify({ is_talent: isTalent }))
 
-        console.log('patchUserType', putUserType)
-        navigate('/') //make navigation to user profile
+        navigate('/profile')
         dispatch(changreMainPreloader(false))
       } catch (e) {
         handleError(e)
