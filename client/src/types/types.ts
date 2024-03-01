@@ -148,3 +148,21 @@ export type ServerResForAllSpecialtiesType = {
   previous: string | number | null
   results: SpecialtyResType[]
 }
+
+export type UserInfoType = {
+  avatar: null
+  description: string
+  id: string
+  ideas: []
+  is_talent: boolean
+  portfolio: string
+  profile_view: number
+  slug: string
+  speciality: { name: string }[]
+  stack: { name: string }[]
+  created_at: string
+  updated_at: string
+  upload_military: null
+  upload_vpo: null
+  user: { id: string; email: string; first_name: string; last_name: string }
+}
