@@ -7,17 +7,38 @@ import ProfileStackInfo from '../../components/ProfileStackInfo/ProfileStackInfo
 import './ProfilePage.scss'
 import { TprofileChange } from '../../types/types'
 import { selectUserInfo, setTypeUser } from '../../store/userSlice'
+import workWithCookies from '../../utils/workWithCookies'
+import ServiceBanyak from '../../service/ServiceBanyak'
 
 const ProfilePage = ({
   fc,
 }: {
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+  const { hostname } = ServiceBanyak()
+  const { getCookies } = workWithCookies()
+  const token = getCookies('sessiontokenid')
   const { userProfile, typeUser } = useAppSelector(selectUserInfo)
   const [disabled, setDisabled] = useState(false)
   const dispatch = useAppDispatch()
 
   const [newUserData, setNewUserData] = useState<TprofileChange | null>(null)
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await fetch(`${hostname}/api/v1/users/user-profile/`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const user = await response.json()
+      console.log(user)
+    }
+    fetchProfile()
+  }, []) //make request to server to get userData
 
   useEffect(() => {
     if (
