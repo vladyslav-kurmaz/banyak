@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
-import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
+import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
-import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
 import { selectUserInfo, setUserProfile } from '../../store/userSlice'
 import logo from '../../image/logo/small_logo.webp'
 
@@ -20,7 +20,7 @@ const ProfilePersonalInfo = ({
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const dispatch = useAppDispatch()
-  const { updatPhoto, profileUser, hostname } = ServiceBanyak()
+  const { updatePhoto, profileUser, hostname } = ServiceBanyak()
   const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
 
@@ -91,7 +91,7 @@ const ProfilePersonalInfo = ({
 
     try {
       // eslint-disable-next-line
-      // const updatePhoto = await updatPhoto(token, 'PUT', formData)
+      // const updatePhoto = await updatePhoto(token, 'PUT', formData)
       // const updateProfile = await profileUser(token, 'GET')
 
       // const profileResponse = await fetch(`${hostname}/api/v1/users/user-profile/`, {
@@ -107,7 +107,7 @@ const ProfilePersonalInfo = ({
 
       // dispatch(setUserProfile(await updateProfile))
       setNewAvatar(undefined) //maybe its better to use another
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
     } catch (e) {
       console.error(e)
     }
@@ -184,7 +184,7 @@ const ProfilePersonalInfo = ({
   return (
     <div className="personal-info">
       <div className="personal-info__user-profile">
-        <SwitchToogle prop1="Я власник ідеї" prop2="Я талант" />
+        <SwitchToggle prop1="Я власник ідеї" prop2="Я талант" />
       </div>
 
       <div className="personal-info__main-info">

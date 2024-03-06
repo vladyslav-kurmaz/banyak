@@ -4,13 +4,14 @@
 // Mobile version
 .mobile-idea-description {
   min-width: 342px;
+  min-height: -moz-fit-content;
   min-height: fit-content;
   margin: 40px 24px;
   box-shadow: var(--base-box-shadow);
   border-radius: var(--base-border-radius);
   font-family: var(--base-font);
 
-  &__content-wraper {
+  &__content-wrapper {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -58,7 +59,7 @@
       font-size: 20px;
     }
 
-    &-items-wraper {
+    &-items-wrapper {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -88,7 +89,7 @@
       font-size: 20px;
     }
 
-    &-wraper {
+    &-wrapper {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -112,7 +113,7 @@
     }
   }
 
-  &__btn-wraper {
+  &__btn-wrapper {
     @include center-element;
     flex-direction: column;
 
@@ -148,7 +149,7 @@
     min-width: 290px;
     margin: 10px 10px;
 
-    &__content-wraper {
+    &__content-wrapper {
       gap: 20px;
     }
 

@@ -1,13 +1,13 @@
 import { FC, useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
-import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
-import ToggleTheam from '../../atoms/ToggleTheam/ToggleTheam'
+import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
+import ToggleTheme from '../../atoms/ToggleTheme/ToggleTheme'
 import {
-  changeOpenHeaderSeting,
+  changeOpenHeaderSetting,
   changeOpenOrCloseLoginPopup,
 } from './StateElementSlice'
 
@@ -17,10 +17,10 @@ import settingIconBlue from '../../image/header/setting_icon-blue.webp'
 import chatIcon from '../../image/header/chat.svg'
 import exitIcon from '../../image/header/exit.svg'
 
-import './SettingMeny.scss'
+import './SettingMenu.scss'
 import { selectUserInfo } from '../../store/userSlice'
 
-const SettingMeny: FC = () => {
+const SettingMenu: FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -42,7 +42,7 @@ const SettingMeny: FC = () => {
 
   const openCloseSettingMenu = useCallback(
     (status: boolean): void => {
-      dispatch(changeOpenHeaderSeting(status))
+      dispatch(changeOpenHeaderSetting(status))
       // eslint-disable-next-line
     },
     // eslint-disable-next-line
@@ -67,13 +67,13 @@ const SettingMeny: FC = () => {
               <span className="header__settings-container-menu-container-list-item-text">
                 Змінити мову
               </span>
-              <SwitchToogle prop1={'УКР'} prop2={'ENG'} />
+              <SwitchToggle prop1={'УКР'} prop2={'ENG'} />
             </li>
             <li className="header__settings-container-menu-container-list-item">
               <span className="header__settings-container-menu-container-list-item-text">
                 Змінити тему
               </span>
-              <ToggleTheam />
+              <ToggleTheme />
             </li>
             <li className="header__settings-container-menu-container-list-item">
               {userProfile ? (
@@ -121,4 +121,4 @@ const SettingMeny: FC = () => {
   )
 }
 
-export default SettingMeny
+export default SettingMenu

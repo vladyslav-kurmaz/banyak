@@ -1,6 +1,5 @@
-import { useState, CSSProperties, ChangeEventHandler } from "react";
-
-import validationForm from "../../utils/validationForm";
+import { useState, CSSProperties, ChangeEventHandler } from 'react'
+import validationForm from '../../utils/validationForm'
 
 import './CustomInput.scss'
 
@@ -30,16 +29,16 @@ const CustomInput = ({
   }
 
   const labelStyle = (): CSSProperties => {
-    if (!inputFocus && value !== "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (inputFocus && value === "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (value !== "") {
-      return { top: 0, transition: "all .2s" };
-    } else if (inputFocus && value !== "") {
-      return { top: "50%", transition: "all .2s" };
-    } else if (!inputFocus && value === "") {
-      return { top: "50%", transition: "all .2s" };
+    if (!inputFocus && value !== '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (inputFocus && value === '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (value !== '') {
+      return { top: 0, transition: 'all .2s' }
+    } else if (inputFocus && value !== '') {
+      return { top: '50%', transition: 'all .2s' }
+    } else if (!inputFocus && value === '') {
+      return { top: '50%', transition: 'all .2s' }
     } else {
       return {}
     }

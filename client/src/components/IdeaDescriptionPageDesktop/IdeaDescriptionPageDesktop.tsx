@@ -22,8 +22,8 @@ function IdeaDescriptionPageDesktop({
   const talentStackKeys = useUUID(talentInfo?.stack.length)
   return (
     <div className="idea-description">
-      <div className="idea-description__logo-specialities-question-wraper">
-        <div className="idea-description__logo-specialities-wraper">
+      <div className="idea-description__logo-specialities-question-wrapper">
+        <div className="idea-description__logo-specialities-wrapper">
           <img
             // src={ideaInfo.avatar ? ideaInfo.avatar : plugIcon}
             src={plugIcon}
@@ -41,7 +41,7 @@ function IdeaDescriptionPageDesktop({
                     key={ideaSpecializationKeys[index]}
                     className="idea-description__specialities-item"
                   >
-                    {speciality.name}
+                    {speciality?.name}
                   </li>
                 ))}
               </ul>
@@ -66,46 +66,46 @@ function IdeaDescriptionPageDesktop({
       </div>
       <div className="idea-description__info">
         {isIdea ? (
-          <div className="idea-description__info-title-description-wraper">
+          <div className="idea-description__info-title-description-wrapper">
             <h1 className="idea-description__info-title">{ideaInfo?.title}</h1>
             <p className="idea-description__info-description">
               {ideaInfo?.description}
             </p>
           </div>
         ) : (
-          <div className="idea-description__info-title-description-wraper">
+          <div className="idea-description__info-title-description-wrapper">
             <h1 className="idea-description__info-title">
-              {talentInfo?.speciality[0].name}
+              {talentInfo?.speciality[0]?.name}
             </h1>
             <p className="idea-description__info-description">
               {talentInfo?.description}
             </p>
           </div>
         )}
-        <div className="idea-description__info-stack-btn-wraper">
+        <div className="idea-description__info-stack-btn-wrapper">
           <div className="idea-description__info-stack">
             <h4 className="idea-description__info-stack-title">
               {isIdea ? 'Потрібні технології:' : 'Володію технологіями:'}
             </h4>
             {isIdea ? (
-              <ul className="idea-description__info-stack-items-wraper">
+              <ul className="idea-description__info-stack-items-wrapper">
                 {ideaInfo?.stack.map((technology, index) => (
                   <li
                     key={ideaStackKeys[index]}
                     className="idea-description__info-stack-item"
                   >
-                    {`+${technology.name}`}
+                    {`+${technology?.name}`}
                   </li>
                 ))}
               </ul>
             ) : (
-              <ul className="idea-description__info-stack-items-wraper">
+              <ul className="idea-description__info-stack-items-wrapper">
                 {talentInfo?.stack.map((technology, index) => (
                   <li
                     key={talentStackKeys[index]}
                     className="idea-description__info-stack-item"
                   >
-                    {`+${technology.name}`}
+                    {`+${technology?.name}`}
                   </li>
                 ))}
               </ul>
@@ -118,7 +118,7 @@ function IdeaDescriptionPageDesktop({
           </Link>
         </div>
       </div>
-      <div className="idea-description__views-date-wraper">
+      <div className="idea-description__views-date-wrapper">
         <ViewsIconAndQuantity
           viewsQuantity={
             isIdea ? ideaInfo?.idea_views : talentInfo?.profile_view
@@ -136,8 +136,8 @@ export default IdeaDescriptionPageDesktop
 
 // // HTML Template
 // <div className="idea-description">
-//       <div className="idea-description__logo-specialities-question-wraper">
-//         <div className="idea-description__logo-specialities-wraper">
+//       <div className="idea-description__logo-specialities-question-wrapper">
+//         <div className="idea-description__logo-specialities-wrapper">
 //           <img
 //             src={plugIcon}
 //             alt="logo for idea"
@@ -147,7 +147,7 @@ export default IdeaDescriptionPageDesktop
 //             <h4 className="idea-description__specialities-title">
 //               Потрібні фахівці:
 //             </h4>
-//             <div className="idea-description__specialities-wraper">
+//             <div className="idea-description__specialities-wrapper">
 //               <p className="idea-description__specialities-item">
 //                 UI/UX Designer
 //               </p>
@@ -168,7 +168,7 @@ export default IdeaDescriptionPageDesktop
 //         </div>
 //       </div>
 //       <div className="idea-description__info">
-//         <div className="idea-description__info-title-description-wraper">
+//         <div className="idea-description__info-title-description-wrapper">
 //           <h1 className="idea-description__info-title">
 //             Мобільний застосунок для домогосподарок
 //           </h1>
@@ -183,12 +183,12 @@ export default IdeaDescriptionPageDesktop
 //             aperiam voluptas praesentium nesciunt.
 //           </p>
 //         </div>
-//         <div className="idea-description__info-stack-btn-wraper">
+//         <div className="idea-description__info-stack-btn-wrapper">
 //           <div className="idea-description__info-stack">
 //             <h4 className="idea-description__info-stack-title">
 //               Потрібні технології:
 //             </h4>
-//             <div className="idea-description__info-stack-items-wraper">
+//             <div className="idea-description__info-stack-items-wrapper">
 //               <p className="idea-description__info-stack-item">+Figma</p>
 //               <p className="idea-description__info-stack-item">+A/B testing</p>
 //               <p className="idea-description__info-stack-item">
@@ -204,7 +204,7 @@ export default IdeaDescriptionPageDesktop
 //           </Link>
 //         </div>
 //       </div>
-//       <div className="idea-description__views-date-wraper">
+//       <div className="idea-description__views-date-wrapper">
 //         <ViewsIconAndQuantity viewsQuantity={10} />
 //         <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />
 //       </div>

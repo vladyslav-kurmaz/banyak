@@ -46,7 +46,7 @@ function TalentDescriptionPage() {
   }, [])
 
   return (
-    <div className="idea-description-page-wraper">
+    <div className="idea-description-page-wrapper">
       <ButtonBack />
       <IdeaDescriptionPageMobile talentInfo={state} />
       <IdeaDescriptionPageTablet talentInfo={state} />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
-import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
+import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
 import { setUserProfile } from '../../store/userSlice'
 
 import Header from '../Header/Header'
@@ -43,14 +43,14 @@ function App() {
     const token = getCookies('sessiontokenid')
 
     if (token !== null) {
-      dispatch(changreMainPreloader(true))
+      dispatch(changeMainPreloader(true))
       try {
         profileUser(token, 'GET').then((res) =>
           dispatch(setUserProfile(res as TUserProfile))
         )
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
       } catch (e) {
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
         console.error(e)
       }
     }

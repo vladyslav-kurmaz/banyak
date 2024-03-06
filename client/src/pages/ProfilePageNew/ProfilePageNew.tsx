@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import ProfilePersonalInfo from '../../components/ProfilePersonalInfo/ProfilePersonalInfo'
 import ProfileStackInfo from '../../components/ProfileStackInfo/ProfileStackInfo'
 import { TprofileChange, UserInfoType } from '../../types/types'

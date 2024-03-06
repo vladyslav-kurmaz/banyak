@@ -1,9 +1,9 @@
 import { ChangeEvent, FC, useState } from 'react'
 import './SearchByStack.scss'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
-import { selectSerchByStack, setStack } from '../../store/searchByStackSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
+import { selectSearchByStack, setStack } from '../../store/searchByStackSlice'
 
-// Watch redux searc implementing
+// Watch redux search implementing
 
 const SearchByStack: FC<{
   fn?: () => void
@@ -14,7 +14,7 @@ const SearchByStack: FC<{
 }> = ({ fn, formStyle, inputStyle, buttonStyle, svgStyle }) => {
   const [stackFilter, setStackFilter] = useState<string>('')
   const dispatch = useAppDispatch()
-  // const stackForSearch = useAppSelector(selectSerchByStack)
+  // const stackForSearch = useAppSelector(selectSearchByStack)
 
   const handleStackFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value

@@ -2,12 +2,12 @@ import { FC, useEffect, useState } from 'react'
 import DropDown from '../DropDown/DropDown'
 import './SearchBySpecialty.scss'
 import ServiceBanyak from '../../service/ServiceBanyak'
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import {
   setSpecialty,
   selectSearchBySpecialty,
 } from '../../store/searchBySpecialtySlice'
-import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
 const SearchBySpecialty: FC<{
@@ -32,7 +32,7 @@ const SearchBySpecialty: FC<{
         const specialties = await getAllSpecialties()
         if (specialties?.count) {
           setSpecialtiesList(specialties.results)
-          dispatch(changreMainPreloader(false))
+          dispatch(changeMainPreloader(false))
         }
       } catch (error) {
         if (error instanceof Error) {

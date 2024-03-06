@@ -6,6 +6,9 @@
     "words": [
         "Banyak",
         "sessiontokenid",
+        "tokenid",
+        "tokensesion",
+        "uuidv",
         "webp"
     ],
     "ignoreWords": [],

@@ -1,9 +1,7 @@
-import { useAppDispatch } from '../hooks/reduxToolkidHooks'
+import { useAppDispatch } from '../hooks/reduxToolkitHooks'
 import useHttp from '../hooks/httpHook'
-
 import { setUserProfile } from '../store/userSlice'
-import { changreMainPreloader } from '../components/SettingMenu/StateElementSlice'
-
+import { changeMainPreloader } from '../components/SettingMenu/StateElementSlice'
 import workWithCookies from '../utils/workWithCookies'
 import {
   ServerResForAllSpecialtiesType,
@@ -93,13 +91,13 @@ const ServiceBanyak = () => {
         if (e.status === 403) {
           newAccess()
         }
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
       }
       console.error(e)
     }
   }
 
-  const updatPhoto = async (
+  const updatePhoto = async (
     token: string,
     method: string,
     body?: BodyInit | null | undefined
@@ -119,7 +117,7 @@ const ServiceBanyak = () => {
         if (e.status === 403) {
           newAccess()
         }
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
       }
       console.error(e)
     }
@@ -144,7 +142,7 @@ const ServiceBanyak = () => {
       deleteCookie('sessiontokenid')
       deleteCookie('tokenid')
       // return req;
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         console.log(e.status)
@@ -154,7 +152,7 @@ const ServiceBanyak = () => {
         }
       }
       console.error(e)
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
     }
   }
 
@@ -171,7 +169,7 @@ const ServiceBanyak = () => {
 
       setCookies('sessiontokenid', await newToken.access_token, 1)
 
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
     } catch (e) {
       if (typeof e === 'object' && e !== null && 'status' in e) {
         if (e.status === 403) {
@@ -180,7 +178,7 @@ const ServiceBanyak = () => {
           deleteCookie('tokenid')
         }
         console.log(e.status)
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
       }
       console.error(e)
     }
@@ -297,7 +295,7 @@ const ServiceBanyak = () => {
   const getAllSpecialties = async () => {
     try {
       const response = await request(
-        `${hostname}/api/v1/users/specilaity-list/`,
+        `${hostname}/api/v1/users/specilaity-list/`, //!!!!!!!!specilaity change typo on backend
         {}
       )
 
@@ -347,7 +345,7 @@ const ServiceBanyak = () => {
     getAllStack,
     getTalents,
     getIdeas,
-    updatPhoto,
+    updatePhoto,
     getAllSpecialties,
   }
 }

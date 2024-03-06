@@ -1,6 +1,6 @@
-import SettingMeny from '../SettingMenu/SettingMeny'
+import SettingMenu from '../SettingMenu/SettingMenu'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import { changeOpenOrCloseLoginPopup } from '../SettingMenu/StateElementSlice'
 
 import logo from '../../image/logo/LOGO_Banyak.webp'
@@ -87,7 +87,7 @@ const Header = () => {
             Мій профіль
           </NavLink>
         )}
-        <SettingMeny />
+        <SettingMenu />
       </div>
     </header>
   )

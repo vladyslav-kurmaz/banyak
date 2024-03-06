@@ -7,7 +7,7 @@ const IdeasOrTalentNotFind: FC<{
 }> = ({ searchQuery, isTalent }) => {
   return (
     <h1 className="ideas-or-talent-not-find">
-      {`Нажаль, за вашим запитом "${searchQuery}" ${
+      {`На жаль, за вашим запитом "${searchQuery}" ${
         isTalent ? 'таланти' : 'ідеї'
       } не знайдені`}
     </h1>

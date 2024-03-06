@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import {
   changeLanguage,
   changeStatusInstr,
@@ -14,7 +14,7 @@ type SwitchToggle = {
   prop2: string
 }
 
-const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
+const SwitchToggle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
   const dispatch = useAppDispatch()
   const { mainLanguage, statusInstr, loginOrSingUp } = useAppSelector(
     (state) => state.stateElement
@@ -83,4 +83,4 @@ const SwitchToogle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
   )
 }
 
-export default SwitchToogle
+export default SwitchToggle

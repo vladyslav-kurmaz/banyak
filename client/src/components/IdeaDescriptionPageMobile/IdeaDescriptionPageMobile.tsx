@@ -23,7 +23,7 @@ function IdeaDescriptionPageMobile({
   const talentStackKeys = useUUID(talentInfo?.stack.length)
   return (
     <div className="mobile-idea-description">
-      <div className="mobile-idea-description__content-wraper">
+      <div className="mobile-idea-description__content-wrapper">
         <div className="mobile-idea-description__header">
           <img
             src={plugIcon}
@@ -50,7 +50,7 @@ function IdeaDescriptionPageMobile({
                 {`${talentInfo?.user.first_name} ${talentInfo?.user.last_name}`}
               </h4>
               <h1 className="mobile-idea-description__info-title">
-                {talentInfo?.speciality[0].name}
+                {talentInfo?.speciality[0]?.name}
               </h1>
               <Link
                 className="mobile-talent-description__portfolio-btn"
@@ -70,24 +70,24 @@ function IdeaDescriptionPageMobile({
             {isIdea ? 'Потрібні технології:' : 'Володію технологіями:'}
           </h4>
           {isIdea ? (
-            <ul className="mobile-idea-description__stack-items-wraper">
+            <ul className="mobile-idea-description__stack-items-wrapper">
               {ideaInfo?.stack.map((technology, index) => (
                 <li
                   key={ideaStackKeys[index]}
                   className="mobile-idea-description__stack-item"
                 >
-                  {`+${technology.name}`}
+                  {`+${technology?.name}`}
                 </li>
               ))}
             </ul>
           ) : (
-            <ul className="mobile-idea-description__stack-items-wraper">
+            <ul className="mobile-idea-description__stack-items-wrapper">
               {talentInfo?.stack.map((technology, index) => (
                 <li
                   key={talentStackKeys[index]}
                   className="mobile-idea-description__stack-item"
                 >
-                  {`+${technology.name}`}
+                  {`+${technology?.name}`}
                 </li>
               ))}
             </ul>
@@ -98,13 +98,13 @@ function IdeaDescriptionPageMobile({
             <h4 className="mobile-idea-description__specialities-title">
               Потрібні фахівці:
             </h4>
-            <ul className="mobile-idea-description__specialities-wraper">
+            <ul className="mobile-idea-description__specialities-wrapper">
               {ideaInfo?.specialization.map((speciality, index) => (
                 <li
                   key={ideaSpecializationKeys[index]}
                   className="mobile-idea-description__specialities-item"
                 >
-                  {speciality.name}
+                  {speciality?.name}
                 </li>
               ))}
             </ul>
@@ -112,11 +112,11 @@ function IdeaDescriptionPageMobile({
         ) : (
           ''
         )}
-        <div className="mobile-idea-description__btn-wraper">
+        <div className="mobile-idea-description__btn-wrapper">
           {/* Change route here to chat page */}
           {isIdea ? (
             <Link
-              className="mobile-idea-description__btn-wraper-link-btn"
+              className="mobile-idea-description__btn-wrapper-link-btn"
               to="/"
             >
               Відгукнутися
@@ -140,7 +140,7 @@ export default IdeaDescriptionPageMobile
 
 // // Template mobile
 // <div className="mobile-idea-description">
-//       <div className="mobile-idea-description__content-wraper">
+//       <div className="mobile-idea-description__content-wrapper">
 //         <div className="mobile-idea-description__header">
 //           <img
 //             src={plugIcon}
@@ -169,7 +169,7 @@ export default IdeaDescriptionPageMobile
 //           <h4 className="mobile-idea-description__stack-title">
 //             Потрібні технології:
 //           </h4>
-//           <div className="mobile-idea-description__stack-items-wraper">
+//           <div className="mobile-idea-description__stack-items-wrapper">
 //             <p className="mobile-idea-description__stack-item">+Figma</p>
 //             <p className="mobile-idea-description__stack-item">+A/B testing</p>
 //             <p className="mobile-idea-description__stack-item">
@@ -183,7 +183,7 @@ export default IdeaDescriptionPageMobile
 //           <h4 className="mobile-idea-description__specialities-title">
 //             Потрібні фахівці:
 //           </h4>
-//           <div className="mobile-idea-description__specialities-wraper">
+//           <div className="mobile-idea-description__specialities-wrapper">
 //             <p className="mobile-idea-description__specialities-item">
 //               UI/UX Designer
 //             </p>
@@ -198,8 +198,8 @@ export default IdeaDescriptionPageMobile
 //             </p>
 //           </div>
 //         </div>
-//         <div className="mobile-idea-description__btn-wraper">
-//           <Link className="mobile-idea-description__btn-wraper-link-btn" to="/">
+//         <div className="mobile-idea-description__btn-wrapper">
+//           <Link className="mobile-idea-description__btn-wrapper-link-btn" to="/">
 //             Відгукнутися
 //           </Link>
 //           <div className="mobile-idea-description___question-mark">

@@ -7,8 +7,8 @@ import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import './IdeasPopup.scss'
 import Idea from '../Idea/Idea'
 import ServiceBanyak from '../../service/ServiceBanyak'
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
-import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
+import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
 import { IdeaRespType } from '../../types/types'
 
 const IdeasPopup = ({
@@ -25,7 +25,7 @@ const IdeasPopup = ({
         const ideas = await getIdeas()
         if (ideas) {
           setIdeas(ideas.results)
-          dispatch(changreMainPreloader(false))
+          dispatch(changeMainPreloader(false))
         }
       } catch (error) {
         if (error instanceof Error) {

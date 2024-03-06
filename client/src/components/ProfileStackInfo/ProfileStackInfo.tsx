@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
 
 import TagsField from '../../atoms/TagsField/TagsField'
 import ServiceBanyak from '../../service/ServiceBanyak'
@@ -8,20 +8,20 @@ import workWithCookies from '../../utils/workWithCookies'
 import validationProfile from '../../utils/validationProfile'
 
 import { TGetAllStack, TUserProfile, TprofileChange } from '../../types/types'
-import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
 import { selectUserInfo, setAllStack } from '../../store/userSlice'
 
-import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
+import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 
 import './ProfileStackInfo.scss'
 
 const ProfileStackInfo = ({
-  userProfil,
+  userProfile,
   fnState,
   disabled,
   newUserProfile,
 }: {
-  userProfil: TUserProfile
+  userProfile: TUserProfile
   fnState: React.Dispatch<React.SetStateAction<TprofileChange | null>>
   disabled: boolean
   newUserProfile: TprofileChange
@@ -56,7 +56,7 @@ const ProfileStackInfo = ({
           const result = res.results
           dispatch(setAllStack(result))
         })
-        .then(() => dispatch(changreMainPreloader(false)))
+        .then(() => dispatch(changeMainPreloader(false)))
     }
     // eslint-disable-next-line
   }, [])
@@ -69,12 +69,12 @@ const ProfileStackInfo = ({
         .then((res) => {
           // console.log(res)
         })
-        .then(() => dispatch(changreMainPreloader(false)))
+        .then(() => dispatch(changeMainPreloader(false)))
     }
   }
 
   const renderStack = () => {
-    if (userProfil !== null && newUserProfile !== null) {
+    if (userProfile !== null && newUserProfile !== null) {
       return (
         <>
           <div className="personal-stack__specialization specialization">
@@ -159,7 +159,7 @@ const ProfileStackInfo = ({
             {allStack.length > -1 ? (
               <div className="technologies__textfield">
                 <TagsField
-                  stackUser={userProfil?.stack}
+                  stackUser={userProfile?.stack}
                   changeStack={fnState}
                   allStack={allStack}
                 />
@@ -176,7 +176,7 @@ const ProfileStackInfo = ({
   return (
     <div className="personal-stack">
       <div className="personal-stack__user-profile">
-        <SwitchToogle prop1="Я власник ідеї" prop2="Я талант" />
+        <SwitchToggle prop1="Я власник ідеї" prop2="Я талант" />
       </div>
 
       {renderStack()}

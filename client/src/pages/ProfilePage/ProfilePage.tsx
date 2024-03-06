@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 
 import ProfilePersonalInfo from '../../components/ProfilePersonalInfo/ProfilePersonalInfo'
 import ProfileStackInfo from '../../components/ProfileStackInfo/ProfileStackInfo'
@@ -94,7 +94,7 @@ const ProfilePage = ({
           <ProfilePersonalInfo fc={fc} />
           <ProfileStackInfo
             disabled={disabled}
-            userProfil={userProfile}
+            userProfile={userProfile}
             fnState={setNewUserData}
             newUserProfile={newUserData}
           />

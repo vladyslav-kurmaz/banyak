@@ -1,7 +1,7 @@
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import { useNavigate } from 'react-router-dom'
 
-import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
@@ -29,7 +29,7 @@ const ButtonChooseProfile = ({
         await updateUserProfile(token, JSON.stringify({ is_talent: isTalent }))
 
         navigate('/profile')
-        dispatch(changreMainPreloader(false))
+        dispatch(changeMainPreloader(false))
       } catch (e) {
         handleError(e)
       }
@@ -38,6 +38,7 @@ const ButtonChooseProfile = ({
 
   return (
     <button
+      type="button"
       className="button-chose-profile"
       data-type={isTalent}
       onClick={chooseProfile}

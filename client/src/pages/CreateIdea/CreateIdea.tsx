@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import logo from '../../image/logo/small_logo.webp'

@@ -1,7 +1,7 @@
 export type stateElement = {
   headerSetting: boolean
   mainLanguage: 'УКР' | 'ENG'
-  mainTheam: boolean
+  mainTheme: boolean
   mainPageSlider: 0 | 1
   statusInstr: 'Власник ідеї' | 'Талант'
   loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ'
@@ -78,7 +78,7 @@ export type TGetAllStack = { name: string }[]
 
 export type TGetAllSpeciality = string[]
 
-export type TValidatinForm = {
+export type TValidationForm = {
   errorStatus: boolean
   message: string
   class: string
