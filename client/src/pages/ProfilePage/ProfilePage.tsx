@@ -35,7 +35,7 @@ const ProfilePage = ({
       })
 
       const user = await response.json()
-      console.log(user)
+      console.log('user ProfilePage', user)
     }
     fetchProfile()
   }, []) //make request to server to get userData

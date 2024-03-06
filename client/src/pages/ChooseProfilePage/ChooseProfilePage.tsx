@@ -11,7 +11,7 @@ const ChooseProfilePage = () => {
       <div className="choose-profile-page__container">
         <div className="choose-profile-page__button">
           <ButtonChooseProfile
-            text="Опублікувати ідею та знайти фахівців для реалізації проєкта"
+            text="Опублікувати ідею та знайти фахівців для реалізації проєкту"
             isTalent={false}
           />
         </div>

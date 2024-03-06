@@ -5,7 +5,7 @@
   display: flex;
   width: 285px;
   height: 40px;
-  border: 2px solid var(--secondary-bg-darck-blue);
+  border: 2px solid var(--secondary-bg-dark-blue);
   border-radius: var(--base-border-radius);
 
   &:hover {
@@ -38,7 +38,7 @@
     height: 36px;
     padding: 0;
     border-color: transparent transparent transparent
-      var(--secondary-bg-darck-blue);
+      var(--secondary-bg-dark-blue);
     border-radius: 0 8px 8px 0;
     border-width: 0 0 0 2px;
     z-index: 1;

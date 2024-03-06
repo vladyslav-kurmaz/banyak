@@ -149,6 +149,13 @@ export type ServerResForAllSpecialtiesType = {
   results: SpecialtyResType[]
 }
 
+export type UserPersonalData = {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+}
+
 export type UserInfoType = {
   avatar: null
   description: string
@@ -164,5 +171,5 @@ export type UserInfoType = {
   updated_at: string
   upload_military: null
   upload_vpo: null
-  user: { id: string; email: string; first_name: string; last_name: string }
+  user: UserPersonalData
 }

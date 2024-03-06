@@ -139,12 +139,9 @@ const LoginRegistrationForm = () => {
     // document.body.style.overflow = "";
 
     try {
-      console.log('registration newUserData', newUserData)
       const registrationResponse = await singUpNewUser(
         JSON.stringify(newUserData)
       )
-
-      // console.log('registration status', registrationResponse.statusText)
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
