@@ -158,12 +158,14 @@ const ProfilePersonalInfo = ({
               <ul className="personal-info__list">
                 <li className="personal-info__button">
                   <ButtonSmall
+                    btnType="button"
                     text="Так"
                     fn={() => sendNewAvatar()}
                   ></ButtonSmall>
                 </li>
                 <li className="personal-info__button">
                   <ButtonSmall
+                    btnType="button"
                     text="Ні"
                     fn={() => setNewAvatar(undefined)}
                   ></ButtonSmall>

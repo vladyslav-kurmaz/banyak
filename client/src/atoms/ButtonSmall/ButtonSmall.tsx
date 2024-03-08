@@ -7,12 +7,18 @@ const ButtonSmall: FC<{
   fn?: () => void
   style?: object
   href?: string
-}> = ({ text, icon, fn, style, href }) => {
+  btnType?: 'button' | 'submit' | 'reset' | undefined
+}> = ({ text, icon, fn, style, href, btnType }) => {
   const iconElement = icon ? (
     <img src={icon} alt="button icon" className="buttonSmall__icon" />
   ) : null
 
-  return (
+  return btnType ? (
+    <button type={btnType} className="buttonSmall" onClick={fn} style={style}>
+      {iconElement}
+      {text}
+    </button>
+  ) : (
     <a className="buttonSmall" onClick={fn} href={href} style={style}>
       {iconElement}
       {text}
