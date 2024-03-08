@@ -1,46 +1,43 @@
-import { MouseEvent } from "react";
-import MainSliderStatus from "../../atoms/MainSliderStatus/MainSliderStatus";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/reduxToolkidHooks";
-import { Link } from "react-router-dom";
+import { MouseEvent } from 'react'
+import MainSliderStatus from '../../atoms/MainSliderStatus/MainSliderStatus'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
+import { Link } from 'react-router-dom'
 
-import MainInfo from "../MainInfo/MainInfo";
-import MainSliderImg from "../MainSliderImg/MainSliderImg";
-import MainInstruction from "../MainInstruction/MainInstruction";
+import MainInfo from '../MainInfo/MainInfo'
+import MainSliderImg from '../MainSliderImg/MainSliderImg'
+import MainInstruction from '../MainInstruction/MainInstruction'
 
-import { changeMainPageSlider } from "../SettingMenu/StateElementSlice";
+import { changeMainPageSlider } from '../SettingMenu/StateElementSlice'
 
-import "./MainSlider.scss";
+import './MainSlider.scss'
 
 const MainSlider = () => {
-  const dispatch = useAppDispatch();
-  const { mainPageSlider } = useAppSelector((state) => state.stateElement);
+  const dispatch = useAppDispatch()
+  const { mainPageSlider } = useAppSelector((state) => state.stateElement)
 
   const changeMainSlide: (
     e: MouseEvent<HTMLDivElement>,
     num: number
   ) => void = (e, num) => {
-    const target = e.currentTarget;
+    const target = e.currentTarget
 
     if (mainPageSlider === 0) {
       if (
         target &&
-        !target.parentElement?.parentElement?.classList.contains("active")
+        !target.parentElement?.parentElement?.classList.contains('active')
       ) {
-        target.parentElement?.parentElement?.classList.add("active");
-        target.parentElement?.parentElement?.classList.remove("inert");
+        target.parentElement?.parentElement?.classList.add('active')
+        target.parentElement?.parentElement?.classList.remove('inert')
       }
     } else {
-      if (!target.parentElement?.parentElement?.classList.contains("inert")) {
-        target.parentElement?.parentElement?.classList.add("inert");
-        target.parentElement?.parentElement?.classList.remove("active");
+      if (!target.parentElement?.parentElement?.classList.contains('inert')) {
+        target.parentElement?.parentElement?.classList.add('inert')
+        target.parentElement?.parentElement?.classList.remove('active')
       }
     }
 
-    dispatch(changeMainPageSlider(num));
-  };
+    dispatch(changeMainPageSlider(num))
+  }
 
   // const buttonChangeSlide = () => {
   //   return mainPageSlider === 0 ? (
@@ -93,9 +90,9 @@ const MainSlider = () => {
 
   function sliderWidth() {
     if (window.screen.width > 1200) {
-      return 2400;
+      return 2400
     } else {
-      return window.screen.width * 2;
+      return window.screen.width * 2
     }
   }
 
@@ -113,8 +110,8 @@ const MainSlider = () => {
             className="main-slider__container-slider-button"
             onClick={(e) => changeMainSlide(e, 1)}
             style={{
-              top: "50%",
-              right: "1%",
+              top: '50%',
+              right: '1%',
             }}
           >
             <svg
@@ -138,9 +135,9 @@ const MainSlider = () => {
             className="main-slider__container-slider-button"
             onClick={(e) => changeMainSlide(e, 0)}
             style={{
-              top: "46%",
-              left: "1%",
-              transform: "rotate(180deg)",
+              top: '46%',
+              left: '1%',
+              transform: 'rotate(180deg)',
             }}
           >
             <svg
@@ -167,7 +164,7 @@ const MainSlider = () => {
         Приєднатись до команди
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default MainSlider;
+export default MainSlider

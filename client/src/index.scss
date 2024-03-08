@@ -4,7 +4,7 @@
 :root {
   // color
   --base-bg-white: #fcfcfc;
-  --secondary-bg-darck-blue: #1c145e;
+  --secondary-bg-dark-blue: #1c145e;
   --bg-color-blue: #061730;
   --light-blue: #5d7497;
   --base-font-color-blue: #061730;
@@ -36,19 +36,19 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background: var(--secondary-bg-darck-blue); /* цвет зоны отслеживания */
+  background: var(--secondary-bg-dark-blue); /* цвет зоны отслеживания */
 }
 
 body::-webkit-scrollbar-thumb {
   background-color: var(--base-hover-color-purple); /* цвет бегунка */
   border-radius: 20px; /* округлось бегунка */
-  border: 1px solid var(--secondary-bg-darck-blue); /* отступ вокруг бегунка */
+  border: 1px solid var(--secondary-bg-dark-blue); /* отступ вокруг бегунка */
 }
 
 // /* For Firefox */
 // body {
 //   scrollbar-width: thin;
-//   scrollbar-color: var(--base-hover-color-purple) var(--secondary-bg-darck-blue);
+//   scrollbar-color: var(--base-hover-color-purple) var(--secondary-bg-dark-blue);
 // }
 
 // /* For Microsoft Edge */
@@ -63,7 +63,7 @@ body::-webkit-scrollbar-thumb {
 // body::-ms-scrollbar-thumb {
 //   background-color: var(--base-hover-color-purple);
 //   border-radius: 20px;
-//   border: 1px solid var(--secondary-bg-darck-blue);
+//   border: 1px solid var(--secondary-bg-dark-blue);
 // }
 
 code {

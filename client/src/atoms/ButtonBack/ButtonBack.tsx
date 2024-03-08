@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
-import './ButtonBack.scss';
+import './ButtonBack.scss'
 
 const ButtonBack = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-    <button className="button__back" onClick={() => navigate(-1)}>
+    <button type="button" className="button__back" onClick={() => navigate(-1)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="40"

@@ -42,7 +42,7 @@ const IdeaDescriptionPage = (isIdea: { isIdea: boolean }) => {
   }, [])
 
   return (
-    <div className="idea-description-page-wraper">
+    <div className="idea-description-page-wrapper">
       <ButtonBack />
       <IdeaDescriptionPageMobile ideaInfo={state} isIdea={isIdea} />
       <IdeaDescriptionPageTablet ideaInfo={state} isIdea={isIdea} />

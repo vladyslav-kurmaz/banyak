@@ -1,7 +1,7 @@
 export type stateElement = {
   headerSetting: boolean
   mainLanguage: 'УКР' | 'ENG'
-  mainTheam: boolean
+  mainTheme: boolean
   mainPageSlider: 0 | 1
   statusInstr: 'Власник ідеї' | 'Талант'
   loginOrSingUp: 'ВХІД' | 'РЕЄСТРАЦІЯ'
@@ -78,7 +78,7 @@ export type TGetAllStack = { name: string }[]
 
 export type TGetAllSpeciality = string[]
 
-export type TValidatinForm = {
+export type TValidationForm = {
   errorStatus: boolean
   message: string
   class: string
@@ -149,6 +149,13 @@ export type ServerResForAllSpecialtiesType = {
   results: SpecialtyResType[]
 }
 
+export type UserPersonalData = {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+}
+
 export type UserInfoType = {
   avatar: null
   description: string
@@ -164,5 +171,5 @@ export type UserInfoType = {
   updated_at: string
   upload_military: null
   upload_vpo: null
-  user: { id: string; email: string; first_name: string; last_name: string }
+  user: UserPersonalData
 }

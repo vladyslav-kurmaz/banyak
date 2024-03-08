@@ -20,7 +20,7 @@
   100% {
     left: 71%;
     border: 1px solid #fff;
-    background-color: #1C145E;
+    background-color: #1c145e;
   }
 }
 
@@ -28,7 +28,7 @@
   0% {
     left: 71%;
     border: 1px solid #fff;
-    background-color: #1C145E;
+    background-color: #1c145e;
   }
   25% {
     left: 55.5%;
@@ -48,7 +48,7 @@
   }
 }
 
-.toggle-theam {
+.toggle-theme {
   // max-width: 132px;
   width: 100%;
   background-color: #fff;
@@ -82,23 +82,19 @@
         width: 25px;
         height: 25px;
       }
-      
 
       &.false {
         animation-name: toggled-forward;
-        animation-duration: .3s;
+        animation-duration: 0.3s;
         animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards; 
-        
+        animation-fill-mode: forwards;
       }
       &.true {
         animation-name: toggled-backward;
-        animation-duration: .3s;
+        animation-duration: 0.3s;
         animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards; 
-        
+        animation-fill-mode: forwards;
       }
-
     }
   }
 }

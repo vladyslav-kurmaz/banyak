@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkidHooks'
-import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
+import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
-import { changreMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
 import { selectUserInfo, setUserProfile } from '../../store/userSlice'
 import logo from '../../image/logo/small_logo.webp'
 
@@ -16,17 +16,12 @@ import plusIcon from '../../image/icon/PLUS.svg'
 
 const ProfilePersonalInfo = ({
   fc,
-}: // changeData,
-{
+}: {
   fc: React.Dispatch<React.SetStateAction<boolean>>
-  // changeData: React.Dispatch<React.SetStateAction<TprofileChange | null>>;
 }) => {
-  // const [name, setName] = useState(true);
-  // const [nameWrite, setNameWrite] = useState("Катерина Білокур");
-
   const dispatch = useAppDispatch()
-  const { updatPhoto, profileUser } = ServiceBanyak()
-  const [newAvatar, setNewAvatar] = useState<string | File>('')
+  const { updatePhoto, profileUser, hostname } = ServiceBanyak()
+  const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
 
   // const inputRef = useRef(null);
@@ -34,112 +29,164 @@ const ProfilePersonalInfo = ({
   const { userProfile } = useAppSelector(selectUserInfo)
   // const {} = userProfile as TUserProfile
 
-  const changeFile = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
-    const target = e.target
-    if (target && target.files !== null) {
-      const file = target.files[0]
-
-      setNewAvatar(file)
+  const handleOnChangeFile = (
+    e: React.FormEvent<HTMLInputElement>,
+    type: string
+  ) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList
     }
+
+    setNewAvatar(target.files[0])
+    // if (target && target.files !== null) {
+    //   const file = target.files[0]
+    //   console.log('avatar', file)
+    //   setNewAvatar(file)
+    // }
   }
 
   const sendNewAvatar = async () => {
+    if (typeof newAvatar === 'undefined') return
+
     const token = getCookies('sessiontokenid')
+
     const formData = new FormData()
-
     formData.append('avatar_profile', newAvatar)
+    // formData.append('upload_preset', 'test')
 
-    if (typeof token === 'string') {
-      try {
-        // eslint-disable-next-line
-        const updatePhoto = await updatPhoto(token, 'PUT', formData)
-        const updateProfile = await profileUser(token, 'GET')
+    console.log('formData', formData.getAll('avatar_profile'))
+    try {
+      const response = await fetch(
+        `${hostname}/api/v1/users/user-profile-avatar/`,
+        {
+          // method: 'POST',
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      )
 
-        dispatch(setUserProfile(await updateProfile))
-        setNewAvatar('')
-        dispatch(changreMainPreloader(false))
-      } catch (e) {
-        console.error(e)
-      }
+      const result = await response.json()
+
+      console.log('result avatar', result)
+
+      const profileResponse = await fetch(
+        `${hostname}/api/v1/users/user-profile/`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      const user = await profileResponse.json()
+      console.log('user ProfilePage from info', user)
+    } catch (error) {
+      console.log(error)
+    }
+
+    try {
+      // eslint-disable-next-line
+      // const updatePhoto = await updatePhoto(token, 'PUT', formData)
+      // const updateProfile = await profileUser(token, 'GET')
+
+      // const profileResponse = await fetch(`${hostname}/api/v1/users/user-profile/`, {
+      //   method: 'GET',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+
+      // const user = await profileResponse.json()
+      // console.log('user ProfilePage from info', user)
+
+      // dispatch(setUserProfile(await updateProfile))
+      setNewAvatar(undefined) //maybe its better to use another
+      dispatch(changeMainPreloader(false))
+    } catch (e) {
+      console.error(e)
     }
   }
 
   const renderUserInfo = () => {
-    if (userProfile !== null) {
-      const { user, avatar } = userProfile
-
-      const newAvatarBlob = newAvatar as File
-
-      const imageUrl = newAvatarBlob ? URL.createObjectURL(newAvatarBlob) : ''
-
-      const avatarOrPlug =
-        (avatar && avatar.avatar_profile !== null) || imageUrl ? (
-          <img
-            src={
-              newAvatar !== ''
-                ? imageUrl
-                : `http://localhost:8000${avatar.avatar_profile}`
-            }
-            className={`personal-info__avatar`}
-            alt="User avatar"
-          />
-        ) : (
-          <img src={logo} className="personal-info__avatar" alt="User avatar" />
-        )
-      return (
-        <>
-          {avatarOrPlug}
-
-          <div className="personal-info__container">
-            {newAvatar === '' ? (
-              <label
-                htmlFor="avatar-change"
-                className="personal-info__changed-avatar"
-              >
-                Замінити фото
-                <input
-                  className="personal-info__input"
-                  type="file"
-                  id="avatar-change"
-                  onChange={(e) => changeFile(e, 'avatar')}
-                />
-              </label>
-            ) : (
-              <div className="personal-info__update">
-                <h2 className="personal-info__question">
-                  Ви бажаєте змінити фото?
-                </h2>
-                <ul className="personal-info__list">
-                  <li className="personal-info__button">
-                    <ButtonSmall
-                      text="Так"
-                      fn={() => sendNewAvatar()}
-                    ></ButtonSmall>
-                  </li>
-                  <li className="personal-info__button">
-                    <ButtonSmall
-                      text="Ні"
-                      fn={() => setNewAvatar('')}
-                    ></ButtonSmall>
-                  </li>
-                </ul>
-              </div>
-            )}
-
-            <span className="personal-info__name">
-              {user.first_name} {user.last_name}
-            </span>
-            <span className="personal-info__email">{user.email}</span>
-          </div>
-        </>
-      )
+    if (!userProfile) {
+      return null
     }
+
+    const { user, avatar } = userProfile
+    const newAvatarBlob = newAvatar as File
+
+    const imageUrl = newAvatarBlob ? URL.createObjectURL(newAvatarBlob) : ''
+    const avatarUrl = avatar?.avatar_profile
+      ? `http://localhost:8000${avatar.avatar_profile}`
+      : null
+
+    console.log('newAvatar', newAvatar)
+
+    return (
+      <>
+        <img
+          src={imageUrl || avatarUrl || logo}
+          className="personal-info__avatar"
+          alt="User avatar"
+        />
+        <div className="personal-info__container">
+          {typeof newAvatar === 'undefined' ? (
+            <label
+              htmlFor="avatar-change"
+              className="personal-info__changed-avatar"
+            >
+              Замінити фото
+              <input
+                className="personal-info__input"
+                accept="image/*"
+                type="file"
+                id="avatar-change"
+                onChange={(e) => handleOnChangeFile(e, 'avatar')}
+              />
+            </label>
+          ) : (
+            <div className="personal-info__update">
+              <h2 className="personal-info__question">
+                Ви бажаєте змінити фото?
+              </h2>
+              <ul className="personal-info__list">
+                <li className="personal-info__button">
+                  <ButtonSmall
+                    btnType="button"
+                    text="Так"
+                    fn={() => sendNewAvatar()}
+                  ></ButtonSmall>
+                </li>
+                <li className="personal-info__button">
+                  <ButtonSmall
+                    btnType="button"
+                    text="Ні"
+                    fn={() => setNewAvatar(undefined)}
+                  ></ButtonSmall>
+                </li>
+              </ul>
+            </div>
+          )}
+
+          <span className="personal-info__name">
+            {user.first_name} {user.last_name}
+          </span>
+          <span className="personal-info__email">{user.email}</span>
+        </div>
+      </>
+    )
   }
 
   return (
     <div className="personal-info">
       <div className="personal-info__user-profile">
-        <SwitchToogle prop1="Я власник ідеї" prop2="Я талант" />
+        <SwitchToggle prop1="Я власник ідеї" prop2="Я талант" />
       </div>
 
       <div className="personal-info__main-info">

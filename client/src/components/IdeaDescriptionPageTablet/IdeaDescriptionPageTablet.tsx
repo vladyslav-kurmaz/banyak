@@ -33,7 +33,7 @@ function IdeaDescriptionPageTablet({
           <h1 className="tablet-idea-description__title">{ideaInfo?.title}</h1>
         </div>
       ) : (
-        <div className="tablet-talent-description__name-avatar-portfolio-wraper">
+        <div className="tablet-talent-description__name-avatar-portfolio-wrapper">
           <img
             src={plugIcon}
             alt="talant's avatar"
@@ -54,9 +54,9 @@ function IdeaDescriptionPageTablet({
           {ideaInfo?.description}
         </p>
       ) : (
-        <div className="tablet-talent-description__speciality-description-wraper">
+        <div className="tablet-talent-description__speciality-description-wrapper">
           <h1 className="tablet-idea-description__title">
-            {talentInfo?.speciality[0].name}
+            {talentInfo?.speciality[0]?.name}
           </h1>
           <p className="tablet-idea-description__description">
             {talentInfo?.description}
@@ -69,42 +69,42 @@ function IdeaDescriptionPageTablet({
           {isIdea ? 'Потрібні технології:' : 'Володію технологіями:'}
         </h4>
         {isIdea ? (
-          <ul className="tablet-idea-description__stack-items-wraper">
+          <ul className="tablet-idea-description__stack-items-wrapper">
             {ideaInfo?.stack.map((technology, index) => (
               <li
                 key={ideaStackKeys[index]}
                 className="tablet-idea-description__stack-item"
               >
-                {`+${technology.name}`}
+                {`+${technology?.name}`}
               </li>
             ))}
           </ul>
         ) : (
-          <ul className="tablet-idea-description__stack-items-wraper">
+          <ul className="tablet-idea-description__stack-items-wrapper">
             {talentInfo?.stack.map((technology, index) => (
               <li
                 key={talentStackKeys[index]}
                 className="tablet-idea-description__stack-item"
               >
-                {`+${technology.name}`}
+                {`+${technology?.name}`}
               </li>
             ))}
           </ul>
         )}
       </div>
-      <div className="tablet-idea-description__specialities-btn-wraper">
+      <div className="tablet-idea-description__specialities-btn-wrapper">
         {isIdea ? (
           <div className="tablet-idea-description__specialities">
             <h4 className="tablet-idea-description__specialities-title">
               Потрібні фахівці:
             </h4>
-            <ul className="tablet-idea-description__specialities-items-wraper">
+            <ul className="tablet-idea-description__specialities-items-wrapper">
               {ideaInfo?.specialization.map((speciality, index) => (
                 <li
                   key={ideaSpecializationKeys[index]}
                   className="tablet-idea-description__specialities-item"
                 >
-                  {speciality.name}
+                  {speciality?.name}
                 </li>
               ))}
             </ul>
@@ -119,7 +119,7 @@ function IdeaDescriptionPageTablet({
         </Link>
       </div>
 
-      <div className="tablet-idea-description__views-date-wraper">
+      <div className="tablet-idea-description__views-date-wrapper">
         <QuestionMark />
         <ViewsIconAndQuantity
           viewsQuantity={
@@ -163,7 +163,7 @@ export default IdeaDescriptionPageTablet
         <h4 className="tablet-idea-description__stack-title">
           Потрібні технології:
         </h4>
-        <div className="tablet-idea-description__stack-items-wraper">
+        <div className="tablet-idea-description__stack-items-wrapper">
           <p className="tablet-idea-description__stack-item">+Figma</p>
           <p className="tablet-idea-description__stack-item">+A/B testing</p>
           <p className="tablet-idea-description__stack-item">
@@ -173,12 +173,12 @@ export default IdeaDescriptionPageTablet
           <p className="tablet-idea-description__stack-item">Type Script</p>
         </div>
       </div>
-      <div className="tablet-idea-description__specialities-btn-wraper">
+      <div className="tablet-idea-description__specialities-btn-wrapper">
         <div className="tablet-idea-description__specialities">
           <h4 className="tablet-idea-description__specialities-title">
             Потрібні фахівці:
           </h4>
-          <div className="tablet-idea-description__specialities-items-wraper">
+          <div className="tablet-idea-description__specialities-items-wrapper">
             <p className="tablet-idea-description__specialities-item">
               UI/UX Designer
             </p>
@@ -199,7 +199,7 @@ export default IdeaDescriptionPageTablet
         </Link>
       </div>
 
-      <div className="tablet-idea-description__views-date-wraper">
+      <div className="tablet-idea-description__views-date-wrapper">
         <QuestionMark />
         <ViewsIconAndQuantity viewsQuantity={10} />
         <DisplayDateFromDB date={'2023-12-05T08:53:07.571657Z'} />

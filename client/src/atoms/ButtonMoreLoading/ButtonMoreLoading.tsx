@@ -15,6 +15,7 @@ const ButtonMoreLoading = ({
 
   return (
     <button
+      type="button"
       className="more-loading"
       onClick={(): void => {
         handleButtonMoreLoadingClick()

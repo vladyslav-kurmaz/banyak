@@ -10,8 +10,8 @@ const initialState: SearchByStackStateType = {
   stack: '',
 }
 
-export const serchByStackSlice = createSlice({
-  name: 'serchByStack',
+export const searchByStackSlice = createSlice({
+  name: 'searchByStack',
   initialState,
   reducers: {
     setStack: (state, action: PayloadAction<SearchByStackStateType>) => {
@@ -20,8 +20,8 @@ export const serchByStackSlice = createSlice({
   },
 })
 
-export const { setStack } = serchByStackSlice.actions
+export const { setStack } = searchByStackSlice.actions
 
-export const selectSerchByStack = (state: RootState) => state.searchByStack
+export const selectSearchByStack = (state: RootState) => state.searchByStack
 
-export default serchByStackSlice.reducer
+export default searchByStackSlice.reducer

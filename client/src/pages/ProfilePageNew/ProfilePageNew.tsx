@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import ProfilePersonalInfo from '../../components/ProfilePersonalInfo/ProfilePersonalInfo'
 import ProfileStackInfo from '../../components/ProfileStackInfo/ProfileStackInfo'
 import { TprofileChange, UserInfoType } from '../../types/types'
@@ -11,9 +11,10 @@ import chat from '../../image/header/chat.svg'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import lampIcon from '../../image/icon/idea.svg'
 import plusIcon from '../../image/icon/PLUS.svg'
+import AvatarName from '../../components/AvatarName/AvatarName'
 
 import './ProfilePageNew.scss'
-import AvatarChangeAvatar from '../../components/AvatarChangeAvatar/AvatarChangeAvatar'
+import { Link } from 'react-router-dom'
 
 function ProfilePageNew() {
   const { hostname, handleError } = ServiceBanyak()
@@ -44,15 +45,26 @@ function ProfilePageNew() {
 
   return (
     <div>
-      <AvatarChangeAvatar />
-
-      <div className="">
-        {userInfo?.user?.first_name} {userInfo?.user?.last_name}
+      <AvatarName userData={userInfo?.user} />
+      <div className="profile-btn-group">
+        <ButtonSmall
+          text="Чат"
+          icon={chat}
+          style={{ width: '87px', boxSizing: 'border-box' }}
+        />
+        <ButtonSmall
+          text="Мої ідеї"
+          icon={lampIcon}
+          style={{ width: '123px', boxSizing: 'border-box' }}
+        />
+        <ButtonSmall
+          text="Додати ідею"
+          icon={plusIcon}
+          href="/create-idea"
+          style={{ width: '166px', boxSizing: 'border-box' }}
+        />
+        <Link to={'/create-idea'} />
       </div>
-      <div className="">{userInfo?.user?.email}</div>
-      <ButtonSmall text="Чат" icon={chat} />
-      <ButtonSmall text="Мої ідеї" icon={lampIcon} />
-      <ButtonSmall text="Додати ідею" icon={plusIcon} href="/create-idea" />
     </div>
   )
 }

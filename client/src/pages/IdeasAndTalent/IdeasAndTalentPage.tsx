@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
-import { changreMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
+import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'
@@ -11,7 +11,7 @@ import SearchByStack from '../../atoms/SearchByStack/SearchByStack'
 import { selectSearchBySpecialty } from '../../store/searchBySpecialtySlice'
 import IdeasOrTalentNotFind from '../../atoms/IdeasOrTalentNotFind/IdeasOrTalentNotFind'
 import './IdeasAndTalent.scss'
-import { selectSerchByStack } from '../../store/searchByStackSlice'
+import { selectSearchByStack } from '../../store/searchByStackSlice'
 
 const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const [talents, setTalents] = useState<TalentRespType[]>([])
@@ -25,7 +25,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
   const dispatch = useAppDispatch()
 
   const selectedSpecialtyForSearch = useAppSelector(selectSearchBySpecialty)
-  const stackForSearch = useAppSelector(selectSerchByStack)
+  const stackForSearch = useAppSelector(selectSearchByStack)
 
   useEffect(() => {
     if (isIdea) {
@@ -48,7 +48,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             setNoTalents(false)
             setNoIdeas(false)
             setIdeas(ideasRes.results)
-            dispatch(changreMainPreloader(false))
+            dispatch(changeMainPreloader(false))
           } else if (
             ideasRes?.next &&
             currentPage > 1 &&
@@ -71,15 +71,11 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             ideasRes?.count &&
             (selectedSpecialtyForSearch.specialty || stackForSearch.stack)
           ) {
-            console.log(
-              'test from ideasRes?.count && (selectedSpecialtyForSearch.specialty || stackForSearch.stack)'
-            )
             setNoTalents(false)
             setNoIdeas(false)
             setIdeas(ideasRes.results)
-            dispatch(changreMainPreloader(false))
+            dispatch(changeMainPreloader(false))
           } else if (ideasRes?.next && currentPage > 1) {
-            console.log('test from (ideasRes?.next && currentPage > 1)')
             const moreIdeasRes = await getIdeas(
               selectedSpecialtyForSearch.specialty,
               stackForSearch.stack,
@@ -94,7 +90,6 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
               setDisabled(true)
             }
           } else {
-            console.log('from last else')
             setIdeas([])
             setNoIdeas(true)
           }
@@ -131,7 +126,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
             setNoIdeas(false)
             setNoTalents(false)
             setTalents(talentsRes.results)
-            dispatch(changreMainPreloader(false))
+            dispatch(changeMainPreloader(false))
           } else if (
             talentsRes?.next &&
             currentPage > 1 &&
@@ -205,7 +200,7 @@ const IdeasAndTalent = ({ isIdea }: { isIdea: boolean }) => {
 
   return (
     <div className="ideaAndTalent">
-      <div className="ideaAndTalent__search-wraper">
+      <div className="ideaAndTalent__search-wrapper">
         <SearchByStack />
         <SearchBySpecialty />
       </div>

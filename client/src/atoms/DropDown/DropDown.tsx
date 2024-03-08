@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { SpecialtyResType } from '../../types/types'
-import { useAppDispatch } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import { setSpecialty } from '../../store/searchBySpecialtySlice'
 import useUUID from '../../hooks/useUUID'
 import './DropDown.scss'

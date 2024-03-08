@@ -63,7 +63,7 @@ const Idea = ({ myIdea, idea }: { myIdea: boolean; idea: IdeaRespType }) => {
               className="idea__img-picture"
             />
           </div>
-          <div className="idea__info-and-speciality-wraper ">
+          <div className="idea__info-and-speciality-wrapper ">
             <div className="idea__container-info">
               <h2 className="idea__container-info-title">
                 {makesTextShorterAddsDots(idea.title, IDEA_TITLE_LENGTH)}

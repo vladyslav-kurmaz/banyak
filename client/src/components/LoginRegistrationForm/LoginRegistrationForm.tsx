@@ -2,12 +2,12 @@ import { useState, useEffect, FormEvent } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 // work with redux
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkidHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 
 import {
   changeCounterLink,
   changeLoginOrSingUp,
-  changreMainPreloader,
+  changeMainPreloader,
   changeErrorStatus,
 } from '../SettingMenu/StateElementSlice'
 import { setUserProfile } from '../../store/userSlice'
@@ -18,7 +18,7 @@ import workWithCookies from '../../utils/workWithCookies'
 
 // Components
 import CustomInput from '../../atoms/CustomInput/CustomInput'
-import SwitchToogle from '../../atoms/SwitchToggle/SwitchToggle'
+import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import CrossCustom from '../../atoms/CrossCustom/CrossCustom'
 
 // photo
@@ -139,12 +139,9 @@ const LoginRegistrationForm = () => {
     // document.body.style.overflow = "";
 
     try {
-      console.log('registration newUserData', newUserData)
       const registrationResponse = await singUpNewUser(
         JSON.stringify(newUserData)
       )
-
-      // console.log('registration status', registrationResponse.statusText)
 
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
@@ -157,7 +154,7 @@ const LoginRegistrationForm = () => {
       dispatch(setUserProfile(await createProfile))
 
       navigate('/chose-profile')
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
       document.body.style.overflow = ''
 
       setName('')
@@ -165,7 +162,7 @@ const LoginRegistrationForm = () => {
       setEmail('')
       setPass('')
     } catch (e) {
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
       if (typeof e === 'object' && e !== null && 'status' in e) {
         dispatch(changeErrorStatus(e.status))
       }
@@ -198,13 +195,13 @@ const LoginRegistrationForm = () => {
       dispatch(setUserProfile(await createProfile))
       document.body.style.overflow = ''
       navigate('/')
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
 
       setEmail('')
       setPass('')
     } catch (e) {
       // document.body.style.overflow = "";
-      dispatch(changreMainPreloader(false))
+      dispatch(changeMainPreloader(false))
       if (typeof e === 'object' && e !== null && 'status' in e) {
         dispatch(changeErrorStatus(e.status))
       }
@@ -323,7 +320,7 @@ const LoginRegistrationForm = () => {
           />
         </div>
         <div className="registration__popup-toggle">
-          <SwitchToogle prop1={'РЕЄСТРАЦІЯ'} prop2={'ВХІД'} />
+          <SwitchToggle prop1={'РЕЄСТРАЦІЯ'} prop2={'ВХІД'} />
         </div>
         {renderForm()}
         <div className="registration__popup-another">
