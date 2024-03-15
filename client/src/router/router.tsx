@@ -42,7 +42,7 @@ const router = createBrowserRouter([
   //   ),
   // },
   // {
-  //   path: '/singup',
+  //   path: '/signup',
   //   element: (
   //     <SingUpPage/>
 

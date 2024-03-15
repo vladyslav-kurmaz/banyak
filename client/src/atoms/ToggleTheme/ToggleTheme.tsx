@@ -1,6 +1,6 @@
 import { FC, MouseEventHandler } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
-import { changeTheme } from '../../components/SettingMenu/StateElementSlice'
+import { changeTheme } from '../../store/stateElementSlice'
 
 import './ToggleTheme.scss'
 

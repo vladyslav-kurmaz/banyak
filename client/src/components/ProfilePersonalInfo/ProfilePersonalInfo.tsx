@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
-import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import { selectUserInfo, setUserProfile } from '../../store/userSlice'
 import logo from '../../image/logo/small_logo.webp'
 
@@ -90,6 +90,19 @@ const ProfilePersonalInfo = ({
     }
 
     try {
+      const profileResponse = await fetch(
+        `${hostname}/api/v1/users/user-profile/`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      const user = await profileResponse.json()
+
       // eslint-disable-next-line
       // const updatePhoto = await updatePhoto(token, 'PUT', formData)
       // const updateProfile = await profileUser(token, 'GET')
@@ -106,7 +119,7 @@ const ProfilePersonalInfo = ({
       // console.log('user ProfilePage from info', user)
 
       // dispatch(setUserProfile(await updateProfile))
-      setNewAvatar(undefined) //maybe its better to use another
+      setNewAvatar(user.avatar_profile)
       dispatch(changeMainPreloader(false))
     } catch (e) {
       console.error(e)

@@ -8,7 +8,7 @@ import './IdeasPopup.scss'
 import Idea from '../Idea/Idea'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
-import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import { IdeaRespType } from '../../types/types'
 
 const IdeasPopup = ({

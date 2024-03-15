@@ -8,7 +8,7 @@ import workWithCookies from '../../utils/workWithCookies'
 import validationProfile from '../../utils/validationProfile'
 
 import { TGetAllStack, TUserProfile, TprofileChange } from '../../types/types'
-import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import { selectUserInfo, setAllStack } from '../../store/userSlice'
 
 import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
@@ -120,7 +120,7 @@ const ProfileStackInfo = ({
               placeholder="Напишіть декілька слів про себе та свій досвід"
             ></textarea>
             <p className="about-me__instruction">
-              Опишіть хочаб 1 проєкт над яким працювали
+              Опишіть хоча б 1 проєкт над яким працювали
             </p>
           </div>
 

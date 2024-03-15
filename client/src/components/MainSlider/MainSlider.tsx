@@ -7,7 +7,7 @@ import MainInfo from '../MainInfo/MainInfo'
 import MainSliderImg from '../MainSliderImg/MainSliderImg'
 import MainInstruction from '../MainInstruction/MainInstruction'
 
-import { changeMainPageSlider } from '../SettingMenu/StateElementSlice'
+import { changeMainPageSlider } from '../../store/stateElementSlice'
 
 import './MainSlider.scss'
 
@@ -15,10 +15,10 @@ const MainSlider = () => {
   const dispatch = useAppDispatch()
   const { mainPageSlider } = useAppSelector((state) => state.stateElement)
 
-  const changeMainSlide: (
-    e: MouseEvent<HTMLDivElement>,
-    num: number
-  ) => void = (e, num) => {
+  const changeMainSlide: (e: MouseEvent<HTMLDivElement>, num: 0 | 1) => void = (
+    e,
+    num
+  ) => {
     const target = e.currentTarget
 
     if (mainPageSlider === 0) {

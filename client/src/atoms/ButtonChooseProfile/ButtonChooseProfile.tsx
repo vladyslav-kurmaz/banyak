@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import { useNavigate } from 'react-router-dom'
 
-import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
