@@ -4,7 +4,7 @@ import {
   changeLanguage,
   changeStatusInstr,
   changeLoginOrSingUp,
-} from '../../components/SettingMenu/StateElementSlice'
+} from '../../store/stateElementSlice'
 import { selectUserInfo, setTypeUser } from '../../store/userSlice'
 
 import './SwitchToggle.scss'

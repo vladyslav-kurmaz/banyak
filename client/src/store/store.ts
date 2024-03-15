@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
 
-import stateElement from '../components/SettingMenu/StateElementSlice'
+import stateElement from './stateElementSlice'
 import userInfo from '../store/userSlice'
 import searchBySpecialty from '../store/searchBySpecialtySlice'
 import searchByStack from '../store/searchByStackSlice'

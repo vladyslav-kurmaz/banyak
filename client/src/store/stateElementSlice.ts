@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { stateElement } from '../../types/types'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { stateElement } from '../types/types'
 
 const initialState: stateElement = {
   headerSetting: false,
@@ -18,34 +19,34 @@ const stateElementSlice = createSlice({
   name: 'stateElement',
   initialState,
   reducers: {
-    changeOpenHeaderSetting: (state, action) => {
+    changeOpenHeaderSetting: (state, action: PayloadAction<boolean>) => {
       state.headerSetting = action.payload
     },
-    changeLanguage: (state, action) => {
+    changeLanguage: (state, action: PayloadAction<string | null>) => {
       state.mainLanguage = action.payload
     },
-    changeTheme: (state, action) => {
+    changeTheme: (state, action: PayloadAction<boolean>) => {
       state.mainTheme = action.payload
     },
-    changeMainPageSlider: (state, action) => {
+    changeMainPageSlider: (state, action: PayloadAction<0 | 1>) => {
       state.mainPageSlider = action.payload
     },
-    changeStatusInstr: (state, action) => {
+    changeStatusInstr: (state, action: PayloadAction<string | null>) => {
       state.statusInstr = action.payload
     },
-    changeOpenOrCloseLoginPopup: (state, action) => {
+    changeOpenOrCloseLoginPopup: (state, action: PayloadAction<boolean>) => {
       state.loginRegistrationForm = action.payload
     },
-    changeLoginOrSingUp: (state, action) => {
+    changeLoginOrSingUp: (state, action: PayloadAction<string | null>) => {
       state.loginOrSingUp = action.payload
     },
     changeCounterLink: (state) => {
       state.counterLink = state.counterLink + 1
     },
-    changeMainPreloader: (state, action) => {
+    changeMainPreloader: (state, action: PayloadAction<boolean>) => {
       state.mainPreloader = action.payload
     },
-    changeErrorStatus: (state, action) => {
+    changeErrorStatus: (state, action: PayloadAction<unknown>) => {
       state.errorStatus = action.payload
     },
   },

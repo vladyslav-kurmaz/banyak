@@ -9,7 +9,7 @@ import ToggleTheme from '../../atoms/ToggleTheme/ToggleTheme'
 import {
   changeOpenHeaderSetting,
   changeOpenOrCloseLoginPopup,
-} from './StateElementSlice'
+} from '../../store/stateElementSlice'
 
 import ServiceBanyak from '../../service/ServiceBanyak'
 

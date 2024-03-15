@@ -1,7 +1,7 @@
 import SettingMenu from '../SettingMenu/SettingMenu'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
-import { changeOpenOrCloseLoginPopup } from '../SettingMenu/StateElementSlice'
+import { changeOpenOrCloseLoginPopup } from '../../store/stateElementSlice'
 
 import logo from '../../image/logo/LOGO_Banyak.webp'
 

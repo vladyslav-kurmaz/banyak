@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
-import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import ButtonMoreLoading from '../../atoms/ButtonMoreLoading/ButtonMoreLoading'
 import Idea from '../../components/Idea/Idea'
 import Talent from '../../components/Talent/Talent'

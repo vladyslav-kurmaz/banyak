@@ -7,7 +7,7 @@ import {
   setSpecialty,
   selectSearchBySpecialty,
 } from '../../store/searchBySpecialtySlice'
-import { changeMainPreloader } from '../../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
 const SearchBySpecialty: FC<{

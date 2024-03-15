@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../hooks/reduxToolkitHooks'
 import useHttp from '../hooks/httpHook'
 import { setUserProfile } from '../store/userSlice'
-import { changeMainPreloader } from '../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../store/stateElementSlice'
 import workWithCookies from '../utils/workWithCookies'
 import {
   ServerResForAllSpecialtiesType,
@@ -40,18 +40,22 @@ const ServiceBanyak = () => {
   }
 
   const singUpNewUser = async (body: BodyInit | null | undefined) => {
-    return fetch(USER_REGISTRATION_URL, {
+    dispatch(changeMainPreloader(true))
+    const createdUser = fetch(USER_REGISTRATION_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: body,
     })
-      .then((response) => {
-        console.log('singUpNewUser resp', response.statusText)
-        return response
-      })
+      .then((response) => response.json())
+      .then((result) => result)
       .catch((error) => {
         handleError(error)
       })
+      .finally(() => {
+        dispatch(changeMainPreloader(false))
+      })
+
+    return createdUser
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {

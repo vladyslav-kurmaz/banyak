@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../hooks/reduxToolkitHooks'
-import { changeMainPreloader } from '../components/SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../store/stateElementSlice'
 
 const useHttp = () => {
   const dispatch = useAppDispatch()

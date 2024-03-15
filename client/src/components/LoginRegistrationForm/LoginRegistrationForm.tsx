@@ -9,7 +9,7 @@ import {
   changeLoginOrSingUp,
   changeMainPreloader,
   changeErrorStatus,
-} from '../SettingMenu/StateElementSlice'
+} from '../../store/stateElementSlice'
 import { setUserProfile } from '../../store/userSlice'
 
 // Services
@@ -65,9 +65,9 @@ const LoginRegistrationForm = () => {
       setEmail('')
       setPass('')
       dispatch(changeCounterLink())
-      navigate('?singup')
+      navigate('?signup')
 
-      setModalLocation((state) => [...state, '?singup'])
+      setModalLocation((state) => [...state, '?signup'])
     }
     // eslint-disable-next-line
   }, [loginOrSingUp])
@@ -76,7 +76,7 @@ const LoginRegistrationForm = () => {
     if (location.search === '?login') {
       dispatch(changeLoginOrSingUp('ВХІД'))
       setDisabled(true)
-    } else if (location.search === '?singup') {
+    } else if (location.search === '?signup') {
       dispatch(changeLoginOrSingUp('РЕЄСТРАЦІЯ'))
       setDisabled(true)
     }
@@ -142,7 +142,7 @@ const LoginRegistrationForm = () => {
       const registrationResponse = await singUpNewUser(
         JSON.stringify(newUserData)
       )
-
+      console.log('registrationResponse', registrationResponse)
       const login = await loginUser(
         JSON.stringify({ email: email, password: pass })
       )
@@ -194,7 +194,7 @@ const LoginRegistrationForm = () => {
 
       dispatch(setUserProfile(await createProfile))
       document.body.style.overflow = ''
-      navigate('/')
+      navigate('/profile')
       dispatch(changeMainPreloader(false))
 
       setEmail('')
@@ -311,7 +311,7 @@ const LoginRegistrationForm = () => {
         <div className="registration__popup-logo">
           <img
             src={logo}
-            alt="Banyk logo"
+            alt="Banyak logo"
             className="registration__popup-logo-picture"
           />
           <CrossCustom
@@ -428,9 +428,9 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          {loginOrSingUp === 'ВХІД' ? 'Ще намає акаунта?' : 'Вже є аккаунт?'}
+          {loginOrSingUp === 'ВХІД' ? 'Ще нeмає акаунта?' : 'Вже є акаунт?'}
           {loginOrSingUp === 'ВХІД' ? (
-            <a href="?singup">Зареєструйтесь</a>
+            <a href="?signup">Зареєструйтесь</a>
           ) : (
             <a href="?login">Увійдіть</a>
           )}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
-import { changeMainPreloader } from '../SettingMenu/StateElementSlice'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 import { setUserProfile } from '../../store/userSlice'
 
 import Header from '../Header/Header'
@@ -32,7 +32,7 @@ function App() {
 
   const location = useLocation()
   const popupLocation =
-    location.search === '?login' || location.search === '?singup'
+    location.search === '?login' || location.search === '?signup'
   const { profileUser } = ServiceBanyak()
   const { getCookies } = workWithCookies()
   const [showPopup, setShowPopup] = useState(false)
