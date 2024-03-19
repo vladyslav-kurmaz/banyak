@@ -41,7 +41,6 @@ const SwitchToggle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
 
   const changeLang = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const target = e.target as HTMLElement
-
     switch (prop1 || prop2) {
       case 'Власник ідеї' || 'Талант':
         dispatch(changeStatusInstr(target.getAttribute('data-prop')))

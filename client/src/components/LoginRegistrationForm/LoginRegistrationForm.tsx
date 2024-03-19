@@ -8,7 +8,7 @@ import {
   changeCounterLink,
   changeLoginOrSingUp,
   changeMainPreloader,
-  changeErrorStatus,
+  setErrorStatus,
 } from '../../store/stateElementSlice'
 import { setUserProfile } from '../../store/userSlice'
 
@@ -30,11 +30,20 @@ import './LoginRegistrationForm.scss'
 import validationForm from '../../utils/validationForm'
 import translateErrorStatus from '../../utils/translateErroStatus'
 
+type userDetailsType = {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+}
+
 const LoginRegistrationForm = () => {
-  const [name, setName] = useState('')
-  const [surName, setSurName] = useState('')
-  const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
+  const [userDetails, setUserDetails] = useState<userDetailsType>({
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+  })
   const [disabled, setDisabled] = useState(true)
   const [modalLocation, setModalLocation] = useState<string[]>([])
   const location = useLocation()
@@ -51,22 +60,13 @@ const LoginRegistrationForm = () => {
 
   useEffect(() => {
     if (loginOrSingUp === 'ВХІД') {
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
       dispatch(changeCounterLink())
       navigate('?login')
 
       setModalLocation((state) => [...state, '?login'])
     } else {
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
       dispatch(changeCounterLink())
       navigate('?signup')
-
       setModalLocation((state) => [...state, '?signup'])
     }
     // eslint-disable-next-line
@@ -85,19 +85,26 @@ const LoginRegistrationForm = () => {
 
   const changeValue = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: (value: React.SetStateAction<string>) => void
+    valueName: string,
+    setState: (value: React.SetStateAction<userDetailsType>) => void
   ) => {
     const value = e.target.value.trim()
-    setState(value)
-    dispatch(changeErrorStatus(null))
+    setState({ ...userDetails, [valueName]: value })
+    dispatch(setErrorStatus(null))
     // eslint-disable-next-line
   }
 
   useEffect(() => {
-    const nameValid = validationForm(name, 'name')?.errorStatus
-    const surNameValid = validationForm(surName, 'surname')?.errorStatus
-    const emailValid = validationForm(email, 'email')?.errorStatus
-    const passValid = validationForm(pass, 'pass')?.errorStatus
+    const nameValid = validationForm(
+      userDetails.first_name,
+      'name'
+    )?.errorStatus
+    const surNameValid = validationForm(
+      userDetails.last_name,
+      'surname'
+    )?.errorStatus
+    const emailValid = validationForm(userDetails.email, 'email')?.errorStatus
+    const passValid = validationForm(userDetails.password, 'pass')?.errorStatus
 
     if (location.search === '?login') {
       if (!emailValid && !passValid) {
@@ -113,7 +120,7 @@ const LoginRegistrationForm = () => {
       }
     }
     // eslint-disable-next-line
-  }, [name, surName, email, pass])
+  }, [userDetails])
 
   const closeLoginForm = () => {
     document.body.style.overflow = ''
@@ -128,23 +135,18 @@ const LoginRegistrationForm = () => {
 
   const submitSingUpForm = async (e: FormEvent) => {
     e.preventDefault()
-    dispatch(changeErrorStatus(null))
-
-    const newUserData = {
-      first_name: name,
-      last_name: surName,
-      email: email,
-      password: pass,
-    }
-    // document.body.style.overflow = "";
+    dispatch(setErrorStatus(null))
 
     try {
       const registrationResponse = await singUpNewUser(
-        JSON.stringify(newUserData)
+        JSON.stringify(userDetails)
       )
       console.log('registrationResponse', registrationResponse)
       const login = await loginUser(
-        JSON.stringify({ email: email, password: pass })
+        JSON.stringify({
+          email: userDetails.email,
+          password: userDetails.password,
+        })
       )
       const loginJson = await login.json()
       setCookies('sessiontokenid', await loginJson.access_token, 1)
@@ -157,35 +159,29 @@ const LoginRegistrationForm = () => {
       dispatch(changeMainPreloader(false))
       document.body.style.overflow = ''
 
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
+      setUserDetails({ first_name: '', last_name: '', email: '', password: '' })
     } catch (e) {
       dispatch(changeMainPreloader(false))
       if (typeof e === 'object' && e !== null && 'status' in e) {
-        dispatch(changeErrorStatus(e.status))
+        dispatch(setErrorStatus(e.status))
       }
+      setUserDetails({ first_name: '', last_name: '', email: '', password: '' })
 
-      setName('')
-      setSurName('')
-      setEmail('')
-      setPass('')
       console.error(e)
     }
   }
 
   const submitLoginUser = async (e: FormEvent) => {
     e.preventDefault()
-    dispatch(changeErrorStatus(null))
-
-    const userData = {
-      email: email,
-      password: pass,
-    }
+    dispatch(setErrorStatus(null))
 
     try {
-      const login = await loginUser(JSON.stringify(userData))
+      const login = await loginUser(
+        JSON.stringify({
+          email: userDetails.email,
+          password: userDetails.password,
+        })
+      )
       const loginJson = await login.json()
       setCookies('sessiontokenid', await loginJson.access_token, 1)
       setCookies('tokenid', await loginJson.refresh_token, 1)
@@ -197,16 +193,13 @@ const LoginRegistrationForm = () => {
       navigate('/profile')
       dispatch(changeMainPreloader(false))
 
-      setEmail('')
-      setPass('')
+      setUserDetails({ ...userDetails, email: '', password: '' })
     } catch (e) {
-      // document.body.style.overflow = "";
       dispatch(changeMainPreloader(false))
       if (typeof e === 'object' && e !== null && 'status' in e) {
-        dispatch(changeErrorStatus(e.status))
+        dispatch(setErrorStatus(e.status))
       }
-      setEmail('')
-      setPass('')
+      setUserDetails({ ...userDetails, email: '', password: '' })
       console.error(e)
     }
   }
@@ -219,32 +212,32 @@ const LoginRegistrationForm = () => {
           onSubmit={(e) => submitSingUpForm(e)}
         >
           <CustomInput
-            value={name}
+            value={userDetails.first_name}
             name="name"
-            handler={(e) => changeValue(e, setName)}
+            handler={(e) => changeValue(e, 'first_name', setUserDetails)}
             type="text"
             label={'Ім’я'}
             id="form__name"
           />
           <CustomInput
-            value={surName}
-            handler={(e) => changeValue(e, setSurName)}
+            value={userDetails.last_name}
+            handler={(e) => changeValue(e, 'last_name', setUserDetails)}
             type="text"
             label={'Прізвище'}
             id="form__surname"
             name="surname"
           />
           <CustomInput
-            value={email}
-            handler={(e) => changeValue(e, setEmail)}
+            value={userDetails.email}
+            handler={(e) => changeValue(e, 'email', setUserDetails)}
             type="text"
             label={'Електронна пошта'}
             id="form__email"
             name="email"
           />
           <CustomInput
-            value={pass}
-            handler={(e) => changeValue(e, setPass)}
+            value={userDetails.password}
+            handler={(e) => changeValue(e, 'password', setUserDetails)}
             type="password"
             label={'Пароль'}
             id="form__pass"
@@ -267,16 +260,16 @@ const LoginRegistrationForm = () => {
           onSubmit={(e) => submitLoginUser(e)}
         >
           <CustomInput
-            value={email}
-            handler={(e) => changeValue(e, setEmail)}
+            value={userDetails.email}
+            handler={(e) => changeValue(e, 'email', setUserDetails)}
             type="text"
             label={'Електронна пошта'}
             id="form__email-login"
             name="email"
           />
           <CustomInput
-            value={pass}
-            handler={(e) => changeValue(e, setPass)}
+            value={userDetails.password}
+            handler={(e) => changeValue(e, 'password', setUserDetails)}
             type="password"
             label={'Пароль'}
             id="form__pass-login"

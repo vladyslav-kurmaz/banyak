@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../hooks/reduxToolkitHooks'
 import useHttp from '../hooks/httpHook'
 import { setUserProfile } from '../store/userSlice'
-import { changeMainPreloader } from '../store/stateElementSlice'
+import { changeMainPreloader, setErrorStatus } from '../store/stateElementSlice'
 import workWithCookies from '../utils/workWithCookies'
 import {
   ServerResForAllSpecialtiesType,
@@ -41,21 +41,25 @@ const ServiceBanyak = () => {
 
   const singUpNewUser = async (body: BodyInit | null | undefined) => {
     dispatch(changeMainPreloader(true))
-    const createdUser = fetch(USER_REGISTRATION_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: body,
-    })
-      .then((response) => response.json())
-      .then((result) => result)
-      .catch((error) => {
-        handleError(error)
+    try {
+      const response = await fetch(USER_REGISTRATION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
       })
-      .finally(() => {
-        dispatch(changeMainPreloader(false))
-      })
+      if (!response.ok) {
+        const errorResponse = await response.json()
+        dispatch(setErrorStatus(errorResponse.status))
+      }
 
-    return createdUser
+      const result = await response.json()
+      return result
+    } catch (e) {
+      handleError(e)
+      throw e
+    } finally {
+      dispatch(changeMainPreloader(false))
+    }
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
