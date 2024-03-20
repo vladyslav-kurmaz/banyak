@@ -3,8 +3,6 @@ import './ChooseProfilePage.scss'
 import ButtonChooseProfile from '../../atoms/ButtonChooseProfile/ButtonChooseProfile'
 
 const ChooseProfilePage = () => {
-  useEffect(() => {}, [])
-
   return (
     <div className="choose-profile-page">
       <h1 className="choose-profile-page__title">Я тут щоб:</h1>

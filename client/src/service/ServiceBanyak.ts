@@ -47,12 +47,13 @@ const ServiceBanyak = () => {
         headers: { 'Content-Type': 'application/json' },
         body: body,
       })
+      const result = await response.json()
+
       if (!response.ok) {
-        const errorResponse = await response.json()
-        dispatch(setErrorStatus(errorResponse.status))
+        dispatch(setErrorStatus(response.status))
+        throw new Error(result.message || 'Failed to register user')
       }
 
-      const result = await response.json()
       return result
     } catch (e) {
       handleError(e)

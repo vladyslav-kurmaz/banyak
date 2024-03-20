@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,12 +9,14 @@ import workWithCookies from '../../utils/workWithCookies'
 
 import './ButtonChooseProfile.scss'
 
-const ButtonChooseProfile = ({
-  text,
-  isTalent,
-}: {
+type ButtonChooseProfilePropsType = {
   text: string
   isTalent: boolean
+}
+
+const ButtonChooseProfile: FC<ButtonChooseProfilePropsType> = ({
+  text,
+  isTalent,
 }) => {
   const { updateUserProfile, handleError } = ServiceBanyak()
   const { getCookies } = workWithCookies()
