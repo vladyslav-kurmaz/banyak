@@ -24,6 +24,7 @@ const ProfilePage = ({
 
   const [newUserData, setNewUserData] = useState<TprofileChange | null>(null)
 
+  //make request to server to get userData, delete later
   useEffect(() => {
     const fetchProfile = async () => {
       const response = await fetch(`${hostname}/api/v1/users/user-profile/`, {
@@ -38,7 +39,7 @@ const ProfilePage = ({
       console.log('user ProfilePage', user)
     }
     fetchProfile()
-  }, []) //make request to server to get userData
+  }, [])
 
   useEffect(() => {
     if (
@@ -81,8 +82,8 @@ const ProfilePage = ({
         // ideas: userProfile.ideas,
         portfolio: userProfile.portfolio === null ? '' : userProfile.portfolio,
       })
-
-      dispatch(setTypeUser(userProfile.is_talent))
+      // ???maby uncoment this
+      // dispatch(setTypeUser(userProfile.is_talent))
     }
     // eslint-disable-next-line
   }, [userProfile])

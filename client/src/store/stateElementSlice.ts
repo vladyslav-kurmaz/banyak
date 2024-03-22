@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from './store'
 import { stateElement } from '../types/types'
 
 const initialState: stateElement = {
@@ -7,7 +8,7 @@ const initialState: stateElement = {
   mainLanguage: 'УКР',
   mainTheme: true,
   mainPageSlider: 0,
-  statusInstr: 'Власник ідеї',
+  statusInstr: null, //'Власник ідеї'
   loginRegistrationForm: false,
   loginOrSingUp: 'ВХІД',
   counterLink: 0,
@@ -32,7 +33,11 @@ const stateElementSlice = createSlice({
       state.mainPageSlider = action.payload
     },
     changeStatusInstr: (state, action: PayloadAction<string | null>) => {
-      state.statusInstr = action.payload
+      if (action.payload === 'Власник ідеї' || action.payload === 'Талант') {
+        state.statusInstr = action.payload
+      } else {
+        throw new Error('Invalid status: ' + action.payload)
+      }
     },
     changeOpenOrCloseLoginPopup: (state, action: PayloadAction<boolean>) => {
       state.loginRegistrationForm = action.payload
@@ -46,7 +51,7 @@ const stateElementSlice = createSlice({
     changeMainPreloader: (state, action: PayloadAction<boolean>) => {
       state.mainPreloader = action.payload
     },
-    changeErrorStatus: (state, action: PayloadAction<unknown>) => {
+    setErrorStatus: (state, action: PayloadAction<unknown>) => {
       state.errorStatus = action.payload
     },
   },
@@ -64,6 +69,8 @@ export const {
   changeLoginOrSingUp,
   changeCounterLink,
   changeMainPreloader,
-  changeErrorStatus,
+  setErrorStatus,
 } = actions
+
+export const selectStateElement = (state: RootState) => state.stateElement
 export default reducer

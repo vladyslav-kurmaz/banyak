@@ -5,7 +5,11 @@ import {
   changeStatusInstr,
   changeLoginOrSingUp,
 } from '../../store/stateElementSlice'
-import { selectUserInfo, setTypeUser } from '../../store/userSlice'
+import {
+  selectUserInfo,
+  setTypeUser,
+  setUserProfile,
+} from '../../store/userSlice'
 
 import './SwitchToggle.scss'
 
@@ -19,7 +23,7 @@ const SwitchToggle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
   const { mainLanguage, statusInstr, loginOrSingUp } = useAppSelector(
     (state) => state.stateElement
   )
-  const { typeUser } = useAppSelector(selectUserInfo)
+  const { typeUser, userProfile } = useAppSelector(selectUserInfo)
   const translateTypeUser = typeUser ? 'Я талант' : 'Я власник ідеї'
 
   const changeActiveLanguage = (status: string) => {
@@ -41,22 +45,35 @@ const SwitchToggle: FC<SwitchToggle> = ({ prop1, prop2 }) => {
 
   const changeLang = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     const target = e.target as HTMLElement
+    const propValue = target.getAttribute('data-prop')
 
-    switch (prop1 || prop2) {
-      case 'Власник ідеї' || 'Талант':
-        dispatch(changeStatusInstr(target.getAttribute('data-prop')))
+    switch (propValue) {
+      case 'Власник ідеї':
+      case 'Талант':
+        dispatch(changeStatusInstr(propValue))
         break
-      case 'УКР' || 'ENG':
-        dispatch(changeLanguage(target.getAttribute('data-prop')))
+      case 'УКР':
+      case 'ENG':
+        dispatch(changeLanguage(propValue))
         break
-      case 'РЕЄСТРАЦІЯ' || 'ВХІД':
-        dispatch(changeLoginOrSingUp(target.getAttribute('data-prop')))
+      case 'РЕЄСТРАЦІЯ':
+      case 'ВХІД':
+        dispatch(changeLoginOrSingUp(propValue))
         break
-      case 'Я власник ідеї' || 'Я талант':
-        target.getAttribute('data-prop') === 'Я власник ідеї'
-          ? dispatch(setTypeUser(false))
-          : dispatch(setTypeUser(true))
+      case 'Я власник ідеї':
+      case 'Я талант':
+        dispatch(setTypeUser(propValue === 'Я талант'))
+        if (userProfile?.is_talent) {
+          dispatch(
+            setUserProfile({
+              ...userProfile,
+              is_talent: propValue === 'Я талант',
+            })
+          )
+        }
 
+        break
+      default:
         break
     }
   }

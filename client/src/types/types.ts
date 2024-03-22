@@ -1,14 +1,14 @@
 export type stateElement = {
   headerSetting: boolean
-  mainLanguage: string | null
+  mainLanguage: string | null // 'УКР' | 'ENG'
   mainTheme: boolean
   mainPageSlider: 0 | 1
-  statusInstr: string | null
-  loginOrSingUp: string | null
+  statusInstr: string | null //'Власник ідеї' | 'Талант' | null
+  loginOrSingUp: string | null // 'Вхід' | 'Реєстрація'
   loginRegistrationForm: boolean
   counterLink: number
   mainPreloader: boolean
-  errorStatus: any
+  errorStatus: any // null | number
 }
 
 export type TUserProfile = {

@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../hooks/reduxToolkitHooks'
 import useHttp from '../hooks/httpHook'
 import { setUserProfile } from '../store/userSlice'
-import { changeMainPreloader } from '../store/stateElementSlice'
+import { changeMainPreloader, setErrorStatus } from '../store/stateElementSlice'
 import workWithCookies from '../utils/workWithCookies'
 import {
   ServerResForAllSpecialtiesType,
@@ -41,21 +41,27 @@ const ServiceBanyak = () => {
 
   const singUpNewUser = async (body: BodyInit | null | undefined) => {
     dispatch(changeMainPreloader(true))
-    const createdUser = fetch(USER_REGISTRATION_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: body,
-    })
-      .then((response) => response.json())
-      .then((result) => result)
-      .catch((error) => {
-        handleError(error)
-      })
-      .finally(() => {
-        dispatch(changeMainPreloader(false))
+    try {
+      const response = await fetch(USER_REGISTRATION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
       })
 
-    return createdUser
+      const result = await response.json()
+
+      if (!response.ok) {
+        dispatch(setErrorStatus(response.status))
+        throw new Error(result.message || 'Failed to register user')
+      }
+
+      return result
+    } catch (e) {
+      handleError(e)
+      throw e
+    } finally {
+      dispatch(changeMainPreloader(false))
+    }
   }
 
   const loginUser = async (body: BodyInit | null | undefined) => {
@@ -86,6 +92,7 @@ const ServiceBanyak = () => {
         body: body,
       })
       const reqJson = await req.json()
+      // 1 set setUserProfile
       dispatch(setUserProfile(await reqJson))
       return await reqJson
     } catch (e) {
