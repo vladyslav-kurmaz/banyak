@@ -153,7 +153,8 @@ const LoginRegistrationForm = () => {
       setCookies('tokenid', await loginJson.refresh_token, 1)
 
       const createProfile = await profileUser(loginJson.access_token, 'POST')
-      dispatch(setUserProfile(await createProfile))
+      console.log('createProfile', createProfile)
+      // dispatch(setUserProfile(createProfile))
 
       navigate('/chose-profile')
       dispatch(changeMainPreloader(false))
@@ -426,7 +427,7 @@ const LoginRegistrationForm = () => {
           </ul>
         </div>
         <div className="registration__popup-question">
-          {loginOrSingUp === 'ВХІД' ? 'Ще нeмає акаунта?' : 'Вже є акаунт?'}
+          {loginOrSingUp === 'ВХІД' ? 'Ще немає акаунта?' : 'Вже є акаунт?'}
           {loginOrSingUp === 'ВХІД' ? (
             <a href="?signup">Зареєструйтесь</a>
           ) : (

@@ -8,7 +8,7 @@ const initialState: stateElement = {
   mainLanguage: 'УКР',
   mainTheme: true,
   mainPageSlider: 0,
-  statusInstr: 'Власник ідеї',
+  statusInstr: null, //'Власник ідеї'
   loginRegistrationForm: false,
   loginOrSingUp: 'ВХІД',
   counterLink: 0,

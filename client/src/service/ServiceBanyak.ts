@@ -47,6 +47,7 @@ const ServiceBanyak = () => {
         headers: { 'Content-Type': 'application/json' },
         body: body,
       })
+
       const result = await response.json()
 
       if (!response.ok) {
@@ -91,6 +92,7 @@ const ServiceBanyak = () => {
         body: body,
       })
       const reqJson = await req.json()
+      // 1 set setUserProfile
       dispatch(setUserProfile(await reqJson))
       return await reqJson
     } catch (e) {

@@ -6,7 +6,7 @@ import { TGetAllStack, TUserProfile, userInfo } from '../types/types'
 const initialState: userInfo = {
   // userId: null,
   userProfile: null,
-  typeUser: true,
+  typeUser: true, //true means that user is Talent
   allStack: [],
 }
 
@@ -29,7 +29,7 @@ export const userInfoSlice = createSlice({
   },
 })
 
-export const { setTypeUser, setUserProfile, setAllStack } =
+export const { setUserProfile, setAllStack, setTypeUser } =
   userInfoSlice.actions
 
 export const selectUserInfo = (state: RootState) => state.userInfo

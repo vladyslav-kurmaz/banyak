@@ -23,11 +23,8 @@ const ProfilePersonalInfo = ({
   const { updatePhoto, profileUser, hostname } = ServiceBanyak()
   const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
-
-  // const inputRef = useRef(null);
-
   const { userProfile } = useAppSelector(selectUserInfo)
-  // const {} = userProfile as TUserProfile
+  console.log('userProfile from profilePersonal info', userProfile)
 
   const handleOnChangeFile = (
     e: React.FormEvent<HTMLInputElement>,
