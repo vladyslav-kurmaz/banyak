@@ -25,7 +25,6 @@ import TalentDescriptionPage from '../../pages/TalentDescriptionPage/TalentDescr
 import { TUserProfile } from '../../types/types'
 
 import './App.scss'
-import ProfilePageNew from '../../pages/ProfilePageNew/ProfilePageNew'
 
 function App() {
   const { mainPreloader } = useAppSelector((state) => state.stateElement)
@@ -85,10 +84,8 @@ function App() {
             <Route path="talents" element={<IdeasAndTalent isIdea={false} />} />
             <Route path="talents/:slug" element={<TalentDescriptionPage />} />
             <Route path="profile" element={<ProfilePage fc={setShowPopup} />} />
-            <Route path="profile-new" element={<ProfilePageNew />} />
             <Route path="create-idea" element={<CreateIdea />} />
             <Route path="chose-profile" element={<ChooseProfilePage />} />
-
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

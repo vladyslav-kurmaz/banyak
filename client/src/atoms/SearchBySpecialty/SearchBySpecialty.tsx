@@ -10,6 +10,8 @@ import {
 import { changeMainPreloader } from '../../store/stateElementSlice'
 import { SpecialtyResType } from '../../types/types'
 
+// check this link and rewrite
+// https://react.dev/learn/choosing-the-state-structure#avoid-duplication-in-state
 const SearchBySpecialty: FC<{
   fn?: () => void
   formStyle?: object
@@ -21,6 +23,8 @@ const SearchBySpecialty: FC<{
   const dispatch = useAppDispatch()
   const [showDropDown, setShowDropDown] = useState<boolean>(false)
   const [selectSpecialty, setSelectSpecialty] = useState<string>('')
+  // check this link and refactor duplication-in-state
+  // https://react.dev/learn/choosing-the-state-structure#avoid-duplication-in-state
   const [specialtiesList, setSpecialtiesList] = useState<SpecialtyResType[]>([])
   const [filteredSpecialties, setFilteredSpecialties] = useState<
     SpecialtyResType[]

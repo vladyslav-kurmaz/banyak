@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
@@ -20,13 +20,13 @@ const ProfilePersonalInfo = ({
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const dispatch = useAppDispatch()
-  const { hostname } = ServiceBanyak()
+  const { hostname, USER_PROFILE_AVATAR } = ServiceBanyak()
   const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
   const { userProfile } = useAppSelector(selectUserInfo)
   console.log('userProfile from profilePersonal info', userProfile)
   const avatarUrl = userProfile?.avatar?.avatar_profile
-    ? `http://localhost:8000${userProfile.avatar.avatar_profile}`
+    ? `${hostname}${userProfile.avatar.avatar_profile}`
     : null
 
   const handleOnChangeFile = (
@@ -49,16 +49,13 @@ const ProfilePersonalInfo = ({
 
     console.log('formData', formData.getAll('avatar_profile'))
     try {
-      const response = await fetch(
-        `${hostname}/api/v1/users/user-profile-avatar/`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      )
+      const response = await fetch(USER_PROFILE_AVATAR, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
 
       const result = await response.json()
       dispatch(setUserProfileAvatar(result))
