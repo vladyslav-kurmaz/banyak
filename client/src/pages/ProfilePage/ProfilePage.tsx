@@ -36,7 +36,6 @@ const ProfilePage = ({
       })
 
       const user = await response.json()
-      console.log('user ProfilePage', user)
     }
     fetchProfile()
   }, [])

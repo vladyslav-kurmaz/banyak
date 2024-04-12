@@ -32,6 +32,13 @@
         "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
         "parameters": [
           {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "page_size",
             "in": "query",
             "description": "A page number within the paginated result set.",
@@ -151,6 +158,60 @@
           },
           "403": {
             "description": "Forbidden"
+          }
+        },
+        "tags": ["ideas"]
+      },
+      "parameters": []
+    },
+    "/ideas/ideas/search/": {
+      "get": {
+        "operationId": "ideas_ideas_search",
+        "description": "GET - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0441\u043f\u0438\u0441\u043e\u043a \u0456\u0434\u0435\u0439,\nGET <slug> - \u041e\u0442\u0440\u0438\u043c\u0443\u0454\u043c\u043e \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e \u043f\u0440\u043e \u0456\u0434\u0435\u044e \u0437\u0430 \u0434\u043e\u043f\u043e\u043c\u043e\u0433\u043e\u044e \u0457\u0457 slug,\nPOST - \u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043d\u043e\u0432\u043e\u0457 \u0456\u0434\u0435\u0457",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/IdeasList"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": ["ideas"]
@@ -482,6 +543,53 @@
       },
       "parameters": []
     },
+    "/talents/talent/search/": {
+      "get": {
+        "operationId": "talents_talent_search",
+        "description": "- GET: Retrieves a list of talents.\n- GET <slug>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ListTalent"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["talents"]
+      },
+      "parameters": []
+    },
     "/talents/talent/talent_send_invite_idea/": {
       "post": {
         "operationId": "talents_talent_talent_send_invite_idea",
@@ -501,6 +609,53 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/ListTalent"
+            }
+          }
+        },
+        "tags": ["talents"]
+      },
+      "parameters": []
+    },
+    "/talents/talent/talents-filter/": {
+      "get": {
+        "operationId": "talents_talent_filter_talents",
+        "description": "- GET: Retrieves a list of talents.\n- GET <slug>: Retrieves detailed information about a talent using their ID.\n- POST: Allows an author of an idea to send a request to a talent for participation in a project.\n- GET list_invite_user: Retrieves a list of talent invitations for the authenticated user.\n- PATCH accept_invite: Accepts a talent invitation by updating the 'accept_invite' field.\n- POST talent_send_invite_idea: Allows a talent to send an invitation for an idea.",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ListTalent"
+                  }
+                }
+              }
             }
           }
         },
@@ -979,67 +1134,6 @@
       },
       "parameters": []
     },
-    "/users/search/": {
-      "get": {
-        "operationId": "users_search_list",
-        "description": "",
-        "parameters": [
-          {
-            "name": "search",
-            "in": "query",
-            "description": "A search term.",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of results to return per page.",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "The initial index from which to return the results.",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "required": ["count", "results"],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/SearchUsers"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": ["users"]
-      },
-      "parameters": []
-    },
     "/users/specilaity-list/": {
       "get": {
         "operationId": "users_specilaity-list_list",
@@ -1175,21 +1269,6 @@
       "parameters": []
     },
     "/users/user-profile-avatar/": {
-      "post": {
-        "operationId": "users_user-profile-avatar_create",
-        "description": "\u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u0430\u0432\u0430\u0442\u0430\u0440\u043a\u0438 \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "consumes": [
-          "multipart/form-data",
-          "application/x-www-form-urlencoded"
-        ],
-        "tags": ["users"]
-      },
       "put": {
         "operationId": "users_user-profile-avatar_update",
         "description": "\u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043d\u044f \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u0430\u0432\u0430\u0442\u0430\u0440\u043a\u0438 \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0430",
@@ -1676,98 +1755,6 @@
           "title": "Password confirm",
           "type": "string",
           "minLength": 8
-        }
-      }
-    },
-    "SearchUsers": {
-      "required": ["stack"],
-      "type": "object",
-      "properties": {
-        "id": {
-          "title": "Id",
-          "type": "string",
-          "format": "uuid",
-          "readOnly": true
-        },
-        "stack": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Stack"
-          }
-        },
-        "upload_military": {
-          "title": "Upload military",
-          "type": "string",
-          "readOnly": true,
-          "x-nullable": true,
-          "format": "uri"
-        },
-        "upload_vpo": {
-          "title": "Upload vpo",
-          "type": "string",
-          "readOnly": true,
-          "x-nullable": true,
-          "format": "uri"
-        },
-        "description": {
-          "title": "Description",
-          "type": "string",
-          "x-nullable": true
-        },
-        "slug": {
-          "title": "Slug",
-          "type": "string",
-          "format": "slug",
-          "pattern": "^[-a-zA-Z0-9_]+$",
-          "maxLength": 50,
-          "x-nullable": true
-        },
-        "portfolio": {
-          "title": "Portfolio",
-          "type": "string",
-          "format": "uri",
-          "maxLength": 200,
-          "x-nullable": true
-        },
-        "is_talent": {
-          "title": "Is talent",
-          "type": "boolean"
-        },
-        "profile_view": {
-          "title": "Profile view",
-          "type": "integer"
-        },
-        "created_at": {
-          "title": "Created at",
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
-        },
-        "updated_at": {
-          "title": "Updated at",
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
-        },
-        "user": {
-          "title": "User",
-          "type": "string",
-          "format": "uuid",
-          "x-nullable": true
-        },
-        "avatar": {
-          "title": "Avatar",
-          "type": "string",
-          "format": "uuid",
-          "x-nullable": true
-        },
-        "speciality": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "uniqueItems": true
         }
       }
     },

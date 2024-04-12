@@ -173,3 +173,23 @@ export type UserInfoType = {
   upload_vpo: null
   user: UserPersonalData
 }
+
+export type TCreateIdea = {
+  title: string
+  description: string
+  specialization: { name: string }[]
+  stack: { name: string }[]
+  is_published: boolean
+}
+
+export type CreateIdeaType = {
+  title: string
+  description: string
+  is_published: boolean
+}
+
+export type SelectAreaPropType = {
+  values: string[]
+  placeholder: string
+  setValues: React.Dispatch<React.SetStateAction<string[]>>
+}
