@@ -23,7 +23,7 @@ const TagsField = ({
         enforceWhitelist: false,
         whitelist: Array.from(allStack.values(), (item) => item.name),
 
-        placeholder: 'Введіть потрібних фахівців',
+        placeholder: 'Введіть потрібні технології',
         dropdown: {
           maxItems: 20,
         },

@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import SwitchToggle from '../../atoms/SwitchToggle/SwitchToggle'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import { changeMainPreloader } from '../../store/stateElementSlice'
-import { selectUserInfo, setUserProfile } from '../../store/userSlice'
+import { selectUserInfo, setUserProfileAvatar } from '../../store/userSlice'
 import logo from '../../image/logo/small_logo.webp'
 
 import './ProfilePersonalInfo.scss'
@@ -20,11 +20,14 @@ const ProfilePersonalInfo = ({
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const dispatch = useAppDispatch()
-  const { updatePhoto, profileUser, hostname } = ServiceBanyak()
+  const { hostname, USER_PROFILE_AVATAR } = ServiceBanyak()
   const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
   const { userProfile } = useAppSelector(selectUserInfo)
   console.log('userProfile from profilePersonal info', userProfile)
+  const avatarUrl = userProfile?.avatar?.avatar_profile
+    ? `${hostname}${userProfile.avatar.avatar_profile}`
+    : null
 
   const handleOnChangeFile = (
     e: React.FormEvent<HTMLInputElement>,
@@ -33,93 +36,33 @@ const ProfilePersonalInfo = ({
     const target = e.target as HTMLInputElement & {
       files: FileList
     }
-
     setNewAvatar(target.files[0])
-    // if (target && target.files !== null) {
-    //   const file = target.files[0]
-    //   console.log('avatar', file)
-    //   setNewAvatar(file)
-    // }
   }
 
   const sendNewAvatar = async () => {
     if (typeof newAvatar === 'undefined') return
 
     const token = getCookies('sessiontokenid')
-
     const formData = new FormData()
     formData.append('avatar_profile', newAvatar)
     // formData.append('upload_preset', 'test')
 
     console.log('formData', formData.getAll('avatar_profile'))
     try {
-      const response = await fetch(
-        `${hostname}/api/v1/users/user-profile-avatar/`,
-        {
-          // method: 'POST',
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      )
+      const response = await fetch(USER_PROFILE_AVATAR, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
 
       const result = await response.json()
-
-      console.log('result avatar', result)
-
-      const profileResponse = await fetch(
-        `${hostname}/api/v1/users/user-profile/`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-
-      const user = await profileResponse.json()
-      console.log('user ProfilePage from info', user)
+      dispatch(setUserProfileAvatar(result))
+      setNewAvatar(undefined)
+      dispatch(changeMainPreloader(false))
     } catch (error) {
       console.log(error)
-    }
-
-    try {
-      const profileResponse = await fetch(
-        `${hostname}/api/v1/users/user-profile/`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-
-      const user = await profileResponse.json()
-
-      // eslint-disable-next-line
-      // const updatePhoto = await updatePhoto(token, 'PUT', formData)
-      // const updateProfile = await profileUser(token, 'GET')
-
-      // const profileResponse = await fetch(`${hostname}/api/v1/users/user-profile/`, {
-      //   method: 'GET',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-
-      // const user = await profileResponse.json()
-      // console.log('user ProfilePage from info', user)
-
-      // dispatch(setUserProfile(await updateProfile))
-      setNewAvatar(user.avatar_profile)
-      dispatch(changeMainPreloader(false))
-    } catch (e) {
-      console.error(e)
     }
   }
 
@@ -128,15 +71,9 @@ const ProfilePersonalInfo = ({
       return null
     }
 
-    const { user, avatar } = userProfile
+    const { user } = userProfile
     const newAvatarBlob = newAvatar as File
-
     const imageUrl = newAvatarBlob ? URL.createObjectURL(newAvatarBlob) : ''
-    const avatarUrl = avatar?.avatar_profile
-      ? `http://localhost:8000${avatar.avatar_profile}`
-      : null
-
-    console.log('newAvatar', newAvatar)
 
     return (
       <>

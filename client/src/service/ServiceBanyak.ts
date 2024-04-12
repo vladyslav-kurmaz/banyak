@@ -346,6 +346,7 @@ const ServiceBanyak = () => {
 
   return {
     hostname,
+    USER_PROFILE_AVATAR,
     handleError,
     singUpNewUser,
     updateUserProfile,

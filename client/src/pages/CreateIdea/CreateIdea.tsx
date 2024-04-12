@@ -4,27 +4,55 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import logo from '../../image/logo/small_logo.webp'
 
-import TagFieldSpeciality from '../../atoms/TagFieldSpeciality/TagFieldSpeciality'
-import TagsField from '../../atoms/TagsField/TagsField'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 
-import { TIdeasChange, TprofileChange } from '../../types/types'
+import { CreateIdeaType } from '../../types/types'
 
 import './CreateIdea.scss'
 import { selectUserInfo } from '../../store/userSlice'
+import SelectArea from '../../atoms/SelectArea/SelectArea'
 
 const CreateIdea = () => {
+  const [stack, setStack] = useState<string[]>([])
+  const [specialization, setSpecialization] = useState<string[]>([])
   const dispatch = useAppDispatch()
   const { allStack } = useAppSelector(selectUserInfo)
-
-  const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
-    name: '',
-    speciality: [],
-    stack: [],
+  const [newIdeaData, setNewIdeaData] = useState<CreateIdeaType>({
+    title: '',
     description: '',
-
-    portfolio: '',
+    is_published: true,
   })
+
+  console.log('newIdeaData', newIdeaData)
+  // const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
+  //   name: '',
+  //   speciality: [],
+  //   stack: [],
+  //   description: '',
+
+  //   portfolio: '',
+  // })
+
+  const handleClick = () => {
+    console.log('button clicked')
+  }
+
+  // {
+  //   "title": "Test Postman test",
+  //   "description": "Розробити лого для дитячого садочку з різним функціоналом та для різних ротреб",
+  //  "specialization": [
+  //         {
+  //             "name": "qa"
+  //         }
+  //     ],
+  //     "stack": [
+  //         {
+  //             "name": "react"
+  //         }
+  //     ],
+
+  //   "is_published": true
+  // }
 
   return (
     <div className="create-idea  create-idea__outside">
@@ -60,18 +88,19 @@ const CreateIdea = () => {
               type="text"
               placeholder="Сайт Арт-платформа"
               className="specialization__input"
-              value={newIdeaData?.name}
+              value={newIdeaData?.title}
               onChange={(e) =>
-                setNewIdeaData(
-                  (state) => state && { ...state, name: e.target.value }
-                )
+                setNewIdeaData({
+                  ...newIdeaData,
+                  title: e.target.value,
+                })
               }
             />
           </div>
 
           <div className="personal-stack__about-me about-me">
             <h2 className="title-h2-l about-me__title title-mb-20">
-              Про їдею:
+              Про ідею:
             </h2>
             <textarea
               name="description"
@@ -92,20 +121,11 @@ const CreateIdea = () => {
               Потрібні фахівці:
             </h2>
 
-            {/* <textarea 
-          name="description" 
-          id="" 
-          className="description technologies__description"
-          placeholder="Почніть вводити технології та з'явиться список"
-          // value={<h2 className="title-h2-l technologies__title">Посилання на портфоліо:</h2>}
-          > 
-        </textarea> */}
-
             <div className="technologies__textfield">
-              <TagFieldSpeciality
-                speciality={[]}
-                allSpeciality={[]}
-                changeSpeciality={setNewIdeaData}
+              <SelectArea
+                values={specialization}
+                setValues={setSpecialization}
+                placeholder={'Введіть фахівців'}
               />
             </div>
           </div>
@@ -114,29 +134,21 @@ const CreateIdea = () => {
             <h2 className="title-h2-l technologies__title title-mb-20">
               Потрібні технології:
             </h2>
-            {/* <textarea 
-          name="description" 
-          id="" 
-          className="description technologies__description"
-          placeholder="Почніть вводити технології та з'явиться список"
-          // value={<h2 className="title-h2-l technologies__title">Посилання на портфоліо:</h2>}
-          > 
-        </textarea> */}
 
             <div className="technologies__textfield">
-              {newIdeaData !== null ? (
-                <TagsField
-                  allStack={allStack}
-                  stackUser={newIdeaData.stack}
-                  changeStack={setNewIdeaData}
-                />
-              ) : null}
+              <SelectArea
+                values={stack}
+                setValues={setStack}
+                placeholder={'Введіть технології'}
+              />
             </div>
           </div>
 
           <ButtonSmall
-            style={{ position: 'relative' }}
+            style={{ margin: 'auto' }}
             text="Опублікувати ідею"
+            btnType="button"
+            fn={handleClick}
           />
         </div>
       </div>

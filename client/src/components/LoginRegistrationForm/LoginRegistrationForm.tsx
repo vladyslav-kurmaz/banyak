@@ -164,7 +164,6 @@ const LoginRegistrationForm = () => {
     } catch (e) {
       dispatch(changeMainPreloader(false))
       if (typeof e === 'object' && e !== null && 'status' in e) {
-        console.log('test from error status')
         dispatch(setErrorStatus(e.status))
       } else {
         console.error('Error:', e)

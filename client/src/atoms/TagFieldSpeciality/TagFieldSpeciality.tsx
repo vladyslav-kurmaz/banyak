@@ -6,6 +6,7 @@ import {
   TGetAllStack,
   TIdeasChange,
   TprofileChange,
+  TCreateIdea,
 } from '../../types/types'
 
 import '@yaireo/tagify/src/tagify.scss'
@@ -15,10 +16,14 @@ const TagFieldSpeciality = ({
   speciality,
   allSpeciality,
   changeSpeciality,
+  setIdeaSpecialization,
 }: {
   speciality: { name: string }[]
   allSpeciality: string[]
-  changeSpeciality: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+  changeSpeciality?: React.Dispatch<React.SetStateAction<TprofileChange | null>>
+  setIdeaSpecialization?: React.Dispatch<
+    React.SetStateAction<TIdeasChange | null>
+  >
 }) => {
   const tagifyRef = useRef(null)
   const [find, setFind] = useState(false)
@@ -29,7 +34,7 @@ const TagFieldSpeciality = ({
         enforceWhitelist: false,
         whitelist: allSpeciality,
         duplicates: true,
-        placeholder: 'Введіть технології',
+        placeholder: 'Введіть потрібних фахівців',
         // editTags: false,
         dropdown: {
           maxItems: 20,
@@ -76,34 +81,51 @@ const TagFieldSpeciality = ({
         if (e.detail.data !== undefined) {
           const addedTags = e.detail.data.value.toUpperCase()
 
-          changeSpeciality((state) =>
-            state && state !== null
-              ? {
-                  ...state,
-                  speciality: [
-                    ...state.speciality,
-                    { name: addedTags.toUpperCase() },
-                  ],
-                }
-              : null
-          )
+          if (changeSpeciality) {
+            changeSpeciality((state) =>
+              state && state !== null
+                ? {
+                    ...state,
+                    speciality: [
+                      ...state.speciality,
+                      { name: addedTags.toUpperCase() },
+                    ],
+                  }
+                : null
+            )
+          }
+
+          if (setIdeaSpecialization) {
+            setIdeaSpecialization((state) =>
+              state && state !== null
+                ? {
+                    ...state,
+                    specialization: [
+                      ...state.speciality,
+                      { name: addedTags.toUpperCase() },
+                    ],
+                  }
+                : null
+            )
+          }
         }
       })
 
       tagify.on('remove', (e) => {
         if (e.detail.data !== undefined) {
           const deleteTags = e.detail.data.value
-
-          changeSpeciality((state) =>
-            state && state !== null
-              ? {
-                  ...state,
-                  speciality: state.speciality.filter(
-                    (item) => item.name !== deleteTags
-                  ),
-                }
-              : null
-          )
+          if (changeSpeciality) {
+            changeSpeciality((state) =>
+              state && state !== null
+                ? {
+                    ...state,
+                    speciality: state.speciality.filter(
+                      (item) => item.name !== deleteTags
+                    ),
+                  }
+                : null
+            )
+          }
         }
       })
     }

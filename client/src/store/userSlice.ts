@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from './store'
-import { TGetAllStack, TUserProfile, userInfo } from '../types/types'
+import {
+  TGetAllStack,
+  TUserProfile,
+  TUpdateAvatar,
+  userInfo,
+} from '../types/types'
 
 const initialState: userInfo = {
   // userId: null,
@@ -23,14 +28,21 @@ export const userInfoSlice = createSlice({
     setUserProfile: (state, action: PayloadAction<TUserProfile | null>) => {
       state.userProfile = action.payload
     },
+    setUserProfileAvatar: (state, action: PayloadAction<TUpdateAvatar>) => {
+      if (state.userProfile) state.userProfile.avatar = action.payload
+    },
     setAllStack: (state, action: PayloadAction<TGetAllStack>) => {
       state.allStack = action.payload
     },
   },
 })
 
-export const { setUserProfile, setAllStack, setTypeUser } =
-  userInfoSlice.actions
+export const {
+  setUserProfile,
+  setAllStack,
+  setTypeUser,
+  setUserProfileAvatar,
+} = userInfoSlice.actions
 
 export const selectUserInfo = (state: RootState) => state.userInfo
 
