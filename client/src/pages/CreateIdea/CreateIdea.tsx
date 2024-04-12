@@ -11,30 +11,64 @@ import { CreateIdeaType } from '../../types/types'
 import './CreateIdea.scss'
 import { selectUserInfo } from '../../store/userSlice'
 import SelectArea from '../../atoms/SelectArea/SelectArea'
+import ServiceBanyak from '../../service/ServiceBanyak'
+import workWithCookies from '../../utils/workWithCookies'
+import { error } from 'console'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
   const [specialization, setSpecialization] = useState<string[]>([])
-  const dispatch = useAppDispatch()
-  const { allStack } = useAppSelector(selectUserInfo)
   const [newIdeaData, setNewIdeaData] = useState<CreateIdeaType>({
     title: '',
     description: '',
     is_published: true,
   })
+  const { IDEAS_URL } = ServiceBanyak()
+  const dispatch = useAppDispatch()
+  const { allStack } = useAppSelector(selectUserInfo)
+  const { getCookies } = workWithCookies()
+  const token = getCookies('sessiontokenid')
 
   console.log('newIdeaData', newIdeaData)
-  // const [newIdeaData, setNewIdeaData] = useState<TprofileChange | null>({
-  //   name: '',
-  //   speciality: [],
-  //   stack: [],
-  //   description: '',
 
-  //   portfolio: '',
-  // })
+  const mapItemsToObjects = (itemsArray: string[]) => {
+    return itemsArray.map((item) => ({
+      name: item,
+    }))
+  }
 
-  const handleClick = () => {
-    console.log('button clicked')
+  const createReqBody = () => {
+    return JSON.stringify({
+      title: newIdeaData.title,
+      description: newIdeaData.description,
+      specialization: mapItemsToObjects(specialization),
+      stack: mapItemsToObjects(stack),
+
+      is_published: newIdeaData.is_published,
+    })
+  }
+
+  // add error handing under button
+
+  const handleCreateIdeaClick = async () => {
+    console.log(createReqBody())
+    try {
+      const res = await fetch(IDEAS_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: createReqBody(),
+      })
+
+      console.log(res)
+      if (!res.ok) {
+        throw new Error('Failed to create idea')
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // {
@@ -126,6 +160,7 @@ const CreateIdea = () => {
                 values={specialization}
                 setValues={setSpecialization}
                 placeholder={'Введіть фахівців'}
+                isStack={false}
               />
             </div>
           </div>
@@ -140,6 +175,7 @@ const CreateIdea = () => {
                 values={stack}
                 setValues={setStack}
                 placeholder={'Введіть технології'}
+                isStack={true}
               />
             </div>
           </div>
@@ -148,7 +184,7 @@ const CreateIdea = () => {
             style={{ margin: 'auto' }}
             text="Опублікувати ідею"
             btnType="button"
-            fn={handleClick}
+            fn={handleCreateIdeaClick}
           />
         </div>
       </div>

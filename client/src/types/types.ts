@@ -192,4 +192,5 @@ export type SelectAreaPropType = {
   values: string[]
   placeholder: string
   setValues: React.Dispatch<React.SetStateAction<string[]>>
+  isStack: boolean
 }

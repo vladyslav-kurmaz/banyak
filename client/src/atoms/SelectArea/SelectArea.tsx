@@ -3,9 +3,14 @@ import { SelectAreaPropType } from '../../types/types'
 
 import './SelectArea.scss'
 
-const SelectArea = ({ values, placeholder, setValues }: SelectAreaPropType) => {
+const SelectArea = ({
+  values,
+  placeholder,
+  setValues,
+  isStack,
+}: SelectAreaPropType) => {
   const [stackInput, setStackInput] = useState('')
-
+  console.log('isStack', isStack)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -26,7 +31,11 @@ const SelectArea = ({ values, placeholder, setValues }: SelectAreaPropType) => {
     <div tabIndex={0} className="select-area-container">
       <span className="">
         {values.map((item, index) => (
-          <button key={index} type="button" className="item-btn">
+          <button
+            key={index}
+            type="button"
+            className={isStack ? 'item-btn-stack' : 'item-btn'}
+          >
             <span className="close" onClick={() => handleDeleteValue(item)}>
               &times;
             </span>
