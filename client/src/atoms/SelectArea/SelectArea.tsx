@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SelectAreaPropType } from '../../types/types'
 
 import './SelectArea.scss'
+import useUUID from '../../hooks/useUUID'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
 
 const SelectArea = ({
   values,
@@ -9,17 +11,23 @@ const SelectArea = ({
   setValues,
   isStack,
 }: SelectAreaPropType) => {
-  const [stackInput, setStackInput] = useState('')
-  console.log('isStack', isStack)
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const [inputValue, setInputValue] = useState('')
+  const ref = useOutsideClick(() => {
+    handleSubmit()
+  })
+  const valuesKeys = useUUID(values.length)
 
-    const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
-    const formJson = Object.fromEntries(formData.entries())
-    const tech = formJson.name as string
-    setValues(() => [...values, tech])
-    setStackInput('')
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    handleSubmit()
+  }
+
+  const handleSubmit = async () => {
+    if (inputValue.trim() === '') {
+      return
+    }
+    setValues(() => [...values, inputValue])
+    setInputValue('')
   }
 
   const handleDeleteValue = (item: string) => {
@@ -29,7 +37,7 @@ const SelectArea = ({
 
   return (
     <div tabIndex={0} className="select-area-container">
-      <span className="">
+      <span>
         {values.map((item, index) => (
           <button
             key={index}
@@ -43,14 +51,15 @@ const SelectArea = ({
           </button>
         ))}
       </span>
-      <form onSubmit={handleSubmit}>
+      <form ref={ref} onSubmit={handleFormSubmit}>
         <input
           type="text"
           name="name"
-          value={stackInput}
-          onChange={(e) => setStackInput(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           className="input"
           placeholder={placeholder}
+          required
         />
       </form>
 

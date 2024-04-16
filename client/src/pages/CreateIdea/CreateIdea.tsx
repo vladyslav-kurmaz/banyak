@@ -1,19 +1,17 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
-
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import logo from '../../image/logo/small_logo.webp'
-
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
-
 import { CreateIdeaType } from '../../types/types'
-
-import './CreateIdea.scss'
 import { selectUserInfo } from '../../store/userSlice'
 import SelectArea from '../../atoms/SelectArea/SelectArea'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
-import { error } from 'console'
+import CustomError from '../../atoms/CustomError/CustomError'
+import validateIdea from '../../utils/validateIdea'
+
+import './CreateIdea.scss'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -23,12 +21,17 @@ const CreateIdea = () => {
     description: '',
     is_published: true,
   })
+  const [error, setError] = useState({ error: false, message: '' })
   const { IDEAS_URL } = ServiceBanyak()
   const dispatch = useAppDispatch()
   const { allStack } = useAppSelector(selectUserInfo)
   const { getCookies } = workWithCookies()
   const token = getCookies('sessiontokenid')
-
+  // const TITLE_LENGTH = 4
+  // const DESCRIPTION_LENGTH = 50
+  // const STACK_LENGTH = 1
+  // const SPECIALIZATION_LENGTH = 1
+  const { title, description } = newIdeaData
   console.log('newIdeaData', newIdeaData)
 
   const mapItemsToObjects = (itemsArray: string[]) => {
@@ -37,22 +40,24 @@ const CreateIdea = () => {
     }))
   }
 
+  const clearErrorStatus = () => setError({ error: false, message: '' })
+
   const createReqBody = () => {
     return JSON.stringify({
       title: newIdeaData.title,
       description: newIdeaData.description,
       specialization: mapItemsToObjects(specialization),
       stack: mapItemsToObjects(stack),
-
       is_published: newIdeaData.is_published,
     })
   }
 
-  // add error handing under button
-
   const handleCreateIdeaClick = async () => {
-    console.log(createReqBody())
+    clearErrorStatus()
+    if (!validateIdea({ title, description, specialization, stack, setError }))
+      return
     try {
+      console.log('test')
       const res = await fetch(IDEAS_URL, {
         method: 'POST',
         headers: {
@@ -69,6 +74,17 @@ const CreateIdea = () => {
     } catch (error) {
       console.error(error)
     }
+
+    setStack([])
+    setSpecialization([])
+    setNewIdeaData({
+      title: '',
+      description: '',
+      is_published: true,
+    })
+
+    // add navigation to my ideas
+    // add spinner
   }
 
   // {
@@ -118,17 +134,20 @@ const CreateIdea = () => {
             <h2 className="title-h2-l specialization__title title-mb-20">
               Назва ідеї:
             </h2>
+
             <input
               type="text"
               placeholder="Сайт Арт-платформа"
               className="specialization__input"
               value={newIdeaData?.title}
-              onChange={(e) =>
+              onChange={(e) => {
+                clearErrorStatus()
                 setNewIdeaData({
                   ...newIdeaData,
                   title: e.target.value,
                 })
-              }
+              }}
+              required
             />
           </div>
 
@@ -142,11 +161,13 @@ const CreateIdea = () => {
               value={newIdeaData?.description}
               className="description about-me__description"
               placeholder="Шукаю бажаючих долучитись до розробки ідеї арт-сайту."
-              onChange={(e) =>
+              onChange={(e) => {
+                clearErrorStatus()
                 setNewIdeaData(
                   (state) => state && { ...state, description: e.target.value }
                 )
-              }
+              }}
+              required
             ></textarea>
           </div>
 
@@ -157,6 +178,7 @@ const CreateIdea = () => {
 
             <div className="technologies__textfield">
               <SelectArea
+                key={'specialization'}
                 values={specialization}
                 setValues={setSpecialization}
                 placeholder={'Введіть фахівців'}
@@ -172,6 +194,7 @@ const CreateIdea = () => {
 
             <div className="technologies__textfield">
               <SelectArea
+                key={'stack'}
                 values={stack}
                 setValues={setStack}
                 placeholder={'Введіть технології'}
@@ -179,7 +202,7 @@ const CreateIdea = () => {
               />
             </div>
           </div>
-
+          {error.error && <CustomError text={error.message} />}
           <ButtonSmall
             style={{ margin: 'auto' }}
             text="Опублікувати ідею"
