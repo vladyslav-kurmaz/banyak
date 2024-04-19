@@ -27,6 +27,7 @@ const ServiceBanyak = () => {
   const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
   const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
   const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
+  const IDEAS_URL = `${hostname}/api/v1/ideas/ideas/`
 
   const handleError = (error: any) => {
     if (error instanceof Error) {
@@ -347,6 +348,7 @@ const ServiceBanyak = () => {
   return {
     hostname,
     USER_PROFILE_AVATAR,
+    IDEAS_URL,
     handleError,
     singUpNewUser,
     updateUserProfile,
