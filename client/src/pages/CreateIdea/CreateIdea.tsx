@@ -10,8 +10,10 @@ import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import CustomError from '../../atoms/CustomError/CustomError'
 import validateIdea from '../../utils/validateIdea'
+import { changeMainPreloader } from '../../store/stateElementSlice'
 
 import './CreateIdea.scss'
+import { useNavigate } from 'react-router-dom'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -24,15 +26,10 @@ const CreateIdea = () => {
   const [error, setError] = useState({ error: false, message: '' })
   const { IDEAS_URL } = ServiceBanyak()
   const dispatch = useAppDispatch()
-  const { allStack } = useAppSelector(selectUserInfo)
+  const navigate = useNavigate()
   const { getCookies } = workWithCookies()
   const token = getCookies('sessiontokenid')
-  // const TITLE_LENGTH = 4
-  // const DESCRIPTION_LENGTH = 50
-  // const STACK_LENGTH = 1
-  // const SPECIALIZATION_LENGTH = 1
   const { title, description } = newIdeaData
-  console.log('newIdeaData', newIdeaData)
 
   const mapItemsToObjects = (itemsArray: string[]) => {
     return itemsArray.map((item) => ({
@@ -53,11 +50,11 @@ const CreateIdea = () => {
   }
 
   const handleCreateIdeaClick = async () => {
+    dispatch(changeMainPreloader(true))
     clearErrorStatus()
     if (!validateIdea({ title, description, specialization, stack, setError }))
       return
     try {
-      console.log('test')
       const res = await fetch(IDEAS_URL, {
         method: 'POST',
         headers: {
@@ -67,12 +64,12 @@ const CreateIdea = () => {
         body: createReqBody(),
       })
 
-      console.log(res)
       if (!res.ok) {
         throw new Error('Failed to create idea')
       }
-    } catch (error) {
-      console.error(error)
+    } catch (err) {
+      console.error(err)
+      if (err instanceof Error) setError({ error: true, message: err.message })
     }
 
     setStack([])
@@ -82,9 +79,8 @@ const CreateIdea = () => {
       description: '',
       is_published: true,
     })
-
-    // add navigation to my ideas
-    // add spinner
+    dispatch(changeMainPreloader(false))
+    navigate('/profile')
   }
 
   // {
