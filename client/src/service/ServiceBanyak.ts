@@ -25,6 +25,7 @@ const ServiceBanyak = () => {
   const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
   const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
   const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
+  const IDEA_AVATAR = `${hostname}/api/v1/ideas/ideas/avatar-update/`
   const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
   const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
   const IDEAS_URL = `${hostname}/api/v1/ideas/ideas/`
@@ -348,6 +349,7 @@ const ServiceBanyak = () => {
   return {
     hostname,
     USER_PROFILE_AVATAR,
+    IDEA_AVATAR,
     IDEAS_URL,
     handleError,
     singUpNewUser,

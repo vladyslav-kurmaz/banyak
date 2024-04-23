@@ -41,7 +41,7 @@ const ProfilePersonalInfo = ({
 
   const sendNewAvatar = async () => {
     if (typeof newAvatar === 'undefined') return
-
+    dispatch(changeMainPreloader(true))
     const token = getCookies('sessiontokenid')
     const formData = new FormData()
     formData.append('avatar_profile', newAvatar)
