@@ -4,12 +4,13 @@ import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import logo from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { CreateIdeaType } from '../../types/types'
-import { selectUserInfo } from '../../store/userSlice'
 import SelectArea from '../../atoms/SelectArea/SelectArea'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import CustomError from '../../atoms/CustomError/CustomError'
 import validateIdea from '../../utils/validateIdea'
+import { changeMainPreloader } from '../../store/stateElementSlice'
+import { useNavigate } from 'react-router-dom'
 
 import './CreateIdea.scss'
 
@@ -22,17 +23,17 @@ const CreateIdea = () => {
     is_published: true,
   })
   const [error, setError] = useState({ error: false, message: '' })
-  const { IDEAS_URL } = ServiceBanyak()
+  const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
+  const { IDEAS_URL, IDEA_AVATAR } = ServiceBanyak()
   const dispatch = useAppDispatch()
-  const { allStack } = useAppSelector(selectUserInfo)
+  const navigate = useNavigate()
   const { getCookies } = workWithCookies()
   const token = getCookies('sessiontokenid')
-  // const TITLE_LENGTH = 4
-  // const DESCRIPTION_LENGTH = 50
-  // const STACK_LENGTH = 1
-  // const SPECIALIZATION_LENGTH = 1
   const { title, description } = newIdeaData
-  console.log('newIdeaData', newIdeaData)
+  const newIdeaAvatarBlob = newIdeaAvatar as File
+  const imageUrl = newIdeaAvatarBlob
+    ? URL.createObjectURL(newIdeaAvatarBlob)
+    : ''
 
   const mapItemsToObjects = (itemsArray: string[]) => {
     return itemsArray.map((item) => ({
@@ -53,11 +54,11 @@ const CreateIdea = () => {
   }
 
   const handleCreateIdeaClick = async () => {
+    dispatch(changeMainPreloader(true))
     clearErrorStatus()
     if (!validateIdea({ title, description, specialization, stack, setError }))
       return
     try {
-      console.log('test')
       const res = await fetch(IDEAS_URL, {
         method: 'POST',
         headers: {
@@ -67,12 +68,14 @@ const CreateIdea = () => {
         body: createReqBody(),
       })
 
-      console.log(res)
       if (!res.ok) {
         throw new Error('Failed to create idea')
       }
-    } catch (error) {
-      console.error(error)
+
+      await sendNewIdeaAvatar()
+    } catch (err) {
+      console.error(err)
+      if (err instanceof Error) setError({ error: true, message: err.message })
     }
 
     setStack([])
@@ -82,9 +85,8 @@ const CreateIdea = () => {
       description: '',
       is_published: true,
     })
-
-    // add navigation to my ideas
-    // add spinner
+    dispatch(changeMainPreloader(false))
+    navigate('/')
   }
 
   // {
@@ -103,6 +105,43 @@ const CreateIdea = () => {
 
   //   "is_published": true
   // }
+  const handleOnChangeFile = (
+    e: React.FormEvent<HTMLInputElement>,
+    type: string
+  ) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList
+    }
+    setNewIdeaAvatar(target.files[0])
+  }
+
+  const sendNewIdeaAvatar = async () => {
+    console.log('send avatar')
+    if (typeof newIdeaAvatar === 'undefined') return
+
+    const formData = new FormData()
+    formData.append('avatar', newIdeaAvatar)
+    console.log('formData', formData.getAll('avatar'))
+
+    try {
+      console.log('test from sendNewIdeaAvatar')
+      const response = await fetch(IDEA_AVATAR, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+
+      const result = await response.json()
+      console.log('idea avat res', result)
+
+      // setNewAvatar(undefined)
+      dispatch(changeMainPreloader(false))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="create-idea  create-idea__outside">
@@ -112,7 +151,11 @@ const CreateIdea = () => {
 
       <div className="create-idea__inside">
         <div className="personal-info__main-info">
-          <img src={logo} className="personal-info__avatar" alt="User avatar" />
+          <img
+            src={imageUrl || logo}
+            className="personal-info__avatar"
+            alt="User avatar"
+          />
 
           <div className="personal-info__container">
             <label
@@ -122,8 +165,10 @@ const CreateIdea = () => {
               Замінити фото
               <input
                 className="personal-info__input"
+                accept="image/*"
                 type="file"
                 id="avatar-change"
+                onChange={(e) => handleOnChangeFile(e, 'avatar')}
               />
             </label>
           </div>
@@ -157,7 +202,7 @@ const CreateIdea = () => {
             </h2>
             <textarea
               name="description"
-              id=""
+              id="description"
               value={newIdeaData?.description}
               className="description about-me__description"
               placeholder="Шукаю бажаючих долучитись до розробки ідеї арт-сайту."
