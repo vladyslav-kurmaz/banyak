@@ -1,18 +1,20 @@
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxToolkitHooks'
+import { useAppDispatch } from '../../hooks/reduxToolkitHooks'
 import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import logo from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
-import { CreateIdeaType } from '../../types/types'
+import { CreateIdeaType, InitialIdeaStatusType } from '../../types/types'
 import SelectArea from '../../atoms/SelectArea/SelectArea'
 import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import CustomError from '../../atoms/CustomError/CustomError'
 import validateIdea from '../../utils/validateIdea'
 import { changeMainPreloader } from '../../store/stateElementSlice'
-import { useNavigate } from 'react-router-dom'
 
 import './CreateIdea.scss'
+import RadioInput from '../../atoms/RadioInput/RadioInput'
+import { initialIdeaStatus } from '../../constants/initialIdeaStatus'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -22,6 +24,8 @@ const CreateIdea = () => {
     description: '',
     is_published: true,
   })
+  const [ideaStatus, setIdeaStatus] =
+    useState<InitialIdeaStatusType[]>(initialIdeaStatus)
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
   const { IDEAS_URL, IDEA_AVATAR } = ServiceBanyak()
@@ -143,6 +147,27 @@ const CreateIdea = () => {
     }
   }
 
+  const handleFormSubmit = () => {}
+
+  const handleIdeaStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = e.target
+    const isPublished = id === 'inactive' ? false : true
+    console.log('e.target.checked', e.target.checked)
+    setIdeaStatus(
+      ideaStatus.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              checked: checked,
+            }
+          : item
+      )
+    )
+    setNewIdeaData({ ...newIdeaData, is_published: isPublished })
+  }
+
+  console.log('newIdeaData', newIdeaData)
+
   return (
     <div className="create-idea  create-idea__outside">
       <div className="create-idea__button-back">
@@ -171,6 +196,20 @@ const CreateIdea = () => {
                 onChange={(e) => handleOnChangeFile(e, 'avatar')}
               />
             </label>
+            <h2 className="title-h2-l specialization__title title-mb-20">
+              Статус ідеї:
+            </h2>
+            <form onSubmit={handleFormSubmit}>
+              {ideaStatus.map((status) => (
+                <RadioInput
+                  key={status.id}
+                  id={status.id}
+                  value={status.value}
+                  checked={status.checked}
+                  handleChange={handleIdeaStatusChange}
+                />
+              ))}
+            </form>
           </div>
         </div>
 

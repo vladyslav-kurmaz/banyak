@@ -194,3 +194,9 @@ export type SelectAreaPropType = {
   setValues: React.Dispatch<React.SetStateAction<string[]>>
   isStack: boolean
 }
+
+export type InitialIdeaStatusType = {
+  id: string
+  value: string
+  checked: boolean
+}
