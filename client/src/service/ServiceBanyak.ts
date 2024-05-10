@@ -8,6 +8,14 @@ import {
   ServerResForIdeas,
   ServerResForTalents,
 } from '../types/types'
+import {
+  USER_PROFILE_URL,
+  USER_REGISTRATION_URL,
+  USER_LOGIN_URL,
+  USER_PROFILE_AVATAR,
+  USER_LOGOUT_URL,
+  USER_NEW_ACCESS,
+} from '../constants/URLs'
 
 const ServiceBanyak = () => {
   const dispatch = useAppDispatch()
@@ -20,15 +28,15 @@ const ServiceBanyak = () => {
 
   const hostname =
     window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi
-
-  const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
-  const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
-  const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
-  const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
-  const IDEA_AVATAR = `${hostname}/api/v1/ideas/ideas/avatar-update/`
-  const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
-  const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
-  const IDEAS_URL = `${hostname}/api/v1/ideas/ideas/`
+  // replace constants in separate file!!!!
+  // const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
+  // const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
+  // const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
+  // const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
+  // const IDEA_AVATAR = `${hostname}/api/v1/ideas/ideas/avatar-update/`
+  // const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
+  // const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
+  // const IDEAS_URL = `${hostname}/api/v1/ideas/ideas/`
 
   const handleError = (error: any) => {
     if (error instanceof Error) {
@@ -347,10 +355,6 @@ const ServiceBanyak = () => {
   }
 
   return {
-    hostname,
-    USER_PROFILE_AVATAR,
-    IDEA_AVATAR,
-    IDEAS_URL,
     handleError,
     singUpNewUser,
     updateUserProfile,

@@ -6,13 +6,12 @@ import ButtonBack from '../../atoms/ButtonBack/ButtonBack'
 import { TalentRespType } from '../../types/types'
 
 import './IdeaDescriptionPage.scss'
-import ServiceBanyak from '../../service/ServiceBanyak'
 import { useEffect } from 'react'
+import { hostname } from '../../constants/URLs'
 
 function TalentDescriptionPage() {
   const location = useLocation()
   const state = location.state as TalentRespType | undefined
-  const { hostname } = ServiceBanyak()
 
   useEffect(() => {
     // this function only adds talent's views. In layout displays data which sended to component with props (state in Link)

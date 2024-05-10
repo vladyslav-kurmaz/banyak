@@ -8,14 +8,14 @@ import './ProfilePage.scss'
 import { TprofileChange } from '../../types/types'
 import { selectUserInfo, setTypeUser } from '../../store/userSlice'
 import workWithCookies from '../../utils/workWithCookies'
-import ServiceBanyak from '../../service/ServiceBanyak'
+
+import { hostname } from '../../constants/URLs'
 
 const ProfilePage = ({
   fc,
 }: {
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const { hostname } = ServiceBanyak()
   const { getCookies } = workWithCookies()
   const token = getCookies('sessiontokenid')
   const { userProfile, typeUser } = useAppSelector(selectUserInfo)

@@ -8,11 +8,11 @@ import { IdeaRespType } from '../../types/types'
 import './IdeaDescriptionPage.scss'
 import { useEffect } from 'react'
 import ServiceBanyak from '../../service/ServiceBanyak'
+import { hostname } from '../../constants/URLs'
 
 const IdeaDescriptionPage = (isIdea: { isIdea: boolean }) => {
   const location = useLocation()
   const state = location.state as IdeaRespType | undefined
-  const { hostname } = ServiceBanyak()
 
   useEffect(() => {
     // this function only adds idea's views. In layout displays data which sended to component with props (state in Link)
