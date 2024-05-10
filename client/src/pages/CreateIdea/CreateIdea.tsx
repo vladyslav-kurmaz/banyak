@@ -6,7 +6,6 @@ import logo from '../../image/logo/small_logo.webp'
 import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import { CreateIdeaType, InitialIdeaStatusType } from '../../types/types'
 import SelectArea from '../../atoms/SelectArea/SelectArea'
-import ServiceBanyak from '../../service/ServiceBanyak'
 import workWithCookies from '../../utils/workWithCookies'
 import CustomError from '../../atoms/CustomError/CustomError'
 import validateIdea from '../../utils/validateIdea'
@@ -15,6 +14,7 @@ import { changeMainPreloader } from '../../store/stateElementSlice'
 import './CreateIdea.scss'
 import RadioInput from '../../atoms/RadioInput/RadioInput'
 import { initialIdeaStatus } from '../../constants/initialIdeaStatus'
+import { IDEAS_URL, IDEA_AVATAR } from '../../constants/URLs'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -28,7 +28,7 @@ const CreateIdea = () => {
     useState<InitialIdeaStatusType[]>(initialIdeaStatus)
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
-  const { IDEAS_URL, IDEA_AVATAR } = ServiceBanyak()
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getCookies } = workWithCookies()

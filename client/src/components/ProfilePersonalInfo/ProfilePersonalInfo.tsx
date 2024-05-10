@@ -13,6 +13,7 @@ import ButtonSmall from '../../atoms/ButtonSmall/ButtonSmall'
 import chat from '../../image/header/chat.svg'
 import lampIcon from '../../image/icon/idea.svg'
 import plusIcon from '../../image/icon/PLUS.svg'
+import { USER_PROFILE_AVATAR, hostname } from '../../constants/URLs'
 
 const ProfilePersonalInfo = ({
   fc,
@@ -20,7 +21,6 @@ const ProfilePersonalInfo = ({
   fc: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const dispatch = useAppDispatch()
-  const { hostname, USER_PROFILE_AVATAR } = ServiceBanyak()
   const [newAvatar, setNewAvatar] = useState<File | undefined>()
   const { getCookies } = workWithCookies()
   const { userProfile } = useAppSelector(selectUserInfo)
