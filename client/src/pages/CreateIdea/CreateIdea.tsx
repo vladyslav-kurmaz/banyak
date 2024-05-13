@@ -15,6 +15,7 @@ import './CreateIdea.scss'
 import RadioInput from '../../atoms/RadioInput/RadioInput'
 import { initialIdeaStatus } from '../../constants/initialIdeaStatus'
 import { IDEAS_URL, IDEA_AVATAR } from '../../constants/URLs'
+import { mapItemsToObjects } from '../../utils/mapItemsToObject'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -28,6 +29,7 @@ const CreateIdea = () => {
     useState<InitialIdeaStatusType[]>(initialIdeaStatus)
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
+  // const [preview, setPreview] = useState<string | ArrayBuffer | null>(null)
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -38,13 +40,6 @@ const CreateIdea = () => {
   const imageUrl = newIdeaAvatarBlob
     ? URL.createObjectURL(newIdeaAvatarBlob)
     : ''
-
-  const mapItemsToObjects = (itemsArray: string[]) => {
-    return itemsArray.map((item) => ({
-      name: item,
-    }))
-  }
-
   const clearErrorStatus = () => setError({ error: false, message: '' })
 
   const createReqBody = () => {
@@ -117,6 +112,14 @@ const CreateIdea = () => {
       files: FileList
     }
     setNewIdeaAvatar(target.files[0])
+
+    // const file = new FileReader()
+
+    // file.onload = () => {
+    //   setPreview(file.result)
+    // }
+
+    // file.readAsDataURL(target.files[0])
   }
 
   const sendNewIdeaAvatar = async () => {
@@ -151,8 +154,7 @@ const CreateIdea = () => {
 
   const handleIdeaStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target
-    const isPublished = id === 'inactive' ? false : true
-    console.log('e.target.checked', e.target.checked)
+    const isPublished = id === 'inactive' || id === 'finished' ? false : true
     setIdeaStatus(
       ideaStatus.map((item) =>
         item.id === id
@@ -177,9 +179,9 @@ const CreateIdea = () => {
       <div className="create-idea__inside">
         <div className="personal-info__main-info">
           <img
-            src={imageUrl || logo}
+            src={/*(preview as string)||*/ imageUrl || logo}
             className="personal-info__avatar"
-            alt="User avatar"
+            alt="Idea avatar"
           />
 
           <div className="personal-info__container">

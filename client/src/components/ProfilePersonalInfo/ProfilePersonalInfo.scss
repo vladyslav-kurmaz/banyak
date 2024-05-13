@@ -12,7 +12,18 @@
     margin-bottom: 40px;
   }
 
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
     max-width: 200px;
     max-height: 200px;
     width: 100%;
@@ -24,20 +35,20 @@
 
   & .military {
     border-radius: 50%;
-    border: 2px solid green
+    border: 2px solid green;
   }
 
   & .vpo {
     border-radius: 50%;
-    border: 2px solid green
+    border: 2px solid green;
   }
 
   &__changed-avatar,
   &__special-status {
     padding: 10px 20px;
     border-radius: 8px;
-    background-color: #1C145E;  
-    color: #FCFDFF;
+    background-color: #1c145e;
+    color: #fcfdff;
     font-family: Montserrat;
     font-size: 16px;
     font-weight: 700;
@@ -51,7 +62,6 @@
     align-items: center;
     transform: translateX(-50%);
     margin-bottom: 50px;
-
   }
 
   &__update {
@@ -74,9 +84,6 @@
     width: 45%;
   }
 
-
-
-
   &__statuses {
     display: flex;
     flex-direction: column;
@@ -88,18 +95,16 @@
       margin-bottom: 40px;
     }
 
-    .personal-info__special-status{
+    .personal-info__special-status {
       text-align: start;
       margin-bottom: 20px;
       // margin-right: auto;
-  
+
       &:last-child {
         margin-bottom: 0;
       }
     }
   }
-
-  
 
   &__input {
     display: none;
@@ -108,7 +113,9 @@
   .personal-info__container {
     display: flex;
     flex-direction: column;
-    // margin-bottom: 50px;  
+    align-items: center;
+    justify-content: center;
+    // margin-bottom: 50px;
   }
 
   &__name {
@@ -129,7 +136,7 @@
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 40px;
-  } 
+  }
 
   &__buttons {
     display: flex;
@@ -158,36 +165,33 @@
     & a {
       text-decoration: none;
     }
-    
   }
 }
 
 @media screen and (max-width: 820px) {
   .personal-info {
     flex-direction: column;
-    max-width: 100%;;
+    max-width: 100%;
 
     &__statuses {
       width: 50%;
-
 
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      
-  
+
       // &-container {
       //   display: flex;
       //   justify-content: flex-start;
       //   margin-bottom: 40px;
       // }
-  
+
       // .personal-info__special-status{
       //   text-align: start;
       //   margin-bottom: 20px;
       //   // margin-right: auto;
-    
+
       //   &:last-child {
       //     margin-bottom: 0;
       //   }
@@ -200,44 +204,34 @@
       align-items: center;
       justify-content: center;
     }
-  
+
     &__user-profile {
       max-width: 100%;
       display: flex;
     }
-  
+
     &__avatar {
       width: 50%;
-      margin-right: 100px;
     }
-  
+
     &__changed-avatar {
       height: 40px;
       box-sizing: border-box;
 
-      position: relative; 
+      position: relative;
       left: 0;
       display: block;
-      transform: translateX(0%); 
+      transform: translateX(0%);
       margin-bottom: 40px;
     }
-  
+
     .personal-info__container {
       width: 50%;
     }
-  
+
     &__buttons {
       width: 100%;
       flex-direction: row;
-    }
-  
-  }
-}
-
-@media screen and (max-width: 680px) {
-  .personal-info {  
-    &__avatar {
-      margin-right: 50px;
     }
   }
 }
@@ -253,15 +247,14 @@
       flex-direction: column;
       align-items: center;
       // justify-content: space-between;
-      
-  
+
       // &-container {
       //   display: flex;
       //   justify-content: flex-start;
       //   margin-bottom: 40px;
       // }
-  
-      .personal-info__special-status{
+
+      .personal-info__special-status {
         text-align: center;
       }
     }
@@ -270,26 +263,25 @@
       flex-direction: column;
       flex-wrap: nowrap;
     }
-  
+
     &__avatar {
       margin-right: 0px;
       width: 100%;
       margin-bottom: 40px;
     }
-  
+
     &__changed-avatar {
       width: 100%;
     }
-  
+
     .personal-info__container {
       width: 100%;
       align-items: center;
     }
-  
+
     &__buttons {
       flex-direction: column;
       align-items: center;
     }
-  
   }
 }
