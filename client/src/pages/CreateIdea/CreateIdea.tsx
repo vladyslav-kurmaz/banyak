@@ -29,7 +29,6 @@ const CreateIdea = () => {
     useState<InitialIdeaStatusType[]>(initialIdeaStatus)
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
-  // const [preview, setPreview] = useState<string | ArrayBuffer | null>(null)
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -66,11 +65,13 @@ const CreateIdea = () => {
         },
         body: createReqBody(),
       })
-
+      // make use api hook
       if (!res.ok) {
         throw new Error('Failed to create idea')
       }
-
+      const result = await res.json()
+      console.log('res new idea', result)
+      // to make sendNewIdeaAvatar work i need to add avatar id  (result.avatar) to my endpoint `${hostname}/api/v1/ideas/ideas/avatar-update/[avatar id]/` it will work in new docker image. Now it works with unique user - one user can have only  one idea
       await sendNewIdeaAvatar()
     } catch (err) {
       console.error(err)
@@ -112,20 +113,12 @@ const CreateIdea = () => {
       files: FileList
     }
     setNewIdeaAvatar(target.files[0])
-
-    // const file = new FileReader()
-
-    // file.onload = () => {
-    //   setPreview(file.result)
-    // }
-
-    // file.readAsDataURL(target.files[0])
   }
 
   const sendNewIdeaAvatar = async () => {
     console.log('send avatar')
     if (typeof newIdeaAvatar === 'undefined') return
-
+    dispatch(changeMainPreloader(true))
     const formData = new FormData()
     formData.append('avatar', newIdeaAvatar)
     console.log('formData', formData.getAll('avatar'))
@@ -146,6 +139,7 @@ const CreateIdea = () => {
       // setNewAvatar(undefined)
       dispatch(changeMainPreloader(false))
     } catch (error) {
+      dispatch(changeMainPreloader(false))
       console.log(error)
     }
   }
@@ -179,7 +173,7 @@ const CreateIdea = () => {
       <div className="create-idea__inside">
         <div className="personal-info__main-info">
           <img
-            src={/*(preview as string)||*/ imageUrl || logo}
+            src={imageUrl || logo}
             className="personal-info__avatar"
             alt="Idea avatar"
           />
