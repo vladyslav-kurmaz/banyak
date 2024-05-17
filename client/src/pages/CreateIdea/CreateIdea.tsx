@@ -15,6 +15,7 @@ import './CreateIdea.scss'
 import RadioInput from '../../atoms/RadioInput/RadioInput'
 import { initialIdeaStatus } from '../../constants/initialIdeaStatus'
 import { IDEAS_URL, IDEA_AVATAR } from '../../constants/URLs'
+import { mapItemsToObjects } from '../../utils/mapItemsToObject'
 
 const CreateIdea = () => {
   const [stack, setStack] = useState<string[]>([])
@@ -29,24 +30,6 @@ const CreateIdea = () => {
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
 
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-  const { getCookies } = workWithCookies()
-  const token = getCookies('sessiontokenid')
-  const { title, description } = newIdeaData
-  const newIdeaAvatarBlob = newIdeaAvatar as File
-  const imageUrl = newIdeaAvatarBlob
-    ? URL.createObjectURL(newIdeaAvatarBlob)
-    : ''
-
-  const mapItemsToObjects = (itemsArray: string[]) => {
-    return itemsArray.map((item) => ({
-      name: item,
-    }))
-  }
-
-  const clearErrorStatus = () => setError({ error: false, message: '' })
-
   const createReqBody = () => {
     return JSON.stringify({
       title: newIdeaData.title,
@@ -56,6 +39,17 @@ const CreateIdea = () => {
       is_published: newIdeaData.is_published,
     })
   }
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { getCookies } = workWithCookies()
+  const token = getCookies('sessiontokenid')
+  const { title, description } = newIdeaData
+  const newIdeaAvatarBlob = newIdeaAvatar as File
+  const imageUrl = newIdeaAvatarBlob
+    ? URL.createObjectURL(newIdeaAvatarBlob)
+    : ''
+  const clearErrorStatus = () => setError({ error: false, message: '' })
 
   const handleCreateIdeaClick = async () => {
     dispatch(changeMainPreloader(true))
@@ -75,6 +69,8 @@ const CreateIdea = () => {
       if (!res.ok) {
         throw new Error('Failed to create idea')
       }
+      const result = await res.json()
+      console.log('res new idea', result)
 
       await sendNewIdeaAvatar()
     } catch (err) {
@@ -120,9 +116,10 @@ const CreateIdea = () => {
   }
 
   const sendNewIdeaAvatar = async () => {
+    // to make sendNewIdeaAvatar work i need to add avatar id  (result.avatar) to my endpoint `${hostname}/api/v1/ideas/ideas/avatar-update/[avatar id]/` it will work in new docker image. Now it works with unique user - one user can have only  one idea
     console.log('send avatar')
     if (typeof newIdeaAvatar === 'undefined') return
-
+    dispatch(changeMainPreloader(true))
     const formData = new FormData()
     formData.append('avatar', newIdeaAvatar)
     console.log('formData', formData.getAll('avatar'))
@@ -143,6 +140,7 @@ const CreateIdea = () => {
       // setNewAvatar(undefined)
       dispatch(changeMainPreloader(false))
     } catch (error) {
+      dispatch(changeMainPreloader(false))
       console.log(error)
     }
   }
@@ -151,8 +149,7 @@ const CreateIdea = () => {
 
   const handleIdeaStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target
-    const isPublished = id === 'inactive' ? false : true
-    console.log('e.target.checked', e.target.checked)
+    const isPublished = id === 'inactive' || id === 'finished' ? false : true
     setIdeaStatus(
       ideaStatus.map((item) =>
         item.id === id
@@ -179,7 +176,7 @@ const CreateIdea = () => {
           <img
             src={imageUrl || logo}
             className="personal-info__avatar"
-            alt="User avatar"
+            alt="Idea avatar"
           />
 
           <div className="personal-info__container">

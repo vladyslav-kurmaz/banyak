@@ -15,28 +15,13 @@ import {
   USER_PROFILE_AVATAR,
   USER_LOGOUT_URL,
   USER_NEW_ACCESS,
+  hostname,
 } from '../constants/URLs'
 
 const ServiceBanyak = () => {
   const dispatch = useAppDispatch()
   const { setCookies, getCookies, deleteCookie } = workWithCookies()
   const { request } = useHttp()
-
-  const _baseUlr = 'http://localhost:8000'
-
-  const _baseUlrApi = 'https://banyak-api.onrender.com'
-
-  const hostname =
-    window.location.hostname === 'localhost' ? _baseUlr : _baseUlrApi
-  // replace constants in separate file!!!!
-  // const USER_PROFILE_URL = `${hostname}/api/v1/users/user-profile/`
-  // const USER_REGISTRATION_URL = `${hostname}/api/v1/users/register/`
-  // const USER_LOGIN_URL = `${hostname}/api/v1/users/login/`
-  // const USER_PROFILE_AVATAR = `${hostname}/api/v1/users/user-profile-avatar/`
-  // const IDEA_AVATAR = `${hostname}/api/v1/ideas/ideas/avatar-update/`
-  // const USER_LOGOUT_URL = `${hostname}/api/v1/users/logout/`
-  // const USER_NEW_ACCESS = `${hostname}/api/v1/users/new-access/`
-  // const IDEAS_URL = `${hostname}/api/v1/ideas/ideas/`
 
   const handleError = (error: any) => {
     if (error instanceof Error) {

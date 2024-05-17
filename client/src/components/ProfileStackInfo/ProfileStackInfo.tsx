@@ -133,7 +133,8 @@ const ProfileStackInfo = ({
                 className={`portfolio__input portfolio__input-${
                   validationProfile(portfolio, 'portfolio')?.class
                 }`}
-                type="text"
+                type="url"
+                pattern="https://.*"
                 placeholder="https://your-portfolio-link"
                 value={portfolio}
                 onChange={(e) => {

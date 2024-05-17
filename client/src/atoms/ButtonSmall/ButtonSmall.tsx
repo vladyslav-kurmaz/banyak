@@ -1,14 +1,23 @@
 import { FC } from 'react'
 import './ButtonSmall.scss'
 
-const ButtonSmall: FC<{
+type ButtonSmallProps = {
   text: string
   icon?: string
   fn?: () => void
   style?: object
   href?: string
   btnType?: 'button' | 'submit' | 'reset' | undefined
-}> = ({ text, icon, fn, style, href, btnType }) => {
+}
+
+const ButtonSmall: FC<ButtonSmallProps> = ({
+  text,
+  icon,
+  fn,
+  style,
+  href,
+  btnType,
+}) => {
   const iconElement = icon ? (
     <img src={icon} alt="button icon" className="buttonSmall__icon" />
   ) : null
