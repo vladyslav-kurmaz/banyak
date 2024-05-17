@@ -30,6 +30,16 @@ const CreateIdea = () => {
   const [error, setError] = useState({ error: false, message: '' })
   const [newIdeaAvatar, setNewIdeaAvatar] = useState<File | undefined>()
 
+  const createReqBody = () => {
+    return JSON.stringify({
+      title: newIdeaData.title,
+      description: newIdeaData.description,
+      specialization: mapItemsToObjects(specialization),
+      stack: mapItemsToObjects(stack),
+      is_published: newIdeaData.is_published,
+    })
+  }
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getCookies } = workWithCookies()
@@ -40,16 +50,6 @@ const CreateIdea = () => {
     ? URL.createObjectURL(newIdeaAvatarBlob)
     : ''
   const clearErrorStatus = () => setError({ error: false, message: '' })
-
-  const createReqBody = () => {
-    return JSON.stringify({
-      title: newIdeaData.title,
-      description: newIdeaData.description,
-      specialization: mapItemsToObjects(specialization),
-      stack: mapItemsToObjects(stack),
-      is_published: newIdeaData.is_published,
-    })
-  }
 
   const handleCreateIdeaClick = async () => {
     dispatch(changeMainPreloader(true))
@@ -65,13 +65,13 @@ const CreateIdea = () => {
         },
         body: createReqBody(),
       })
-      // make use api hook
+
       if (!res.ok) {
         throw new Error('Failed to create idea')
       }
       const result = await res.json()
       console.log('res new idea', result)
-      // to make sendNewIdeaAvatar work i need to add avatar id  (result.avatar) to my endpoint `${hostname}/api/v1/ideas/ideas/avatar-update/[avatar id]/` it will work in new docker image. Now it works with unique user - one user can have only  one idea
+
       await sendNewIdeaAvatar()
     } catch (err) {
       console.error(err)
@@ -116,6 +116,7 @@ const CreateIdea = () => {
   }
 
   const sendNewIdeaAvatar = async () => {
+    // to make sendNewIdeaAvatar work i need to add avatar id  (result.avatar) to my endpoint `${hostname}/api/v1/ideas/ideas/avatar-update/[avatar id]/` it will work in new docker image. Now it works with unique user - one user can have only  one idea
     console.log('send avatar')
     if (typeof newIdeaAvatar === 'undefined') return
     dispatch(changeMainPreloader(true))
